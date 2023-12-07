@@ -57,3 +57,4 @@ class Users extends Connect
             }
         }
     }
+}
