@@ -11,5 +11,3 @@ nbproject
 
 # windows thumbnail cache
 Thumbs.db
-views/site/index.php
-views/site/logout.php
