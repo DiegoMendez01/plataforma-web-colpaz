@@ -8,21 +8,21 @@ if(isset($_SESSION['id'])){
 <html>
 <head lang="es">
 	<?php
-    require_once ("../mainHead/head.php");
+    require_once ("../MainHead/head.php");
     ?>
     <title>Aula Virtual::Gestion de Usuarios</title>
 </head>
 <body class="with-side-menu">
 	
 	<?php
-    require_once ("../mainHeader/header.php");
+    require_once ("../MainHeader/header.php");
     ?>
 	<!--.site-header-->
 
 	<div class="mobile-menu-left-overlay"></div>
 	
 	<?php
-    require_once ("../mainNav/nav.php");
+    require_once ("../MainNav/nav.php");
     ?>
     
     <!-- Contenido  -->
@@ -34,7 +34,7 @@ if(isset($_SESSION['id'])){
 						<div class="tbl-cell">
 							<h3>Gestion Usuario</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="../home/">Inicio</a></li>
+								<li><a href="../Home/">Inicio</a></li>
 								<li class="active">Gestion Usuario</li>
 							</ol>
 						</div>
@@ -72,7 +72,7 @@ if(isset($_SESSION['id'])){
     ?>
     
     <?php
-    require_once ("../mainJs/js.php");
+    require_once ("../MainJs/js.php");
     ?>
     <script src="users.js" type="text/javascript"></script>
 </body>

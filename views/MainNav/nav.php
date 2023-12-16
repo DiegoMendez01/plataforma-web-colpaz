@@ -4,25 +4,25 @@ if($_SESSION['role_id'] == 1){
     <nav class="side-menu">
         <ul class="side-menu-list">
         	<li class="blue-dirty">
-        		<a href="..\home\">
+        		<a href="..\Home\">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Inicio</span>
     			</a>
     		</li>
     		<li class="blue-dirty">
-    			<a href="../users/">
+    			<a href="..\Users\">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Gestion de Usuarios</span>
     			</a>
     		</li>
     		<li class="blue-dirty">
-    			<a href="../courses/">
+    			<a href="..\Courses\">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Gestion Cursos</span>
     			</a>
     		</li>
     		<li class="blue-dirty">
-    			<a href="../grades/">
+    			<a href="..\Grades\">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Gestion Grados</span>
     			</a>

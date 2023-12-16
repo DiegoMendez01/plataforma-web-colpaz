@@ -81,15 +81,15 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                     </div>
                     <div class="form-group">
                         <div class="float-right reset">
-                            <a href="reset-password.html">Cambiar contraseña</a>
+                            <a href="#">Cambiar contraseña</a>
                         </div>
                     </div>
                     <input type="hidden" name="submit" class="form-control" value="si">
                     <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
                         <button id="btnacceder" type="submit" class="btn btn-primary">Acceder</button>
                     </div>
-                    <div class=" form-group " style="display: flex; justify-content: center; align-items: center; ">
-                        <a href="../register/ " id="btnregistrar ">Registrar cuenta</a>
+                    <div class="form-group" style="display: flex; justify-content: center; align-items: center; ">
+                        <a href="../Register/" id="btnregistrar ">Registrar cuenta</a>
                     </div>
                 </form>
             </div>
