@@ -7,7 +7,7 @@ class Grades extends Connect
         $conectar = parent::connection();
         parent::set_names();
 
-        $sql = "INSERT INTO grados (nombre, descripcion) VALUES (?, ?)";
+        $sql = "INSERT INTO grades (nombre, descripcion) VALUES (?, ?)";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $nombre);
         $stmt->bindValue(2, $descripcion);
@@ -19,7 +19,7 @@ class Grades extends Connect
         $conectar = parent::connection();
         parent::set_names();
 
-        $sql = "SELECT * FROM grados";
+        $sql = "SELECT * FROM grades";
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
 
@@ -31,7 +31,7 @@ class Grades extends Connect
         $conectar = parent::connection();
         parent::set_names();
 
-        $sql = "SELECT * FROM grados WHERE id = ?";
+        $sql = "SELECT * FROM grades WHERE id = ?";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
@@ -44,7 +44,7 @@ class Grades extends Connect
         $conectar = parent::connection();
         parent::set_names();
 
-        $sql = "UPDATE grados SET nombre = ?, descripcion = ? WHERE id = ?";
+        $sql = "UPDATE grades SET nombre = ?, descripcion = ? WHERE id = ?";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $nombre);
         $stmt->bindValue(2, $descripcion);
@@ -57,7 +57,7 @@ class Grades extends Connect
         $conectar = parent::connection();
         parent::set_names();
 
-        $sql = "DELETE FROM grados WHERE id = ?";
+        $sql = "DELETE FROM grades WHERE id = ?";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
