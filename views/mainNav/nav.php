@@ -22,9 +22,9 @@ if($_SESSION['role_id'] == 1){
     			</a>
     		</li>
     		<li class="blue-dirty">
-    			<a href="#">
+    			<a href="../grades/">
     				<span class="glyphicon glyphicon-th"></span>
-    				<span class="lbl">Gestion Materias</span>
+    				<span class="lbl">Gestion Grados</span>
     			</a>
     		</li>
     	</ul>
