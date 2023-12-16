@@ -49,5 +49,21 @@ switch($_GET['op']){
     case 'deleteCourseById':
         $course->deleteCourseById($_POST['id']);
         break;
+    /*
+     * Es para listar/obtener los cursos que existen registrados en el sistema.
+     * Pero debe mostrar el usuario por medio de su identificador unico
+     */
+    case 'listCourseById':
+        $datos = $course->getCourseById($_POST['id']);
+        
+        if(is_array($datos) == true AND count($datos)){
+            foreach($datos as $row){
+                $output["id"]                       = $row['id'];
+                $output["name"]                     = $row['name'];
+                $output["description"]                 = $row['description'];
+            }
+            echo json_encode($output);
+        }
+        break;
 }
 ?>

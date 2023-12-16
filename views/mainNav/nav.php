@@ -16,7 +16,7 @@ if($_SESSION['role_id'] == 1){
     			</a>
     		</li>
     		<li class="blue-dirty">
-    			<a href="#">
+    			<a href="../courses/">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Gestion Cursos</span>
     			</a>

@@ -102,6 +102,48 @@ $(document).ready(function(){
 	}).DataTable();
 });
 
+function editar(id){
+	$('#mdltitulo').html('Editar Registro');
+	
+	$.post("../../controllers/CourseController.php?op=listCourseById", { id : id}, function(data) {
+    	data = JSON.parse(data);
+    	$('#id').val(data.id);
+    	$('#name').val(data.name);
+    	$('#description').val(data.description);
+    });
+	
+	$('#modalGestionCurso').modal('show');
+}
+
+function eliminar(id){
+	swal({
+    	title: "ColPaz Quipama",
+    	text: "¿Esta seguro de eliminar el curso?",
+    	type: "error",
+    	showCancelButton: true,
+    	confirmButtonClass: "btn-danger",
+    	confirmButtonText: "Si",
+    	cancelButtonText: "No",
+    	closeOnConfirm: false
+	},
+	function(isConfirm)
+	{
+		if(isConfirm){
+			$.post("../../controllers/CourseController.php?op=deleteCourseById", { id : id}, function(data) {
+        	});
+        	
+        	$('#course_data').DataTable().ajax.reload();
+        	
+			swal({
+				title: "ColPaz Quipama",
+				text: "Registro eliminado.",
+				type: "success",
+				confirmButtonClass: "btn-success"
+			});
+		}
+	});
+}
+
 $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#course_form')[0].reset();

@@ -31,7 +31,7 @@ class Courses extends Connect
     /*
      * Funcion para actualizar registros de cursos existentes por su ID
      */
-    public function updateCourse($id, $name, $description = null)
+    public function updateCourseById($id, $name, $description = null)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -88,6 +88,29 @@ class Courses extends Connect
                 courses
             SET
                 is_active = 0
+            WHERE
+                id = ?
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll();
+    }
+    /*
+     * Funcion para traer los cursos mediante el ID del curso
+     */
+    public function getCourseById($id)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                *
+            FROM
+                courses
             WHERE
                 id = ?
         ";
