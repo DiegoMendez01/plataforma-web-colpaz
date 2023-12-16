@@ -55,10 +55,10 @@ switch($_GET['op'])
             $grade->deleteGradeById($_POST['id']);
         }
         break;
-        /*
-         * Es para listar/obtener los usuarios que existen registrados en el sistema.
-         * Pero debe mostrar el usuario por medio de su identificador unico
-         */
+    /*
+     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Pero debe mostrar el usuario por medio de su identificador unico
+     */
     case 'listGradeById':
         $datos = $grade->getGradeById($_POST['id']);
         
