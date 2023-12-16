@@ -31,7 +31,7 @@
     						<a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span>Perfil</a>
     						<a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-question-sign"></span>Ayuda</a>
     						<div class="dropdown-divider"></div>
-    						<a class="dropdown-item" href="../site/logout.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Cerrar Sesión</a>
+    						<a class="dropdown-item" href="../Site/logout.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Cerrar Sesión</a>
     					</div>
     				</div>
 				</div>
