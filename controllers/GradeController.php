@@ -3,7 +3,7 @@
 require_once("../config/connection.php");
 require_once("../models/Grades.php");
 
-$grades = new Grades();
+$grade = new Grades();
 
 switch($_GET['op'])
 {
@@ -13,9 +13,9 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $grades->insertGrade($_POST['name']);
+            $grade->insertGrade($_POST['name']);
         } else {
-            $grades->updateGrade($_POST['id'], $_POST['name']);
+            $grade->updateGrade($_POST['id'], $_POST['name']);
         }
         break;
     /*
@@ -23,7 +23,7 @@ switch($_GET['op'])
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listGrade':
-        $datos = $grades->getGrades();
+        $datos = $grade->getGrades();
         
         foreach ($datos as $row) {
             $sub_array      = [];
@@ -52,7 +52,22 @@ switch($_GET['op'])
      */
     case 'deleteGradeById':
         if(isset($_POST['id'])){
-            $grades->deleteGradeById($_POST['id']);
+            $grade->deleteGradeById($_POST['id']);
+        }
+        break;
+        /*
+         * Es para listar/obtener los usuarios que existen registrados en el sistema.
+         * Pero debe mostrar el usuario por medio de su identificador unico
+         */
+    case 'listGradeById':
+        $datos = $grade->getGradeById($_POST['id']);
+        
+        if(is_array($datos) == true AND count($datos)){
+            foreach($datos as $row){
+                $output["id"]                       = $row['id'];
+                $output["name"]                     = $row['name'];
+            }
+            echo json_encode($output);
         }
         break;
 }

@@ -12,8 +12,8 @@ class Grades extends Connect
         
         $sql = "
             INSERT INTO
-                grades (nombre, descripcion, created) 
-            VALUES (?, ?, now())
+                grades (name, created) 
+            VALUES (?, now())
         ";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $name);
@@ -54,12 +54,12 @@ class Grades extends Connect
             UPDATE
                 grades
             SET
-                nombre = ?
+                name = ?
             WHERE
                 id = ?";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $name);
-        $stmt->bindValue(3, $id);
+        $stmt->bindValue(2, $id);
         $stmt->execute();
         
         return $result = $stmt->fetchAll();
@@ -79,6 +79,29 @@ class Grades extends Connect
                 is_active = 0
             WHERE
                 id = ?";
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll();
+    }
+    /*
+     * Funcion para traer los usuarios mediante el ID del usuario
+     */
+    public function getGradeById($id)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                *
+            FROM
+                grades
+            WHERE
+                id = ?
+        ";
+        
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();

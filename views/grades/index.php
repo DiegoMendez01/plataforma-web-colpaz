@@ -1,7 +1,6 @@
 <?php
-// Incluye la conexion y la clase Grades
+// Incluye la conexion
 require_once("../../config/connection.php");
-require_once("../models/Grades.php");
 
 // Verifica la sesion del usuario
 if(isset($_SESSION['id'])){
@@ -37,10 +36,12 @@ if(isset($_SESSION['id'])){
             
             <div class="box-typical box-typical-padding">
                 <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="grades_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="grade_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
-                            <th style="width: 15%;">Nombre</th> 
+                            <th style="width: 15%;">Nombre</th>
+                            <th style="width: 30%;">Creado</th> 
+							<th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
@@ -52,10 +53,12 @@ if(isset($_SESSION['id'])){
             </div>
         </div>
     </div>
-
+	
     <?php require_once("modalGestionGrado.php"); ?>
+    
     <?php require_once ("../mainJs/js.php"); ?>
-    <script src="gestiongrados.js" type="text/javascript"></script>
+    
+    <script src="grades.js" type="text/javascript"></script>
 </body>
 </html>
 <?php 
