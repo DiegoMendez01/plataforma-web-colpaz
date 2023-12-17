@@ -40,6 +40,30 @@ class Users extends Connect
                 $result = $stmt->fetch();
                 
                 if(is_array($result) AND count($result) > 0){
+                    $rolData = '
+                            SELECT * FROM
+                                roles
+                            WHERE
+                                id = ?
+                    ';
+                    
+                    $stmtRol   = $conectar->prepare($rolData);
+                    $stmtRol->bindValue(1, $result['role_id']);
+                    $stmtRol->execute();
+                    $resultRol = $stmtRol->fetch();
+                    
+                    $campuseData = '
+                        SELECT * FROM
+                            campuses
+                        WHERE
+                            idr = ?
+                    ';
+                    
+                    $stmtRol   = $conectar->prepare($campuseData);
+                    $stmtRol->bindValue(1, $result['role_id']);
+                    $stmtRol->execute();
+                    $resultCampuse = $stmtRol->fetch();
+                    
                     $_SESSION['id']             = $result['id'];
                     $_SESSION['name']           = $result['name'];
                     $_SESSION['lastname']       = $result['lastname'];
@@ -47,7 +71,10 @@ class Users extends Connect
                     $_SESSION['identification'] = $result['identification'];
                     $_SESSION['password_hash']  = $result['password_hash'];
                     $_SESSION['is_active']      = $result['is_active'];
+                    $_SESSION['created']        = $result['created'];
                     $_SESSION['role_id']        = $result['role_id'];
+                    $_SESSION['role_name']      = $resultRol['name'];
+                    $_SESSION['campuse']        = $resultCampuse['name'];
                     header("Location:".Connect::route()."views/Home/");
                     exit;
                 }else{
@@ -60,7 +87,7 @@ class Users extends Connect
     /*
      * Funcion para insertar/registrar usuarios por medio de un formulario
      */
-    public function insertUser($name, $lastname, $username, $identification_type_id, $identification, $password_hash, $email = null, $phone = null, $phone2 = null, $birthdate, $sex)
+    public function insertUser($name, $lastname, $username, $identification_type_id, $identification, $password_hash, $email, $phone, $phone2 = null, $birthdate, $sex)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -97,11 +124,11 @@ class Users extends Connect
                     $duplicateInfo[] = ['type' => 'Nombre de usuario', 'value' => $dataDuplicate['username']];
                 }
                 
-                if ($dataDuplicate['email'] == $email && !empty($dataDuplicate['email'])) {
+                if ($dataDuplicate['email'] == $email) {
                     $duplicateInfo[] = ['type' => 'Correo', 'value' => $dataDuplicate['email']];
                 }
                 
-                if ($dataDuplicate['phone'] == $phone && !empty($dataDuplicate['phone'])) {
+                if ($dataDuplicate['phone'] == $phone) {
                     $duplicateInfo[] = ['type' => 'Telefono', 'value' => $dataDuplicate['phone']];
                 }
                 
@@ -142,6 +169,79 @@ class Users extends Connect
             $stmt->bindValue(13, $resetPassword);
             $stmt->bindValue(14, $emailToken);
             $stmt->bindValue(15, $smsCode);
+            $stmt->execute();
+            
+            return $result = $stmt->fetchAll();
+        }
+    }
+    /*
+     * Funcion para actualizar usuario por medio de perfil
+     */
+    public function updatePerfilById($id, $name, $lastname, $password_hash, $email, $phone, $phone2 = null)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $validateData = "
+            SELECT
+                email, phone
+            FROM
+                users
+            WHERE
+                (email = ? OR phone = ?) AND id <> ?
+        ";
+        
+        $stmtDNI = $conectar->prepare($validateData);
+        $stmtDNI->bindValue(1, $email);
+        $stmtDNI->bindValue(2, $phone);
+        $stmtDNI->bindValue(3, $id);
+        $stmtDNI->execute();
+        
+        $duplicatedUsers = $stmtDNI->fetchAll(PDO::FETCH_ASSOC);
+        
+        if(is_array($duplicatedUsers) && count($duplicatedUsers) > 0) {
+            $duplicates = [];
+            
+            foreach ($duplicatedUsers as $dataDuplicate) {
+                $duplicateInfo = [];
+                
+                if ($dataDuplicate['email'] == $email && !empty($dataDuplicate['email'])) {
+                    $duplicateInfo[] = ['type' => 'Correo', 'value' => $dataDuplicate['email']];
+                }
+                
+                if ($dataDuplicate['phone'] == $phone && !empty($dataDuplicate['phone'])) {
+                    $duplicateInfo[] = ['type' => 'Telefono', 'value' => $dataDuplicate['phone']];
+                }
+                
+                if (!empty($duplicateInfo)) {
+                    $duplicates = array_merge($duplicates, $duplicateInfo);
+                }
+            }
+            
+            echo json_encode(["error" => true, "message" => $duplicates]);
+        }else{
+            $sql = "
+                UPDATE
+                    users
+                SET
+                    name                    = ?,
+                    lastname                = ?,
+                    password_hash           = ?,
+                    email                   = ?,
+                    phone                   = ?,
+                    phone2                  = ?
+                WHERE
+                    id = ? AND is_active = 1
+            ";
+            
+            $stmt = $conectar->prepare($sql);
+            $stmt->bindValue(1, $name);
+            $stmt->bindValue(2, $lastname);
+            $stmt->bindValue(3, $password_hash);
+            $stmt->bindValue(4, $email);
+            $stmt->bindValue(5, $phone);
+            $stmt->bindValue(6, $phone2);
+            $stmt->bindValue(7, $id);
             $stmt->execute();
             
             return $result = $stmt->fetchAll();
