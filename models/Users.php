@@ -56,7 +56,7 @@ class Users extends Connect
                         FROM
                             users u
                         INNER JOIN roles r ON u.role_id = r.id
-                        INNER JOIN campuses c ON r.id = c.idr
+                        INNER JOIN campuses c ON u.idr = c.idr
                         WHERE
                             u.id = ?
                     ';
