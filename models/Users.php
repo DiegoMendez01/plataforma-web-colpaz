@@ -40,29 +40,31 @@ class Users extends Connect
                 $result = $stmt->fetch();
                 
                 if(is_array($result) AND count($result) > 0){
-                    $rolData = '
-                            SELECT * FROM
-                                roles
-                            WHERE
-                                id = ?
-                    ';
-                    
-                    $stmtRol   = $conectar->prepare($rolData);
-                    $stmtRol->bindValue(1, $result['role_id']);
-                    $stmtRol->execute();
-                    $resultRol = $stmtRol->fetch();
-                    
-                    $campuseData = '
-                        SELECT * FROM
-                            campuses
+                    $userData = '
+                        SELECT
+                            u.id,
+                            u.name,
+                            u.lastname,
+                            u.email,
+                            u.identification,
+                            u.password_hash,
+                            u.is_active,
+                            u.created,
+                            u.role_id,
+                            r.name AS role_name,
+                            c.name AS campuse
+                        FROM
+                            users u
+                        INNER JOIN roles r ON u.role_id = r.id
+                        INNER JOIN campuses c ON r.id = c.idr
                         WHERE
-                            idr = ?
+                            u.id = ?
                     ';
                     
-                    $stmtRol   = $conectar->prepare($campuseData);
-                    $stmtRol->bindValue(1, $result['role_id']);
-                    $stmtRol->execute();
-                    $resultCampuse = $stmtRol->fetch();
+                    $stmtUser = $conectar->prepare($userData);
+                    $stmtUser->bindValue(1, $result['id']);
+                    $stmtUser->execute();
+                    $resultUser = $stmtUser->fetch();
                     
                     $_SESSION['id']             = $result['id'];
                     $_SESSION['name']           = $result['name'];
@@ -73,8 +75,8 @@ class Users extends Connect
                     $_SESSION['is_active']      = $result['is_active'];
                     $_SESSION['created']        = $result['created'];
                     $_SESSION['role_id']        = $result['role_id'];
-                    $_SESSION['role_name']      = $resultRol['name'];
-                    $_SESSION['campuse']        = $resultCampuse['name'];
+                    $_SESSION['role_name']      = $resultUser['role_name'];
+                    $_SESSION['campuse']        = $resultUser['campuse'];
                     header("Location:".Connect::route()."views/Home/");
                     exit;
                 }else{

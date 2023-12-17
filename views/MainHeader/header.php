@@ -43,7 +43,7 @@
 				<input type="hidden" id="rol_idx" value="<?php echo $_SESSION['role_id']; ?>"> <!-- ID del rol del usuario  -->
 				
 				<div class="dropdown dropdown-typical">
-					<a href="#" class="dropdown-toggle no-arr">
+					<a href="../Users/perfil.php" class="dropdown-toggle no-arr">
 						<span class="font-icon font-icon-user"></span>
 						<span class="lblcontactonomx"><?php echo $_SESSION['name'].' '.$_SESSION['lastname']; ?></span>
 					</a>
