@@ -40,6 +40,30 @@ class Users extends Connect
                 $result = $stmt->fetch();
                 
                 if(is_array($result) AND count($result) > 0){
+                    $rolData = '
+                            SELECT * FROM
+                                roles
+                            WHERE
+                                id = ?
+                    ';
+                    
+                    $stmtRol   = $conectar->prepare($rolData);
+                    $stmtRol->bindValue(1, $result['role_id']);
+                    $stmtRol->execute();
+                    $resultRol = $stmtRol->fetch();
+                    
+                    $campuseData = '
+                        SELECT * FROM
+                            campuses
+                        WHERE
+                            idr = ?
+                    ';
+                    
+                    $stmtRol   = $conectar->prepare($campuseData);
+                    $stmtRol->bindValue(1, $result['role_id']);
+                    $stmtRol->execute();
+                    $resultCampuse = $stmtRol->fetch();
+                    
                     $_SESSION['id']             = $result['id'];
                     $_SESSION['name']           = $result['name'];
                     $_SESSION['lastname']       = $result['lastname'];
@@ -47,7 +71,10 @@ class Users extends Connect
                     $_SESSION['identification'] = $result['identification'];
                     $_SESSION['password_hash']  = $result['password_hash'];
                     $_SESSION['is_active']      = $result['is_active'];
+                    $_SESSION['created']        = $result['created'];
                     $_SESSION['role_id']        = $result['role_id'];
+                    $_SESSION['role_name']      = $resultRol['name'];
+                    $_SESSION['campuse']        = $resultCampuse['name'];
                     header("Location:".Connect::route()."views/Home/");
                     exit;
                 }else{
