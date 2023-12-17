@@ -100,7 +100,7 @@ if (isset($_SESSION['id'])) {
                                     	<header class="box-typical-header-sm">Información Personal</header>
                                     	<form method="post" id="user_perfil">
                                             <section class="box-typical-section">
-                                            	<input type="hidden" id="id_usuario" name="id_usuario" />
+                                            	<input type="hidden" id="id" name="id" />
                                                 <div class="form-group row">
                                                     <div class="col-xl-2">
                                                         <label class="form-label" for="name">Nombre <b>*</b></label>
@@ -134,15 +134,23 @@ if (isset($_SESSION['id'])) {
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
+                                                    <div class="col-xl-2">
+                                                        <label class="form-label" for="phone2">Celular 2</label>
+                                                    </div>
+                                                    <div class="col-xl-6">
+                                                        <input class="form-control" id="phone2" name="phone2" type="text" placeholder="Ingrese su celular opcional">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
                                                     <div class="col-xl-12">
                                                         <label class="form-label semibold" for="repeatPass"><i class="font-icon font-icon-pin-2"></i>Nueva clave <b>*</b></label>
-        												<input type="password" name="repeatPass" id="repeatPass" class="form-control" />
+        												<input type="text" name="repeatPass" id="repeatPass" class="form-control" />
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <div class="col-xl-12">
                                                         <label class="form-label semibold" for="password_hash"><i class="font-icon font-icon-pin-2"></i>Confirmar clave <b>*</b></label>
-        												<input type="password" name="password_hash" id="password_hash" class="form-control" />
+        												<input type="text" name="password_hash" id="password_hash" class="form-control" />
                                                     </div>
                                                 </div>
                                             </section>
@@ -165,10 +173,10 @@ if (isset($_SESSION['id'])) {
 	<!-- Contenido  -->
 
 	<?php
-    require_once ("../mainJs/js.php");
+    require_once ("../MainJs/js.php");
     ?>
 
-<script src="mntperfil.js" type="text/javascript"></script>
+<script src="perfil.js" type="text/javascript"></script>
 
 </body>
 </html>

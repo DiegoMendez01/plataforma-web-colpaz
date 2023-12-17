@@ -106,5 +106,16 @@ switch($_GET['op']){
     case "updateAsignRole":
         $user->updateAsignRole($_POST['user_id'], $_POST['role_id']);
         break;
+    /*
+     * Actualizar el registro de un usuario utilizando su perfil de usuario
+     */
+    case 'updateUserPerfilById':
+        $user->updatePerfilById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2']);
+        $_SESSION['name']           = $_POST['name'];
+        $_SESSION['lastname']       = $_POST['lastname'];
+        $_SESSION['email']          = $_POST['email'];
+        $_SESSION['phone']          = $_POST['phone'];
+        $_SESSION['password_hash']  = $_POST['password_hash'];
+        break;
 }
 ?>
