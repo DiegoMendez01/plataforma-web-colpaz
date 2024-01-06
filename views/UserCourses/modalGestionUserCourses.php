@@ -11,15 +11,15 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id" />
                     <div class="form-group row">
-                        <label for="name" class="col-sm-2 form-control-label">Nombre <b>*</b></label>
+                        <label for="course_id" class="col-sm-2 form-control-label">Curso <b>*</b></label>
                         <div class="col-sm-10">
-                            <p class="form-control-static"><input type="text" class="form-control" id="name" name="name" placeholder="Ingrese el nombre del grado"></p>
+                            <p class="form-control-static"><input type="text" class="form-control" id="course_id" name="course_id" placeholder="Ingrese el nombre del grado"></p>
                         </div>
                     </div>
                     <div class="form-group row">
-    					<label for="user" class="col-sm-2 form-control-label">Usuario <b>*</b></label>
+    					<label for="user_id" class="col-sm-2 form-control-label">Usuario <b>*</b></label>
     					<div class="col-sm-10">
-       						 <p class="form-control-static"><input type="text" class="form-control" id="user" name="user" placeholder="Ingrese el nombre de usuario"></p>
+       						 <p class="form-control-static"><input type="text" class="form-control" id="user_id" name="user_id" placeholder="Ingrese el nombre de usuario"></p>
     					</div>
 					</div>
                 </div>
