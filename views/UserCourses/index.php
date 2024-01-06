@@ -1,77 +1,91 @@
-<?php 
+<?php
 
 require_once("../../config/connection.php");
 
-if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
-    require_once("../../models/userCoursers.php");
-    $user = new userCoursers();
-    $user->login();
-}
 
+if (isset($_SESSION['id'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
-<head lang="es">
-    <!-- Your existing head content -->
+<head>
+    <?php require_once("../MainHead/head.php"); ?>
+    <title>Aula Virtual::Gestion de Grados</title>
 </head>
 
-<body>
-    <div class="page-center" style="height: 100vh; display: flex; justify-content: center; align-items: center; background-image: url('../../public/img/fondoLogin.png'); background-size: cover; background-repeat: no-repeat;">
-        <div class="page-center-in" style="width: 71vh;">
-            <div class="container-fluid">
-                <form class="sign-box" action="../../path/to/your/php/script.php" method="post" id="login_form">
-                    <!-- Your existing form content -->
+<body class="with-side-menu">
 
-                    <!-- Move your PHP logic here, replacing the existing switch statement -->
-                    <?php 
-                    if(isset($_POST['submit']) && $_POST['submit'] == "si") {
-                        require_once("../../models/userCoursers.php");
-                        $user = new userCoursers();
-                        $user->login();
-                    }
+    <?php require_once("../MainHeader/header.php"); ?>
+    <div class="mobile-menu-left-overlay"></div>
+    <?php require_once("../MainNav/nav.php"); ?>
 
-                    if(isset($_GET['m'])){
-                        switch($_GET['m'])
-                        {
-                            case "1":
-                                ?>
-                                <div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                    <i class="font-icon font-icon-warning"></i>
-                                    Documento y/o contraseña incorrectos
-                                </div>
-                                <?php
-                                break;
-                            case "2":
-                                ?>
-                                <div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                    <i class="font-icon font-icon-warning"></i>
-                                    Los campos están vacíos
-                                </div>
-                                <?php
-                                break;
+    <!-- Contenido  -->
+    <div class="page-content">
+        <div class="container-fluid">
+            <header class="section-header">
+                <div class="tbl">
+                    <div class="tbl-row">
+                        <div class="tbl-cell">
+                            <h3>Gestion de Grados</h3>
+                            <ol class="breadcrumb breadcrumb-simple">
+                                <li><a href="../Home/">Inicio</a></li>
+                                <li class="active">Gestion de Grados</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="box-typical box-typical-padding">
+                <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
+                <table id="classroom_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Nombre</th>
+                            <th style="width: 30%;">Creado</th>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
+                            <th class="text-center" style="width: 5%"></th>
+                            <th class="text-center" style="width: 5%"></th>
+                            <th class="text-center" style="width: 5%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        
+                        $userCourses = new userCourses();
+                        $gradesData = $userCourses->getGradesData();
+
+                        foreach ($gradesData as $grade) {
+                            echo "<tr>";
+                            echo "<td>{$grade['name']}</td>";
+                            echo "<td>{$grade['created']}</td>";
+                            echo "<td class='d-none d-sm-table-cell'>{$grade['status']}</td>";
+                           
+                            echo "<td class='text-center'></td>";
+                            echo "<td class='text-center'></td>";
+                            echo "<td class='text-center'></td>";
+                            echo "</tr>";
                         }
-                    }
-                    ?>
-                </form>
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <!--.page-center-->
 
-    <script src="../../public/js/lib/jquery/jquery.min.js"></script>
-    <script src="../../public/js/lib/tether/tether.min.js"></script>
-    <script src="../../public/js/lib/bootstrap/bootstrap.min.js"></script>
-    <script src="../../public/js/plugins.js"></script>
-    <script type="text/javascript" src="../../public/js/lib/match-height/jquery.matchHeight.min.js"></script>
-    <script src="../../public/js/app.js"></script>
+    <?php require_once("modalGestionClassroom.php"); ?>
+
+    <?php require_once("../MainJs/js.php"); ?>
+
+    <script src="classrooms.js" type="text/javascript"></script>
 </body>
 
 </html>
+
+<?php
+} else {
+    header("Location:" . Connect::route() . "views/login/");
+    exit;
+}
+?>
