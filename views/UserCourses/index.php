@@ -39,7 +39,7 @@ if (isset($_SESSION['id'])) {
 
             <div class="box-typical box-typical-padding">
                 <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="classroom_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="userCourse_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
                             <th style="width: 15%;">Nombre</th>
@@ -50,36 +50,7 @@ if (isset($_SESSION['id'])) {
                             <th class="text-center" style="width: 5%"></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php
-                        
-                        $userCourses = new userCourses();
-                        $gradesData = $userCourses->getGradesData();
 
-                        foreach ($gradesData as $grade) {
-                            echo "<tr>";
-                            echo "<td>{$grade['name']}</td>";
-                            echo "<td>{$grade['created']}</td>";
-                            echo "<td class='d-none d-sm-table-cell'>{$grade['status']}</td>";
-                           
-                            echo "<td class='text-center'></td>";
-                            echo "<td class='text-center'></td>";
-                            echo "<td class='text-center'></td>";
-                            echo "</tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <?php require_once("modalGestionClassroom.php"); ?>
-
-    <?php require_once("../MainJs/js.php"); ?>
-
-    <script src="classrooms.js" type="text/javascript"></script>
-</body>
 
 </html>
 
