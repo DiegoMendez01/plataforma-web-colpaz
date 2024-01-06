@@ -2,7 +2,7 @@ var tabla;
 
 function init()
 {
-	$('#grade_form').on("submit", function(e){
+	$('#classroom_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
 }
@@ -10,7 +10,7 @@ function init()
 function insertOrUpdate(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#grade_form')[0]);
+	var formData = new FormData($('#classroom_form')[0]);
 	
 	var camposVacios = false;
 	
@@ -28,15 +28,15 @@ function insertOrUpdate(e)
         swal("Error!", "Campos vacios", "error");
     } else {
     	$.ajax({
-			url: "../../controllers/GradeController.php?op=insertOrUpdate",
+			url: "../../controllers/ClassroomController.php?op=insertOrUpdate",
 			type: "POST",
 			data: formData,
 			contentType: false,
 			processData: false,
 			success: function(data){
-				$('#grade_form')[0].reset();
-				$('#modalGestionGrado').modal('hide');
-				$('#grade_data').DataTable().ajax.reload();
+				$('#classroom_form')[0].reset();
+				$('#modalGestionClassroom').modal('hide');
+				$('#classroom_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
 					text: "Registro completado.",
@@ -49,7 +49,7 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
-	tabla = $('#grade_data').dataTable({
+	tabla = $('#classroom_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
@@ -63,7 +63,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/GradeController.php?op=listGrade',
+			url: '../../controllers/ClassroomController.php?op=listClassroom',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -105,13 +105,13 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/GradeController.php?op=listGradeById", { id : id}, function(data) {
+	$.post("../../controllers/ClassroomController.php?op=listClassroomById", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
     });
 	
-	$('#modalGestionGrado').modal('show');
+	$('#modalGestionClassroom').modal('show');
 }
 
 function eliminar(id){
@@ -128,7 +128,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/GradeController.php?op=deleteGradeById", { id : id}, function(data) {
+			$.post("../../controllers/ClassroomController.php?op=deleteClassroomById", { id : id}, function(data) {
         	});
         	
         	$('#grade_data').DataTable().ajax.reload();
@@ -145,8 +145,8 @@ function eliminar(id){
 
 $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
-	$('#grade_form')[0].reset();
-	$('#modalGestionGrado').modal('show');
+	$('#classroom_form')[0].reset();
+	$('#modalGestionClassroom').modal('show');
 });
 
 init();

@@ -1,18 +1,18 @@
 <?php
 
-class Grades extends Connect
+class Classrooms extends Connect
 {
     /*
      * Funcion para insertar/registrar grados academicos por medio de un formulario
      */
-    public function insertGrade($name)
+    public function insertClassroom($name)
     {
         $conectar = parent::connection();
         parent::set_names();
         
         $sql = "
             INSERT INTO
-                grades (name, created) 
+                classrooms (name, created) 
             VALUES (?, now())
         ";
         $stmt = $conectar->prepare($sql);
@@ -24,7 +24,7 @@ class Grades extends Connect
     /*
      * Funcion para traer todos los grados academicos registrados hasta el momento
      */
-    public function getGrades()
+    public function getClassrooms()
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -33,7 +33,7 @@ class Grades extends Connect
             SELECT
                 * 
             FROM 
-                grades
+                classrooms
             WHERE
                 is_active = 1
         ";
@@ -45,14 +45,14 @@ class Grades extends Connect
     /*
      * Funcion para actualizar registros de grados academicos
      */
-    public function updateGrade($id, $name)
+    public function updateClassroom($id, $name)
     {
         $conectar = parent::connection();
         parent::set_names();
     
         $sql = "
             UPDATE
-                grades
+                classrooms
             SET
                 name = ?
             WHERE
@@ -67,14 +67,14 @@ class Grades extends Connect
     /*
      * Funcion para eliminar totalmente registros de grados existentes (eliminado logico)
      */
-    public function deleteGradeById($id)
+    public function deleteClassroomById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
         
         $sql = "
             UPDATE
-                grades
+                classrooms
             SET
                 is_active = 0
             WHERE
@@ -88,7 +88,7 @@ class Grades extends Connect
     /*
      * Funcion para traer los usuarios mediante el ID del usuario
      */
-    public function getGradeById($id)
+    public function getClassroomById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -97,7 +97,7 @@ class Grades extends Connect
             SELECT
                 *
             FROM
-                grades
+                classrooms
             WHERE
                 id = ?
         ";

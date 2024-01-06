@@ -1,4 +1,4 @@
-<div id="modalGestionGrado" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="modalGestionClassroom" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,7 +7,7 @@
                 </button>
                 <h4 class="modal-title" id="mdltitulo"></h4>
             </div>
-            <form method="post" id="grade_form">
+            <form method="post" id="classroom_form">
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id" />
                     <div class="form-group row">

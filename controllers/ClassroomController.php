@@ -1,9 +1,9 @@
 <?php
 // Importa la clase del modelo
 require_once("../config/connection.php");
-require_once("../models/Grades.php");
+require_once("../models/Classrooms.php");
 
-$grade = new Grades();
+$classroom = new Classrooms();
 
 switch($_GET['op'])
 {
@@ -13,17 +13,17 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $grade->insertGrade($_POST['name']);
+            $classroom->insertClassroom($_POST['name']);
         } else {
-            $grade->updateGrade($_POST['id'], $_POST['name']);
+            $classroom->updateClassroom($_POST['id'], $_POST['name']);
         }
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
-    case 'listGrade':
-        $datos = $grade->getGrades();
+    case 'listClassroom':
+        $datos = $classroom->getClassrooms();
         
         foreach ($datos as $row) {
             $sub_array      = [];
@@ -50,17 +50,17 @@ switch($_GET['op'])
     /*
      * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
      */
-    case 'deleteGradeById':
+    case 'deleteClassroomById':
         if(isset($_POST['id'])){
-            $grade->deleteGradeById($_POST['id']);
+            $classroom->deleteClassroomById($_POST['id']);
         }
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
-    case 'listGradeById':
-        $datos = $grade->getGradeById($_POST['id']);
+    case 'listClassroomById':
+        $datos = $classroom->getClassroomById($_POST['id']);
         
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){

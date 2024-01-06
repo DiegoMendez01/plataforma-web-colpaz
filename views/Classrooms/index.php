@@ -36,7 +36,7 @@ if(isset($_SESSION['id'])){
             
             <div class="box-typical box-typical-padding">
                 <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="grade_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="classroom_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
                             <th style="width: 15%;">Nombre</th>
@@ -54,11 +54,11 @@ if(isset($_SESSION['id'])){
         </div>
     </div>
 	
-    <?php require_once("modalGestionGrado.php"); ?>
+    <?php require_once("modalGestionClassroom.php"); ?>
     
     <?php require_once ("../MainJs/js.php"); ?>
     
-    <script src="grades.js" type="text/javascript"></script>
+    <script src="classrooms.js" type="text/javascript"></script>
 </body>
 </html>
 <?php 
