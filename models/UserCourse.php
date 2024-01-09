@@ -12,7 +12,7 @@ class UserCourse extends Connect
 
         $sql = "
             INSERT INTO
-                user_courses (user_id, course_id, enrolled_at, is_active) 
+                user_courses (user_id, course_id, created, is_active) 
             VALUES (?, ?, now(), 1)
         ";
         $stmt = $conectar->prepare($sql);
@@ -25,7 +25,7 @@ class UserCourse extends Connect
     /*
      * Funcion para obtener todos los cursos en los que un usuario esta inscrito
      */
-    public function getuserCourse()
+    public function getUserCourse()
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -34,7 +34,7 @@ class UserCourse extends Connect
             SELECT
                 * 
             FROM 
-                userCourse
+                user_courses
             WHERE
                 is_active = 1
         ";
