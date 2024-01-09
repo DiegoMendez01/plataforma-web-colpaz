@@ -13,21 +13,22 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $UserCourse->insertUserCourse($_POST['name']);
+            $UserCourse->insertUserCourse($_POST['user_id'], $_POST['course_id']);
         } else {
-            $UserCourse->updateUserCourse($_POST['id'], $_POST['name']);
+            $UserCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id']);
         }
         break;
-    /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
-     * Ademas, de dibujar una tabla para mostrar los registros.
-     */
+        /*
+         * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+         * Ademas, de dibujar una tabla para mostrar los registros.
+         */
     case 'listUserCourses':
         $datos = $UserCourse->getUserCourse();
         
         foreach ($datos as $row) {
             $sub_array      = [];
-            $sub_array[]    = $row['name'];
+            $sub_array[]    = $row['user_id'];
+            $sub_array[]    = $row['course_id'];
             $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
                 $sub_array[] = 'Activo';
@@ -47,25 +48,25 @@ switch($_GET['op'])
         ];
         echo json_encode($results);
         break;
-    /*
-     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
-     */
+        /*
+         * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+         */
     case 'deleteUserCourseById':
         if(isset($_POST['id'])){
             $UserCourse->deleteUserCourseById($_POST['id']);
         }
         break;
-    /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
-     */
+        /*
+         * Es para listar/obtener los usuarios que existen registrados en el sistema.
+         * Pero debe mostrar el usuario por medio de su identificador unico
+         */
     case 'listUserCourseById':
         $datos = $UserCourse->getUserCourseById($_POST['id']);
         
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
-                $output["id"]                       = $row['id'];
-                $output["name"]                     = $row['name'];
+                $output["id"]   = $row['id'];
+                $output["name"] = $row['name'];
             }
             echo json_encode($output);
         }
