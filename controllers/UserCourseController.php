@@ -65,8 +65,9 @@ switch($_GET['op'])
         
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
-                $output["id"]   = $row['id'];
-                $output["name"] = $row['name'];
+                $output["id"]        = $row['id'];
+                $output["user_id"]   = $row['user_id'];
+                $output["course_id"] = $row['course_id'];
             }
             echo json_encode($output);
         }
