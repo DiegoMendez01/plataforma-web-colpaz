@@ -5,7 +5,7 @@ class UserCourse extends Connect
     /*
      * Funcion para inscribir a un usuario en un curso mediante un formulario
      */
-    public function insertuserCourse($user_id, $course_id)
+    public function insertUserCourse($user_id, $course_id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -22,16 +22,14 @@ class UserCourse extends Connect
 
         return $conectar->lastInsertId();
     }
-
     /*
      * Funcion para obtener todos los cursos en los que un usuario esta inscrito
      */
     
-
     /*
      * Funcion para desinscribir a un usuario de un curso (eliminado logico)
      */
-    public function unenrollUserFromCourse($user_course_id)
+    public function deleteUserCourseById($user_course_id)
     {
         $conectar = parent::connection();
         parent::set_names();
