@@ -3,7 +3,7 @@
 require_once("../config/connection.php");
 require_once("../models/UserCourse.php");
 
-$UserCourse = new UserCourses();
+$UserCourse = new UserCourse();
 
 switch($_GET['op'])
 {
