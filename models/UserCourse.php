@@ -25,6 +25,24 @@ class UserCourse extends Connect
     /*
      * Funcion para obtener todos los cursos en los que un usuario esta inscrito
      */
+    public function getuserCourse()
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                * 
+            FROM 
+                userCourse
+            WHERE
+                is_active = 1
+        ";
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll();
+    }
     
     /*
      * Funcion para desinscribir a un usuario de un curso (eliminado logico)
