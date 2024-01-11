@@ -1,6 +1,6 @@
 <?php
 
-class UserCourse extends Connect
+class UserCourses extends Connect
 {
     /*
      * Funcion para inscribir a un usuario en un curso mediante un formulario
@@ -23,9 +23,53 @@ class UserCourse extends Connect
         return $conectar->lastInsertId();
     }
     /*
+     * Funcion para obtener los cursos mediante un formulario
+     */
+    public function getUsers()
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                * 
+            FROM 
+                users
+            WHERE
+                is_active = 1
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /*
+     * Funcion para obtener los usuarios mediante un formulario
+     */
+    public function getCourses()
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                *
+            FROM
+                courses
+            WHERE
+                is_active = 1
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /*
      * Funcion para obtener todos los cursos en los que un usuario esta inscrito
      */
-    public function getUserCourse()
+    public function getUserCourses()
     {
         $conectar = parent::connection();
         parent::set_names();

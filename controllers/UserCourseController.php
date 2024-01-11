@@ -1,9 +1,13 @@
 <?php
 // Importa la clase del modelo
 require_once("../config/connection.php");
-require_once("../models/UserCourse.php");
+require_once("../models/UserCourses.php");
+require_once("../models/Users.php");
+require_once("../models/Courses.php");
 
-$UserCourse = new UserCourse();
+$userCourse = new UserCourses();
+$user       = new Users();
+$course     = new Courses();
 
 switch($_GET['op'])
 {
@@ -13,9 +17,9 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $UserCourse->insertUserCourse($_POST['user_id'], $_POST['course_id']);
+            $userCourse->insertUserCourse($_POST['user_id'], $_POST['course_id']);
         } else {
-            $UserCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id']);
+            $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id']);
         }
         break;
         /*
@@ -23,12 +27,15 @@ switch($_GET['op'])
          * Ademas, de dibujar una tabla para mostrar los registros.
          */
     case 'listUserCourses':
-        $datos = $UserCourse->getUserCourse();
+        $datos = $userCourse->getUserCourses();
         
         foreach ($datos as $row) {
+            $userData   = $user->getUserById($row['user_id']);
+            $courseData = $course->getCourseById($row['course_id']);
+            
             $sub_array      = [];
-            $sub_array[]    = $row['user_id'];
-            $sub_array[]    = $row['course_id'];
+            $sub_array[]    = $courseData[0]['name'];
+            $sub_array[]    = $userData[0]['name'].' '.$userData[0]['lastname'];
             $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
                 $sub_array[] = 'Activo';
@@ -53,7 +60,7 @@ switch($_GET['op'])
          */
     case 'deleteUserCourseById':
         if(isset($_POST['id'])){
-            $UserCourse->deleteUserCourseById($_POST['id']);
+            $userCourse->deleteUserCourseById($_POST['id']);
         }
         break;
         /*
@@ -61,7 +68,7 @@ switch($_GET['op'])
          * Pero debe mostrar el usuario por medio de su identificador unico
          */
     case 'listUserCourseById':
-        $datos = $UserCourse->getUserCourseById($_POST['id']);
+        $datos = $userCourse->getUserCourseById($_POST['id']);
         
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
@@ -71,6 +78,20 @@ switch($_GET['op'])
             }
             echo json_encode($output);
         }
+        break;
+    /*
+     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     */
+    case 'listUsers':
+        $datos = $userCourse->getUsers();
+        echo json_encode($datos);
+        break;
+    /*
+     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     */
+    case 'listCourses':
+        $datos = $userCourse->getCourses();
+        echo json_encode($datos);
         break;
 }
 ?>
