@@ -5,14 +5,14 @@ class CourseClassrooms extends Connect
     /*
      * Funcion para insertar/registrar asignaciones de aulas a cursos por medio de un formulario
      */
-    public function insertClassrooms($course_id, $classroom_id)
+    public function insertCourseClassrooms($classroom_id, $course_id)
     {
         $conectar = parent::connection();
         parent::set_names();
 
         $sql = "
             INSERT INTO
-                course_classrooms (course_id, classroom_id, assigned_at, is_active) 
+                course_classrooms (course_id, classroom_id, created, is_active) 
             VALUES (?, ?, now(), 1)
         ";
         $stmt = $conectar->prepare($sql);
@@ -26,7 +26,7 @@ class CourseClassrooms extends Connect
     /*
      * Funcion para obtener todas las asignaciones de aulas a cursos registradas hasta el momento
      */
-    public function getCourseClassrooms($course_id)
+    public function getCourseClassrooms()
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -37,10 +37,9 @@ class CourseClassrooms extends Connect
             FROM 
                 course_classrooms
             WHERE
-                course_id = ? AND is_active = 1
+                is_active = 1
         ";
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $course_id);
         $stmt->execute();
 
         return $result = $stmt->fetchAll();
@@ -96,7 +95,7 @@ class CourseClassrooms extends Connect
     /*
      * Funcion para obtener información de la asignación de un aula a un curso mediante el ID de la asignacion
      */
-    public function getCourseClassroomById($id)
+    public function getCourseClassroomsById($id)
     {
         $conectar = parent::connection();
         parent::set_names();

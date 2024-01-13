@@ -19,7 +19,6 @@ switch($_GET['op'])
         if(empty($_POST['id'])){
             $userCourse->insertUserCourse($_POST['user_id'], $_POST['course_id']);
         } else {
-            var_dump($_POST['user_id'], $_POST['course_id']);
             $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id']);
         }
         break;
@@ -29,7 +28,7 @@ switch($_GET['op'])
          */
     case 'listUserCourses':
         $datos = $userCourse->getUserCourses();
-        
+        $data  = [];
         foreach ($datos as $row) {
             $userData   = $user->getUserById($row['user_id']);
             $courseData = $course->getCourseById($row['course_id']);
@@ -85,13 +84,6 @@ switch($_GET['op'])
      */
     case 'listUsers':
         $datos = $userCourse->getUsers();
-        echo json_encode($datos);
-        break;
-    /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     */
-    case 'listCourses':
-        $datos = $userCourse->getCourses();
         echo json_encode($datos);
         break;
 }

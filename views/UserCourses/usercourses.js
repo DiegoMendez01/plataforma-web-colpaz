@@ -124,7 +124,7 @@ function editar(id){
 	    });
 	
 	    // Fetch courses and populate the course dropdown
-	    $.post("../../controllers/UserCourseController.php?op=listCourses", function (courses) {
+	    $.post("../../controllers/CourseController.php?op=listCourses", function (courses) {
 			jsonData = JSON.parse(courses);
 	        $('#course_id').empty();
 		
@@ -185,7 +185,7 @@ $(document).on("click", "#btnnuevo", function(){
     });
 
     // Fetch courses and populate the course dropdown
-    $.post("../../controllers/UserCourseController.php?op=listCourses", function (data) {
+    $.post("../../controllers/CourseController.php?op=listCourses", function (data) {
 		jsonData = JSON.parse(data);
         $('#course_id').empty();
 	

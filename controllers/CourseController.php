@@ -65,5 +65,12 @@ switch($_GET['op']){
             echo json_encode($output);
         }
         break;
+    /*
+     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     */
+    case 'listCourses':
+        $datos = $course->getCourses();
+        echo json_encode($datos);
+        break;
 }
 ?>

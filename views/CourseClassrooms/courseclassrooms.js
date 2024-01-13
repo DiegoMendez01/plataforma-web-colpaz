@@ -34,9 +34,9 @@ function insertOrUpdate(e)
 			contentType: false,
 			processData: false,
 			success: function(data){
-				$('#usercourse_form')[0].reset();
-				$('#modalGestionUserCourse').modal('hide');
-				$('#usercourse_data').DataTable().ajax.reload();
+				$('#courseclassroom_form')[0].reset();
+				$('#modalGestionCourseClassroom').modal('hide');
+				$('#courseclassroom_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
 					text: "Registro completado.",
@@ -49,7 +49,7 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
-	tabla = $('#usercourse_data').dataTable({
+	tabla = $('#courseclassroom_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
@@ -63,7 +63,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/CourseClassroomController.php?op=listUserCourses',
+			url: '../../controllers/CourseClassroomController.php?op=listCourseClassroom',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -104,24 +104,26 @@ $(document).ready(function(){
 
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
-	$('#courseclassroom_form')[0].reset();
-	$.post("../../controllers/CourseClassroomController.php?op=listUserCourseById", { id : id}, function(data) {
+	$.post("../../controllers/CourseClassroomController.php?op=listCourseClassroomById", { id : id}, function(data) {
     	data = JSON.parse(data);
+    	$('#id').val('');
+    	$('#classroom_id').empty();
+    	$('#course_id').empty();
     	$('#id').val(data.id);
-    	$.post("../../controllers/CourseClassroomController.php?op=listUsers", function (users) {
-			jsonData = JSON.parse(users);
-	        $('#user_id').empty();
+    	$.post("../../controllers/ClassroomController.php?op=listClassrooms", function (classrooms) {
+			jsonData = JSON.parse(classrooms);
+	        $('#classroom_id').empty();
 		
 		    // Puedes iterar sobre los usuarios si hay mas de uno
-		    jsonData.forEach(function(user) {
+		    jsonData.forEach(function(classroom) {
 		        // Crear una opcion para cada usuario y agregarla al desplegable
-		        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
+		        $('#classroom_id').append('<option value="' + classroom.id + '">' + classroom.name + '</option>');
 		    });
-		    $('#user_id').val(data.user_id);
+		    $('#classroom_id').val(data.classroom_id);
 	    });
 	
 	    // Fetch courses and populate the course dropdown
-	    $.post("../../controllers/CourseClassroomController.php?op=listCourses", function (courses) {
+	    $.post("../../controllers/CourseController.php?op=listCourses", function (courses) {
 			jsonData = JSON.parse(courses);
 	        $('#course_id').empty();
 		
@@ -151,10 +153,10 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/UserCourseController.php?op=deleteUserCourseById", { id : id}, function(data) {
+			$.post("../../controllers/CourseClassroomController.php?op=deleteCourseClassroomsById", { id : id}, function(data) {
         	});
         	
-        	$('#usercourse_data').DataTable().ajax.reload();
+        	$('#courseclassroom_data').DataTable().ajax.reload();
         	
 			swal({
 				title: "ColPaz Quipama",
@@ -170,19 +172,19 @@ $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#courseclassroom_form')[0].reset();
 	// Fetch users and populate the user dropdown
-    $.post("../../controllers/CourseClassroomController.php?op=listUsers", function (data) {
+    $.post("../../controllers/ClassroomController.php?op=listClassrooms", function (data) {
 		jsonData = JSON.parse(data);
-        $('#user_id').empty();
+        $('#classroom_id').empty();
 	
 	    // Puedes iterar sobre los usuarios si hay mas de uno
-	    jsonData.forEach(function(user) {
+	    jsonData.forEach(function(classroom) {
 	        // Crear una opcion para cada usuario y agregarla al desplegable
-	        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
+	        $('#classroom_id').append('<option value="' + classroom.id + '">' + classroom.name + '</option>');
 	    });
     });
 
     // Fetch courses and populate the course dropdown
-    $.post("../../controllers/CourseClassroomController.php?op=listCourses", function (data) {
+    $.post("../../controllers/CourseController.php?op=listCourses", function (data) {
 		jsonData = JSON.parse(data);
         $('#course_id').empty();
 	
