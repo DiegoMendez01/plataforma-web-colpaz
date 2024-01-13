@@ -39,6 +39,12 @@
     				<span class="lbl">Materias Grados</span>
     			</a>
     		</li>
+    		<li class="blue-dirty">
+    			<a href="..\Roles\">
+    				<span class="glyphicon glyphicon-th"></span>
+    				<span class="lbl">Roles</span>
+    			</a>
+    		</li>
 		<?php 
 		}elseif($_SESSION['role_id'] == 3){
         ?>
