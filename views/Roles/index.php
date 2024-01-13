@@ -44,14 +44,13 @@ if(isset($_SESSION['id'])){
 			
 			<div class="box-typical box-typical-padding">
 				<button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo registro</button>
-				<table id="user_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+				<table id="role_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 					<thead>
 						<tr>
 							<th style="width: 15%;">Nombre</th> 
-							<th style="width: 15%;">Apellido</th> 
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Correo</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Identificacion</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Rol</th>
+							<th style="width: 20%;">Funciones</th> 
+							<th class="d-none d-sm-table-cell" style="width: 15%;">Creado</th>
+							<th class="d-none d-sm-table-cell" style="width: 15%;">Estado</th>
 							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
 						</tr>
@@ -64,7 +63,7 @@ if(isset($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modelGestionRoles.php");
+    require_once("modalGestionRoles.php");
     ?>
     
     <?php
@@ -75,7 +74,7 @@ if(isset($_SESSION['id'])){
 </html>
 <?php 
 }else{
-    header("Location:" . Connect::route() . "views/login/");
+    header("Location:" . Connect::route() . "views/Site/");
     exit;
 }
 ?>

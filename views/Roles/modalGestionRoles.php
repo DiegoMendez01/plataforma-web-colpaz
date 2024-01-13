@@ -9,21 +9,25 @@
 			</div>
 			<form method="post" id="roles_form">
     			<div class="modal-body">
-    				<input type="hidden" id="user_id" name="user_id">
+    				<input type="hidden" id="id" name="id">
     				<div class="form-group">
-    					<label class="form-label" for="role_id">Roles</label>
-    					<select class="select2" id="role_id" name="role_id" data-placeholder="Seleccionar" required>
-                            <option value="">Seleccione</option>
-    						<option value="2">Administrador</option>
-    						<option value="3">Docente</option>
-    						<option value="4">Estudiante</option>
-    						<option value="5">Usuario Provisional</option>
-    					</select>
+    					<div class="form-group row">
+                            <label for="name" class="col-sm-2 form-control-label">Nombre<b>*</b></label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static"><input type="text" class="form-control" id="name" name="name" placeholder="Ingrese el nombre del rol"></p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="functions" class="col-sm-2 form-control-label">Funciones<b>*</b></label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static"><textarea type="text" class="form-control" id="functions" name="functions" placeholder="Ingrese la funcion del rol"></textarea></p>
+                            </div>
+                        </div>
     				</div>
     			</div>
     			<div class="modal-footer">
     				<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Cerrar</button>
-    				<button type="submit" name="action" id="#" value="add" class="btn btn-rounded btn-primary">Asignar</button>
+    				<button type="submit" name="action" id="#" value="add" class="btn btn-rounded btn-primary">Aceptar</button>
     			</div>
 			</form>
 		</div>

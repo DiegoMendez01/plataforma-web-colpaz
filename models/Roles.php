@@ -5,26 +5,48 @@ class Roles extends Connect
     /*
      * Funcion para insertar/registrar un nuevo rol
      */
-    public function insertRole($rol_name, $rol_functions, $rol_created, $rol_idr)
+    public function insertRole($name, $functions)
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
         $sql = "
             INSERT INTO
-                roles (name, functions, created, idr, is_active) 
-            VALUES (?, ?, ?, ?, 1)
+                roles (name, functions, created) 
+            VALUES (?, ?, now())
         ";
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $rol_name);
-        $stmt->bindValue(2, $rol_functions);
-        $stmt->bindValue(3, $rol_created);
-        $stmt->bindValue(4, $rol_idr);
+        $stmt->bindValue(1, $name);
+        $stmt->bindValue(2, $functions);
         $stmt->execute();
 
         return $stmt->fetchAll();
     }
-
+    /*
+     * Funcion para actualizar registros de cursos existentes por su ID
+     */
+    public function updateRoleById($id, $name, $functions)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            UPDATE
+                roles
+            SET
+                name = ?, functions = ?
+            WHERE
+                id = ?
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $name);
+        $stmt->bindValue(2, $functions);
+        $stmt->bindValue(3, $id);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll();
+    }
     /*
      * Funcion para obtener todos los roles
      */
@@ -39,7 +61,7 @@ class Roles extends Connect
             FROM 
                 roles
             WHERE
-                is_active = 1
+                is_active = 1 AND id <> 1
         ";
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
@@ -74,7 +96,7 @@ class Roles extends Connect
     /*
      * Funcion para eliminar logicamente un rol
      */
-    public function deleteRolesById($rol_id)
+    public function deleteRolesById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -85,10 +107,10 @@ class Roles extends Connect
             SET
                 is_active = 0
             WHERE
-                id = ? AND is_active = 1
+                id = ?
         ";
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $rol_id);
+        $stmt->bindValue(1, $id);
         $stmt->execute();
 
         return $stmt->fetchAll();
