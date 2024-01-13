@@ -1,6 +1,6 @@
 <?php
 
-class RolesModel extends Connect
+class Roles extends Connect
 {
     /*
      * Funcion para insertar/registrar un nuevo rol
@@ -74,7 +74,7 @@ class RolesModel extends Connect
     /*
      * Funcion para eliminar logicamente un rol
      */
-    public function deleteRole($rol_id)
+    public function deleteRolesById($rol_id)
     {
         $conectar = parent::connection();
         parent::set_names();
