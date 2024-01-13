@@ -1,9 +1,14 @@
 <?php
 // Importa la clase del modelo
 require_once("../config/connection.php");
+require_once("../models/CourseClassrooms.php");
+require_once("../models/Courses.php");
 require_once("../models/Classrooms.php");
 
 $classroom = new Classrooms();
+$course    = new Courses();
+
+$courseClassrooms = new CourseClassrooms();
 
 switch($_GET['op'])
 {
@@ -13,21 +18,25 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $classroom->insertClassroom($_POST['name']);
+            $courseClassrooms->insertCourseClassrooms($_POST['classroom_id'], $_POST['course_id']);
         } else {
-            $classroom->updateClassroom($_POST['id'], $_POST['name']);
+            $courseClassrooms->updateCourseClassrooms($_POST['id'], $_POST['classroom_id'], $_POST['course_id']);
         }
         break;
-    /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
-     * Ademas, de dibujar una tabla para mostrar los registros.
-     */
-    case 'listClassroom':
-        $datos = $classroom->getClassrooms();
-        
+        /*
+         * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+         * Ademas, de dibujar una tabla para mostrar los registros.
+         */
+    case 'listCourseClassroom':
+        $datos   = $courseClassrooms->getCourseClassrooms();
+        $data = [];
         foreach ($datos as $row) {
+            $classroomData  = $classroom->getClassroomById($row['classroom_id']);
+            $courseData     = $course->getCourseById($row['course_id']);
+            
             $sub_array      = [];
-            $sub_array[]    = $row['name'];
+            $sub_array[]    = $classroomData[0]['name'];
+            $sub_array[]    = $courseData[0]['name'];
             $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
                 $sub_array[] = 'Activo';
@@ -47,35 +56,29 @@ switch($_GET['op'])
         ];
         echo json_encode($results);
         break;
-    /*
-     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
-     */
-    case 'deleteClassroomById':
+        /*
+         * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+         */
+    case 'deleteCourseClassroomsById':
         if(isset($_POST['id'])){
-            $classroom->deleteClassroomById($_POST['id']);
+            $courseClassrooms->deleteCourseClassroomsById($_POST['id']);
         }
         break;
-    /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
-     */
-    case 'listClassroomById':
-        $datos = $classroom->getClassroomById($_POST['id']);
+        /*
+         * Es para listar/obtener los usuarios que existen registrados en el sistema.
+         * Pero debe mostrar el usuario por medio de su identificador unico
+         */
+    case 'listCourseClassroomById':
+        $datos = $courseClassrooms->getCourseClassroomsById($_POST['id']);
         
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
-                $output["id"]                       = $row['id'];
-                $output["name"]                     = $row['name'];
+                $output["id"]             = $row['id'];
+                $output["classroom_id"]   = $row['classroom_id'];
+                $output["course_id"]      = $row['course_id'];
             }
             echo json_encode($output);
         }
-        break;
-    /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     */
-    case 'listClassrooms':
-        $datos = $classroom->getClassrooms();
-        echo json_encode($datos);
         break;
 }
 ?>

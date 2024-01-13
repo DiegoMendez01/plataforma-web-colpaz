@@ -11,7 +11,7 @@
     			<div class="modal-body">
     				<input type="hidden" id="id" name="id" />
     				<div class="form-group row">
-                        <label for="name" class="col-sm-2 form-control-label">Nombre del curso<b>*</b></label>
+                        <label for="name" class="col-sm-2 form-control-label">Nombre<b>*</b></label>
                         <div class="col-sm-10">
                             <p class="form-control-static"><input type="text" class="form-control" id="name" name="name" placeholder="Ingrese el nombre del curso"></p>
                         </div>
