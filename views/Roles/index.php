@@ -64,11 +64,7 @@ if(isset($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modalGestionRoles.php");
-    ?>
-    
-    <?php
-    require_once("modalRoles.php");
+    require_once("modelGestionRoles.php");
     ?>
     
     <?php

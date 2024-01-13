@@ -39,7 +39,7 @@ if (isset($_SESSION['id'])) {
             
             <div class="box-typical box-typical-padding">
                 <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="usercourse_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="courseclassroom_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
                             <th style="width: 15%;">Curso</th>
