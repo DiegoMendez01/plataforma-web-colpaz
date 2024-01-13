@@ -8,6 +8,7 @@ class Auths extends Connect
     public function insertAuths($username)
     {
         $conectar = parent::connection();
+
         parent::set_names();
         
         $user = "
@@ -24,7 +25,7 @@ class Auths extends Connect
         $stmtUser->execute();
         
         $resultUser = $stmtUser->fetchAll();
-        
+
         $sql = "
             INSERT INTO
                 auths (user_id, source_id, created, source)
