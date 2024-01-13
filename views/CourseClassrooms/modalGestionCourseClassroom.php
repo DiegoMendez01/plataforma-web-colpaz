@@ -7,21 +7,23 @@
                 </button>
                 <h4 class="modal-title" id="mdltitulo"></h4>
             </div>
-            <form method="post" id="CourseClassroom_form">
+            <form method="post" id="courseclassroom_form">
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id" />
                     <div class="form-group row">
                         <label for="course_id" class="col-sm-2 form-control-label">Curso <b>*</b></label>
                         <div class="col-sm-10">
-                            <p class="form-control-static"><input type="text" class="form-control" id="course_id" name="course_id" placeholder="Ingrese el nombre del grado"></p>
+                            <select id="course_id" class="form-control" name="course_id">
+							</select>
                         </div>
                     </div>
                     <div class="form-group row">
-    					<label for="user_id" class="col-sm-2 form-control-label">Usuario <b>*</b></label>
-    					<div class="col-sm-10">
-       						 <p class="form-control-static"><input type="text" class="form-control" id="user_id" name="user_id" placeholder="Ingrese el nombre de usuario"></p>
-    					</div>
-					</div>
+                        <label for="classroom_id" class="col-sm-2 form-control-label">Grado <b>*</b></label>
+                        <div class="col-sm-10">
+                            <select id="classroom_id" class="form-control" name="classroom_id">
+							</select>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Cerrar</button>

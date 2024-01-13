@@ -27,10 +27,10 @@ if (isset($_SESSION['id'])) {
                 <div class="tbl">
                     <div class="tbl-row">
                         <div class="tbl-cell">
-                            <h3>Cursos Aula</h3>
+                            <h3>Cursos Grados</h3>
                             <ol class="breadcrumb breadcrumb-simple">
                                 <li><a href="../Home/">Inicio</a></li>
-                                <li class="active">Cursos Aula</li>
+                                <li class="active">Cursos Grados</li>
                             </ol>
                         </div>
                     </div>
@@ -39,12 +39,12 @@ if (isset($_SESSION['id'])) {
             
             <div class="box-typical box-typical-padding">
                 <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="usercourse_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="courseclassroom_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
-                            <th style="width: 15%;">Curso</th>
-                            <th style="width: 30%;">Aula</th>
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
+                            <th style="width: 15%;">Grado</th>
+                            <th style="width: 30%;">Curso</th>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
@@ -59,13 +59,13 @@ if (isset($_SESSION['id'])) {
     
     <?php require_once ("../MainJs/js.php"); ?>
     
-    <script src="CourseClasroom.js" type="text/javascript"></script>
+    <script src="courseclassrooms.js" type="text/javascript"></script>
 </body>
 </html>
 
 <?php
 } else {
-    header("Location:" . Connect::route() . "views/login/");
+    header("Location:" . Connect::route() . "views/Site/");
     exit;
 }
 ?>

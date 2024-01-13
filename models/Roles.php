@@ -1,6 +1,6 @@
 <?php
 
-class RolesModel extends Connect
+class Roles extends Connect
 {
     /*
      * Funcion para insertar/registrar un nuevo rol
@@ -50,7 +50,7 @@ class RolesModel extends Connect
     /*
      * Funcion para obtener informacion de un rol por su ID
      */
-    public function getRoles($rol_id)
+    public function getRolesById($rol_id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -70,40 +70,11 @@ class RolesModel extends Connect
         return $result = $stmt->fetchAll();
     }
 
-    /*
-     * Funcion para actualizar informacion de un rol
-     */
-    public function deleteRolesById($rol_id, $rol_name, $rol_functions, $rol_created, $rol_idr)
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-
-        $sql = "
-            UPDATE
-                roles
-            SET
-                name = ?,
-                functions = ?,
-                created = ?,
-                idr = ?
-            WHERE
-                id = ? AND is_active = 1
-        ";
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $rol_name);
-        $stmt->bindValue(2, $rol_functions);
-        $stmt->bindValue(3, $rol_created);
-        $stmt->bindValue(4, $rol_idr);
-        $stmt->bindValue(5, $rol_id);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-
+    
     /*
      * Funcion para eliminar logicamente un rol
      */
-    public function deleteRole($rol_id)
+    public function deleteRolesById($rol_id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -123,3 +94,4 @@ class RolesModel extends Connect
         return $stmt->fetchAll();
     }
 }
+

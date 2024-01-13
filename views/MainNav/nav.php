@@ -36,7 +36,7 @@
     		<li class="blue-dirty">
     			<a href="..\CourseClassrooms\">
     				<span class="glyphicon glyphicon-th"></span>
-    				<span class="lbl">Materias Grados</span>
+    				<span class="lbl">Cursos Grados</span>
     			</a>
     		</li>
     		<li class="blue-dirty">
