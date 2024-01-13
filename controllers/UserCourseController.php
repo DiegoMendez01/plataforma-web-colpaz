@@ -19,6 +19,7 @@ switch($_GET['op'])
         if(empty($_POST['id'])){
             $userCourse->insertUserCourse($_POST['user_id'], $_POST['course_id']);
         } else {
+            var_dump($_POST['user_id'], $_POST['course_id']);
             $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id']);
         }
         break;

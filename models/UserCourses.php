@@ -23,6 +23,30 @@ class UserCourses extends Connect
         return $conectar->lastInsertId();
     }
     /*
+     * Funcion para actualizar registros de asignaciones de usuarios por cursos
+     */
+    public function updateUserCourse($id, $user_id, $course_id)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            UPDATE
+                user_courses
+            SET
+                user_id   = ?,
+                course_id = ?
+            WHERE
+                id = ?";
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $user_id);
+        $stmt->bindValue(2, $course_id);
+        $stmt->bindValue(3, $id);
+        $stmt->execute();
+        
+        return $stmt->fetchAll();
+    }
+    /*
      * Funcion para obtener los cursos mediante un formulario
      */
     public function getUsers()

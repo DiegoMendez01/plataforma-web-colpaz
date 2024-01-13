@@ -33,6 +33,12 @@
     				<span class="lbl">Cursos Usuarios</span>
     			</a>
     		</li>
+    		<li class="blue-dirty">
+    			<a href="..\CourseClassrooms\">
+    				<span class="glyphicon glyphicon-th"></span>
+    				<span class="lbl">Materias Grados</span>
+    			</a>
+    		</li>
 		<?php 
 		}elseif($_SESSION['role_id'] == 3){
         ?>

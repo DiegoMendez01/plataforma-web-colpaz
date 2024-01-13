@@ -16,7 +16,7 @@ function insertOrUpdate(e)
 	
     formData.forEach(function(value, key) {
 	    // Excluir id del chequeo de campos vacios
-	    if (key !== 'id' && key !== 'description') {
+	    if (key !== 'id') {
 	        if (value === "") {
 	            camposVacios = true;
 	            return false;  // Para salir del bucle si se encuentra un campo vacio
@@ -107,8 +107,34 @@ function editar(id){
 	
 	$.post("../../controllers/UserCourseController.php?op=listUserCourseById", { id : id}, function(data) {
     	data = JSON.parse(data);
+    	$('#id').val('');
+    	$('#user_id').empty();
+    	$('#course_id').empty();
     	$('#id').val(data.id);
-    	$('#name').val(data.name);
+    	$.post("../../controllers/UserCourseController.php?op=listUsers", function (users) {
+			jsonData = JSON.parse(users);
+	        $('#user_id').empty();
+		
+		    // Puedes iterar sobre los usuarios si hay mas de uno
+		    jsonData.forEach(function(user) {
+		        // Crear una opcion para cada usuario y agregarla al desplegable
+		        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
+		    });
+		    $('#user_id').val(data.user_id);
+	    });
+	
+	    // Fetch courses and populate the course dropdown
+	    $.post("../../controllers/UserCourseController.php?op=listCourses", function (courses) {
+			jsonData = JSON.parse(courses);
+	        $('#course_id').empty();
+		
+		    // Puedes iterar sobre los cursos si hay mas de uno
+		    jsonData.forEach(function(course) {
+		        // Crear una opcion para cada curso y agregarla al desplegable
+		        $('#course_id').append('<option value="' + course.id + '">' + course.name + '</option>');
+		    });
+		    $('#course_id').val(data.course_id);
+	    });
     });
 	
 	$('#modalGestionUserCourse').modal('show');
