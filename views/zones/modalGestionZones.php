@@ -16,12 +16,6 @@
                             <p class="form-control-static"><input type="text" class="form-control" id="name" name="name" placeholder="Ingrese el nombre del curso"></p>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="description" class="col-sm-2 form-control-label">Descripcion</label>
-                        <div class="col-sm-10">
-                            <p class="form-control-static"><input type="text" class="form-control" id="description" name="description" placeholder="Ingrese una descripción"></p>
-                        </div>
-                    </div>
     			</div>
     			<div class="modal-footer">
     				<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Cerrar</button>

@@ -1,25 +1,24 @@
 <?php
 
-class Zone extends Connect
+class Zones extends Connect
 {
     /*
      * Funcion para insertar/registrar zonas por medio de un formulario
      */
-    public function insertZone($name, $custom_fields = null)
+    public function insertZone($name)
     {
         $conectar = parent::connection();
         parent::set_names();
 
         $sql = "
             INSERT INTO
-                zones (name, custom_fields, created)
+                zones (name, created)
             VALUES
-                (?, ?, now())
+                (?, now())
         ";
 
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $custom_fields);
         $stmt->execute();
 
         return $result = $stmt->fetchAll();
@@ -28,7 +27,7 @@ class Zone extends Connect
     /*
      * Funcion para actualizar registros de zonas existentes por su ID
      */
-    public function updateZoneById($id, $name, $custom_fields = null)
+    public function updateZoneById($id, $name)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -37,15 +36,14 @@ class Zone extends Connect
             UPDATE
                 zones
             SET
-                name = ?, custom_fields = ?
+                name = ?
             WHERE
                 id = ?
         ";
 
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $custom_fields);
-        $stmt->bindValue(3, $id);
+        $stmt->bindValue(2, $id);
         $stmt->execute();
 
         return $result = $stmt->fetchAll();

@@ -22,9 +22,9 @@ switch($_GET['op'])
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
-    case 'lisZone':
+    case 'listZone':
         $datos = $zone->getZones();
-
+        $data  = [];
         foreach ($datos as $row) {
             $sub_array      = [];
             $sub_array[]    = $row['name'];
@@ -32,11 +32,11 @@ switch($_GET['op'])
             if($row['is_active'] == 1){
                 $sub_array[] = 'Activo';
             }
-
+            
             $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
             $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
             $sub_array[] = '<button type="button" onClick="ver('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
-
+            
             $data[] = $sub_array;
         }
         $results = [

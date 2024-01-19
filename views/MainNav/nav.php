@@ -30,6 +30,12 @@
     			</a>
     		</li>
     		<li class="blue-dirty">
+    			<a href="..\Zones\">
+    				<span class="glyphicon glyphicon-th"></span>
+    				<span class="lbl">Zonas</span>
+    			</a>
+    		</li>
+    		<li class="blue-dirty">
     			<a href="..\Roles\">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Roles</span>

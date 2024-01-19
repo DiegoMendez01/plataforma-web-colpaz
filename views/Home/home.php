@@ -28,6 +28,11 @@ if($_SESSION['id']){
 	
 	<!-- Contenido  -->
 	<div class="page-content">
+		<div class="row">
+    		<div class="col-md-12">
+				<img src="../../public/img/school.svg" alt="Imagen Colegio" />
+			</div>
+		</div>
 	</div>
 	
 	<?php
