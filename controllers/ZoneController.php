@@ -15,7 +15,7 @@ switch($_GET['op'])
         if(empty($_POST['id'])){
             $zone->insertZone($_POST['name']);
         } else {
-            $zone->updateZone($_POST['id'], $_POST['name']);
+            $zone->updateZoneById($_POST['id'], $_POST['name']);
         }
         break;
     /*
@@ -60,7 +60,7 @@ switch($_GET['op'])
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
     case 'listZoneById':
-        $datos = $period->getZoneById($_POST['id']);
+        $datos = $zone->getZoneById($_POST['id']);
 
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
@@ -74,7 +74,7 @@ switch($_GET['op'])
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
      */
     case 'listZones':
-        $datos = $period->getZones();
+        $datos = $zone->getZones();
         echo json_encode($datos);
         break;
 }
