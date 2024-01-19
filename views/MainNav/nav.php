@@ -48,6 +48,13 @@
     				<span class="lbl">Grados</span>
     			</a>
     		</li>
+    		<label style="margin-left: 20px; font-weight: bold;">Gestión Periodos</label>
+    		<li class="blue-dirty">
+    			<a href="..\Periods\">
+    				<span class="glyphicon glyphicon-th"></span>
+    				<span class="lbl">Periodo Academico</span>
+    			</a>
+    		</li>
 		<?php 
 		}elseif($_SESSION['role_id'] == 3){
         ?>

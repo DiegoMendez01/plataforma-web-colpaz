@@ -44,7 +44,7 @@ if(isset($_SESSION['id'])){
 			
 			<div class="box-typical box-typical-padding">
 				<button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-				<table id="course_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+				<table id="period_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 					<thead>
 						<tr>
 							<th style="width: 30%;">Nombre</th> 
@@ -69,12 +69,12 @@ if(isset($_SESSION['id'])){
     <?php
     require_once ("../MainJs/js.php");
     ?>
-    <script src="courses.js" type="text/javascript"></script>
+    <script src="periods.js" type="text/javascript"></script>
 </body>
 </html>
 <?php 
 }else{
-    header("Location:" . Connect::route() . "views/login/");
+    header("Location:" . Connect::route() . "views/Site/");
     exit;
 }
 ?>

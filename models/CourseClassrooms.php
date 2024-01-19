@@ -30,7 +30,7 @@ class CourseClassrooms extends Connect
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
         $sql = "
             SELECT
                 * 
@@ -41,10 +41,10 @@ class CourseClassrooms extends Connect
         ";
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
-
+        
         return $result = $stmt->fetchAll();
     }
-
+    
     /*
      * Funcion para actualizar registros de asignaciones de aulas a cursos
      */
@@ -52,7 +52,7 @@ class CourseClassrooms extends Connect
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
         $sql = "
             UPDATE
                 course_classrooms
@@ -66,10 +66,10 @@ class CourseClassrooms extends Connect
         $stmt->bindValue(2, $classroom_id);
         $stmt->bindValue(3, $id);
         $stmt->execute();
-
+        
         return $stmt->fetchAll();
     }
-
+    
     /*
      * Funcion para eliminar totalmente registros de asignaciones de aulas a cursos (eliminado logico)
      */
@@ -77,7 +77,7 @@ class CourseClassrooms extends Connect
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
         $sql = "
             UPDATE
                 course_classrooms
@@ -88,10 +88,10 @@ class CourseClassrooms extends Connect
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
-
+        
         return $stmt->fetchAll();
     }
-
+    
     /*
      * Funcion para obtener información de la asignación de un aula a un curso mediante el ID de la asignacion
      */
@@ -99,7 +99,7 @@ class CourseClassrooms extends Connect
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
         $sql = "
             SELECT
                 *
@@ -111,7 +111,7 @@ class CourseClassrooms extends Connect
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
-
+        
         return $result = $stmt->fetchAll();
     }
 }
