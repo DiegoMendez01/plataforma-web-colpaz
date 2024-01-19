@@ -74,7 +74,7 @@ class PeriodsModel extends Connect
     /*
      * Funcion para actualizar informacion de un periodo
      */
-    public function deletePeriodsById($period_id, $period_name, $period_start_date, $period_end_date, $period_created, $period_idr)
+    public function updatePeriods($period_id, $period_name, $period_start_date, $period_end_date, $period_created, $period_idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -106,7 +106,7 @@ class PeriodsModel extends Connect
     /*
      * Funcion para eliminar logicamente un periodo
      */
-    public function deletePeriod($period_id)
+    public function deletePeriodsById($period_id)
     {
         $conectar = parent::connection();
         parent::set_names();
