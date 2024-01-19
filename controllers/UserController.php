@@ -26,6 +26,7 @@ switch($_GET['op']){
      */
     case 'listUser':
         $datos = $user->getUsers($_POST['id']);
+        $data  = [];
         foreach($datos as $row){
             $sub_array   = [];
             $sub_array[] = $row['name'];
@@ -116,6 +117,13 @@ switch($_GET['op']){
         $_SESSION['email']          = $_POST['email'];
         $_SESSION['phone']          = $_POST['phone'];
         $_SESSION['password_hash']  = $_POST['password_hash'];
+        break;
+    /*
+     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     */
+    case 'listUsers':
+        $datos = $user->getUserAll();
+        echo json_encode($datos);
         break;
 }
 ?>

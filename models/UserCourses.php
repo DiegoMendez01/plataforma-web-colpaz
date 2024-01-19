@@ -5,19 +5,21 @@ class UserCourses extends Connect
     /*
      * Funcion para inscribir a un usuario en un curso mediante un formulario
      */
-    public function insertUserCourse($user_id, $course_id)
+    public function insertUserCourse($user_id, $course_id, $classroom_id, $period_id)
     {
         $conectar = parent::connection();
         parent::set_names();
 
         $sql = "
             INSERT INTO
-                user_courses (user_id, course_id, created, is_active) 
-            VALUES (?, ?, now(), 1)
+                user_courses (user_id, course_id, classroom_id, period_id, created, is_active) 
+            VALUES (?, ?, ?, ?, now(), 1)
         ";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $user_id);
         $stmt->bindValue(2, $course_id);
+        $stmt->bindValue(3, $classroom_id);
+        $stmt->bindValue(4, $period_id);
         $stmt->execute();
 
         return $conectar->lastInsertId();
@@ -25,7 +27,7 @@ class UserCourses extends Connect
     /*
      * Funcion para actualizar registros de asignaciones de usuarios por cursos
      */
-    public function updateUserCourse($id, $user_id, $course_id)
+    public function updateUserCourse($id, $user_id, $course_id, $classroom_id, $period_id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -35,60 +37,20 @@ class UserCourses extends Connect
                 user_courses
             SET
                 user_id   = ?,
-                course_id = ?
+                course_id = ?,
+                classroom_id = ?,
+                period_id = ?
             WHERE
                 id = ?";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $user_id);
         $stmt->bindValue(2, $course_id);
-        $stmt->bindValue(3, $id);
+        $stmt->bindValue(3, $classroom_id);
+        $stmt->bindValue(4, $period_id);
+        $stmt->bindValue(5, $id);
         $stmt->execute();
         
         return $stmt->fetchAll();
-    }
-    /*
-     * Funcion para obtener los cursos mediante un formulario
-     */
-    public function getUsers()
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            SELECT
-                * 
-            FROM 
-                users
-            WHERE
-                is_active = 1
-        ";
-        
-        $stmt = $conectar->prepare($sql);
-        $stmt->execute();
-        
-        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    /*
-     * Funcion para obtener los usuarios mediante un formulario
-     */
-    public function getCourses()
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            SELECT
-                *
-            FROM
-                courses
-            WHERE
-                is_active = 1
-        ";
-        
-        $stmt = $conectar->prepare($sql);
-        $stmt->execute();
-        
-        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para obtener todos los cursos en los que un usuario esta inscrito

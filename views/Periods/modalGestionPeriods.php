@@ -7,19 +7,13 @@
 				</button>
 				<h4 class="modal-title" id="mdltitulo"></h4>
 			</div>
-			<form method="post" id="Periods_form">
+			<form method="post" id="periods_form">
     			<div class="modal-body">
     				<input type="hidden" id="id" name="id" />
     				<div class="form-group row">
                         <label for="name" class="col-sm-2 form-control-label">Nombre<b>*</b></label>
                         <div class="col-sm-10">
                             <p class="form-control-static"><input type="text" class="form-control" id="name" name="name" placeholder="Ingrese el nombre del curso"></p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="description" class="col-sm-2 form-control-label">Descripcion</label>
-                        <div class="col-sm-10">
-                            <p class="form-control-static"><input type="text" class="form-control" id="description" name="description" placeholder="Ingrese una descripción"></p>
                         </div>
                     </div>
     			</div>

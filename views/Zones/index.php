@@ -11,7 +11,7 @@ if (isset($_SESSION['id'])) {
 
 <head>
     <?php require_once("../MainHead/head.php"); ?>
-    <title>Aula Virtual::Cursos Aula</title>
+    <title>Aula Virtual:Zonas</title>
 </head>
 
 <body class="with-side-menu">
@@ -27,10 +27,10 @@ if (isset($_SESSION['id'])) {
                 <div class="tbl">
                     <div class="tbl-row">
                         <div class="tbl-cell">
-                            <h3>Cursos Grados</h3>
+                            <h3>Gestion zonas</h3>
                             <ol class="breadcrumb breadcrumb-simple">
                                 <li><a href="../Home/">Inicio</a></li>
-                                <li class="active">Cursos Grados</li>
+                                <li class="active">Gestion zonas</li>
                             </ol>
                         </div>
                     </div>
@@ -39,12 +39,12 @@ if (isset($_SESSION['id'])) {
             
             <div class="box-typical box-typical-padding">
                 <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="courseclassroom_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="zone_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
-                            <th style="width: 15%;">Grado</th>
-                            <th style="width: 30%;">Curso</th>
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
+                            <th style="width: 15%;">Nombre</th>
+                            <th style="width: 30%;">Creado</th>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
@@ -55,11 +55,11 @@ if (isset($_SESSION['id'])) {
         </div>
     </div>
     
-    <?php require_once("modalGestionCourseClassroom.php"); ?>
+    <?php require_once("modalGestionZones.php"); ?>
     
     <?php require_once ("../MainJs/js.php"); ?>
     
-    <script src="courseclassrooms.js" type="text/javascript"></script>
+    <script src="zones.js" type="text/javascript"></script>
 </body>
 </html>
 

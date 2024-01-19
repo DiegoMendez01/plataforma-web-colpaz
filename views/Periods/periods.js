@@ -2,7 +2,7 @@ var tabla;
 
 function init()
 {
-	$('#courseclassroom_form').on("submit", function(e){
+	$('#periods_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
 }
@@ -10,7 +10,7 @@ function init()
 function insertOrUpdate(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#courseclassroom_form')[0]);
+	var formData = new FormData($('#periods_form')[0]);
 	
 	var camposVacios = false;
 	
@@ -28,15 +28,15 @@ function insertOrUpdate(e)
         swal("Error!", "Campos vacios", "error");
     } else {
     	$.ajax({
-			url: "../../controllers/CourseClassroomController.php?op=insertOrUpdate",
+			url: "../../controllers/PeriodController.php?op=insertOrUpdate",
 			type: "POST",
 			data: formData,
 			contentType: false,
 			processData: false,
 			success: function(data){
-				$('#courseclassroom_form')[0].reset();
-				$('#modalGestionCourseClassroom').modal('hide');
-				$('#courseclassroom_data').DataTable().ajax.reload();
+				$('#periods_form')[0].reset();
+				$('#modalGestionPeriods').modal('hide');
+				$('#period_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
 					text: "Registro completado.",
@@ -49,7 +49,7 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
-	tabla = $('#courseclassroom_data').dataTable({
+	tabla = $('#period_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
@@ -63,7 +63,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/CourseClassroomController.php?op=listCourseClassroom',
+			url: '../../controllers/PeriodController.php?op=listPeriod',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -104,39 +104,15 @@ $(document).ready(function(){
 
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
-	$.post("../../controllers/CourseClassroomController.php?op=listCourseClassroomById", { id : id}, function(data) {
-    	data = JSON.parse(data);
-    	$('#id').val('');
-    	$('#classroom_id').empty();
-    	$('#course_id').empty();
-    	$('#id').val(data.id);
-    	$.post("../../controllers/ClassroomController.php?op=listClassrooms", function (classrooms) {
-			jsonData = JSON.parse(classrooms);
-	        $('#classroom_id').empty();
-		
-		    // Puedes iterar sobre los usuarios si hay mas de uno
-		    jsonData.forEach(function(classroom) {
-		        // Crear una opcion para cada usuario y agregarla al desplegable
-		        $('#classroom_id').append('<option value="' + classroom.id + '">' + classroom.name + '</option>');
-		    });
-		    $('#classroom_id').val(data.classroom_id);
-	    });
 	
-	    // Fetch courses and populate the course dropdown
-	    $.post("../../controllers/CourseController.php?op=listCourses", function (courses) {
-			jsonData = JSON.parse(courses);
-	        $('#course_id').empty();
-		
-		    // Puedes iterar sobre los cursos si hay mas de uno
-		    jsonData.forEach(function(course) {
-		        // Crear una opcion para cada curso y agregarla al desplegable
-		        $('#course_id').append('<option value="' + course.id + '">' + course.name + '</option>');
-		    });
-		    $('#course_id').val(data.course_id);
-	    });
+	$.post("../../controllers/PeriodController.php?op=listPeriodById", { id : id}, function(data) {
+    	data = JSON.parse(data);
+    	$('#id').val(data.id);
+    	$('#name').val(data.name);
+    	$('#description').val(data.description);
     });
 	
-	$('#modalGestionCourseClassroom').modal('show');
+	$('#modalGestionPeriods').modal('show');
 }
 
 function eliminar(id){
@@ -153,10 +129,10 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/CourseClassroomController.php?op=deleteCourseClassroomsById", { id : id}, function(data) {
+			$.post("../../controllers/PeriodController.php?op=deletePeriodById", { id : id}, function(data) {
         	});
         	
-        	$('#courseclassroom_data').DataTable().ajax.reload();
+        	$('#period_data').DataTable().ajax.reload();
         	
 			swal({
 				title: "ColPaz Quipama",
@@ -170,32 +146,8 @@ function eliminar(id){
 
 $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
-	$('#courseclassroom_form')[0].reset();
-	// Fetch users and populate the user dropdown
-    $.post("../../controllers/ClassroomController.php?op=listClassrooms", function (data) {
-		jsonData = JSON.parse(data);
-        $('#classroom_id').empty();
-	
-	    // Puedes iterar sobre los usuarios si hay mas de uno
-	    jsonData.forEach(function(classroom) {
-	        // Crear una opcion para cada usuario y agregarla al desplegable
-	        $('#classroom_id').append('<option value="' + classroom.id + '">' + classroom.name + '</option>');
-	    });
-    });
-
-    // Fetch courses and populate the course dropdown
-    $.post("../../controllers/CourseController.php?op=listCourses", function (data) {
-		jsonData = JSON.parse(data);
-        $('#course_id').empty();
-	
-	    // Puedes iterar sobre los cursos si hay mas de uno
-	    jsonData.forEach(function(course) {
-	        // Crear una opcion para cada curso y agregarla al desplegable
-	        $('#course_id').append('<option value="' + course.id + '">' + course.name + '</option>');
-	    });
-    });
-	
-	$('#modalGestionCourseClassroom').modal('show');
+	$('#periods_form')[0].reset();
+	$('#modalGestionPeriods').modal('show');
 });
 
 init();

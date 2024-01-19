@@ -1,9 +1,9 @@
 <?php
 // Importa la clase del modelo
 require_once("../config/connection.php");
-require_once("../models/Periods.php");
+require_once("../models/Zones.php");
 
-$period = new Periods();
+$zone = new Zones();
 
 switch($_GET['op'])
 {
@@ -13,17 +13,17 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $period->insertPeriod($_POST['name']);
+            $zone->insertZone($_POST['name']);
         } else {
-            $period->updatePeriodById($_POST['id'], $_POST['name']);
+            $zone->updateZoneById($_POST['id'], $_POST['name']);
         }
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
-    case 'listPeriod':
-        $datos = $period->getPeriods();
+    case 'listZone':
+        $datos = $zone->getZones();
         $data  = [];
         foreach ($datos as $row) {
             $sub_array      = [];
@@ -50,17 +50,17 @@ switch($_GET['op'])
     /*
      * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
      */
-    case 'deletePeriodById':
+    case 'deleteZoneById':
         if(isset($_POST['id'])){
-            $period->deletePeriodById($_POST['id']);
+            $zone->deleteZoneById($_POST['id']);
         }
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
-    case 'listPeriodById':
-        $datos = $period->getPeriodsById($_POST['id']);
+    case 'listZoneById':
+        $datos = $zone->getZoneById($_POST['id']);
 
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
@@ -73,8 +73,8 @@ switch($_GET['op'])
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
      */
-    case 'listPeriods':
-        $datos = $period->getPeriods();
+    case 'listZones':
+        $datos = $zone->getZones();
         echo json_encode($datos);
         break;
 }

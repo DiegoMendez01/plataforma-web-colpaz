@@ -22,17 +22,17 @@
     				<span class="lbl">Cursos Usuarios</span>
     			</a>
     		</li>
-    		<li class="blue-dirty">
-    			<a href="..\CourseClassrooms\">
-    				<span class="glyphicon glyphicon-th"></span>
-    				<span class="lbl">Cursos Grados</span>
-    			</a>
-    		</li>
         	<label style="margin-left: 20px; font-weight: bold;">Gestión Usuarios</label>
     		<li class="blue-dirty">
     			<a href="..\Users\">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Usuarios</span>
+    			</a>
+    		</li>
+    		<li class="blue-dirty">
+    			<a href="..\Zones\">
+    				<span class="glyphicon glyphicon-th"></span>
+    				<span class="lbl">Zonas</span>
     			</a>
     		</li>
     		<li class="blue-dirty">
@@ -46,6 +46,13 @@
     			<a href="..\Classrooms\">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Grados</span>
+    			</a>
+    		</li>
+    		<label style="margin-left: 20px; font-weight: bold;">Gestión Periodos</label>
+    		<li class="blue-dirty">
+    			<a href="..\Periods\">
+    				<span class="glyphicon glyphicon-th"></span>
+    				<span class="lbl">Periodo Academico</span>
     			</a>
     		</li>
 		<?php 

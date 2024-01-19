@@ -4,10 +4,15 @@ require_once("../config/connection.php");
 require_once("../models/UserCourses.php");
 require_once("../models/Users.php");
 require_once("../models/Courses.php");
+require_once("../models/Periods.php");
+require_once("../models/Classrooms.php");
+
 
 $userCourse = new UserCourses();
 $user       = new Users();
 $course     = new Courses();
+$classroom  = new Classrooms();
+$period     = new Periods();
 
 switch($_GET['op'])
 {
@@ -17,9 +22,9 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $userCourse->insertUserCourse($_POST['user_id'], $_POST['course_id']);
+            $userCourse->insertUserCourse($_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id']);
         } else {
-            $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id']);
+            $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id']);
         }
         break;
         /*
@@ -30,15 +35,18 @@ switch($_GET['op'])
         $datos = $userCourse->getUserCourses();
         $data  = [];
         foreach ($datos as $row) {
-            $userData   = $user->getUserById($row['user_id']);
-            $courseData = $course->getCourseById($row['course_id']);
+            $userData      = $user->getUserById($row['user_id']);
+            $courseData    = $course->getCourseById($row['course_id']);
+            $classroomData = $classroom->getClassroomById($row['classroom_id']);
+            $periodData    = $period->getPeriodsById($row['period_id']);
             
             $sub_array      = [];
+            $sub_array[]    = $classroomData[0]['name'];
             $sub_array[]    = $courseData[0]['name'];
+            $sub_array[]    = $periodData[0]['name'];
             $sub_array[]    = $userData[0]['name'].' '.$userData[0]['lastname'];
-            $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
-                $sub_array[] = 'Activo';
+                $sub_array[] = '<span class="label label-success">Activo</span>';
             }
             
             $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
@@ -72,19 +80,14 @@ switch($_GET['op'])
         
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
-                $output["id"]        = $row['id'];
-                $output["user_id"]   = $row['user_id'];
-                $output["course_id"] = $row['course_id'];
+                $output["id"]           = $row['id'];
+                $output["user_id"]      = $row['user_id'];
+                $output["course_id"]    = $row['course_id'];
+                $output["classroom_id"] = $row['classroom_id'];
+                $output["period_id"]    = $row['period_id'];
             }
             echo json_encode($output);
         }
-        break;
-    /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     */
-    case 'listUsers':
-        $datos = $userCourse->getUsers();
-        echo json_encode($datos);
         break;
 }
 ?>

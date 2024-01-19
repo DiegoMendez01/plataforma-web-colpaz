@@ -1,115 +1,123 @@
 <?php
 
-class Periods extends Connect
+class Zones extends Connect
 {
     /*
-     * Funcion para insertar/registrar un nuevo periodo
+     * Funcion para insertar/registrar zonas por medio de un formulario
      */
-    public function insertPeriod($name)
+    public function insertZone($name)
     {
         $conectar = parent::connection();
         parent::set_names();
-        
+
         $sql = "
             INSERT INTO
-                periods (name, created) 
-            VALUES (?, now())
+                zones (name, created)
+            VALUES
+                (?, now())
         ";
+
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $name);
         $stmt->execute();
-        
-        return $stmt->fetchAll();
+
+        return $result = $stmt->fetchAll();
     }
+
     /*
-     * Funcion para actualizar registros de periodos
+     * Funcion para actualizar registros de zonas existentes por su ID
      */
-    public function updatePeriodById($id, $name)
+    public function updateZoneById($id, $name)
     {
         $conectar = parent::connection();
         parent::set_names();
-        
+
         $sql = "
             UPDATE
-                periods
+                zones
             SET
                 name = ?
             WHERE
                 id = ?
         ";
-        
+
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $name);
         $stmt->bindValue(2, $id);
         $stmt->execute();
-        
-        return $stmt->fetchAll();
-    }
-    /*
-     * Funcion para obtener todos los periodos
-     */
-    public function getPeriods()
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            SELECT
-                *
-            FROM 
-                periods
-            WHERE
-                is_active = 1
-        ";
-        $stmt = $conectar->prepare($sql);
-        $stmt->execute();
-        
+
         return $result = $stmt->fetchAll();
     }
 
     /*
-     * Funcion para obtener informacion de un periodo por su ID
+     * Funcion para traer todas las zonas registradas hasta el momento
      */
-    public function getPeriodsById($id)
+    public function getZones()
     {
         $conectar = parent::connection();
         parent::set_names();
-        
+
         $sql = "
             SELECT
                 *
             FROM
-                periods
+                zones
             WHERE
-                id = ? AND is_active = 1
+                is_active = 1
         ";
+
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $id);
         $stmt->execute();
-        
+
         return $result = $stmt->fetchAll();
     }
 
     /*
-     * Funcion para actualizar informacion de un periodo
+     * Funcion para eliminar totalmente registros de zonas existentes por su ID
      */
-    public function deletePeriodById($id)
+    public function deleteZoneById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
-        
+
         $sql = "
             UPDATE
-                periods
+                zones
             SET
                 is_active = 0
             WHERE
                 id = ?
         ";
+
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
-        
-        return $stmt->fetchAll();
+
+        return $result = $stmt->fetchAll();
+    }
+
+    /*
+     * Funcion para traer las zonas mediante el ID de la zona
+     */
+    public function getZoneById($id)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+
+        $sql = "
+            SELECT
+                *
+            FROM
+                zones
+            WHERE
+                id = ?
+        ";
+
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+
+        return $result = $stmt->fetchAll();
     }
 }
+?>
