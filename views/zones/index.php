@@ -39,12 +39,12 @@ if (isset($_SESSION['id'])) {
             
             <div class="box-typical box-typical-padding">
                 <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="courseclassroom_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="zone_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
-                            <th style="width: 15%;">nombre</th>
-                            <th style="width: 30%;">creado</th>
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
+                            <th style="width: 15%;">Nombre</th>
+                            <th style="width: 30%;">Creado</th>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
