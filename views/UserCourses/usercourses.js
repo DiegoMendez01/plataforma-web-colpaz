@@ -110,8 +110,10 @@ function editar(id){
     	$('#id').val('');
     	$('#user_id').empty();
     	$('#course_id').empty();
+    	$('#classroom_id').empty();
+    	$('#period_id').empty();
     	$('#id').val(data.id);
-    	$.post("../../controllers/UserCourseController.php?op=listUsers", function (users) {
+    	$.post("../../controllers/UserController.php?op=listUsers", function (users) {
 			jsonData = JSON.parse(users);
 	        $('#user_id').empty();
 		
@@ -134,6 +136,32 @@ function editar(id){
 		        $('#course_id').append('<option value="' + course.id + '">' + course.name + '</option>');
 		    });
 		    $('#course_id').val(data.course_id);
+	    });
+	    
+	    // Fetch courses and populate the course dropdown
+	    $.post("../../controllers/PeriodController.php?op=listPeriods", function (periods) {
+			jsonData = JSON.parse(periods);
+	        $('#period_id').empty();
+		
+		    // Puedes iterar sobre los cursos si hay mas de uno
+		    jsonData.forEach(function(period) {
+		        // Crear una opcion para cada curso y agregarla al desplegable
+		        $('#period_id').append('<option value="' + period.id + '">' + period.name + '</option>');
+		    });
+		    $('#period_id').val(data.period_id);
+	    });
+	    
+	    // Fetch courses and populate the course dropdown
+	    $.post("../../controllers/ClassroomController.php?op=listClassrooms", function (classrooms) {
+			jsonData = JSON.parse(classrooms);
+	        $('#classroom_id').empty();
+		
+		    // Puedes iterar sobre los cursos si hay mas de uno
+		    jsonData.forEach(function(classroom) {
+		        // Crear una opcion para cada curso y agregarla al desplegable
+		        $('#classroom_id').append('<option value="' + classroom.id + '">' + classroom.name + '</option>');
+		    });
+		    $('#classroom_id').val(data.classroom_id);
 	    });
     });
 	
@@ -173,7 +201,7 @@ $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#usercourse_form')[0].reset();
 	// Fetch users and populate the user dropdown
-    $.post("../../controllers/UserCourseController.php?op=listUsers", function (data) {
+    $.post("../../controllers/UserController.php?op=listUsers", function (data) {
 		jsonData = JSON.parse(data);
         $('#user_id').empty();
 	
@@ -194,6 +222,32 @@ $(document).on("click", "#btnnuevo", function(){
 	        // Crear una opcion para cada curso y agregarla al desplegable
 	        $('#course_id').append('<option value="' + course.id + '">' + course.name + '</option>');
 	    });
+    });
+    
+    // Fetch courses and populate the course dropdown
+    $.post("../../controllers/PeriodController.php?op=listPeriods", function (periods) {
+		jsonData = JSON.parse(periods);
+        $('#period_id').empty();
+	
+	    // Puedes iterar sobre los cursos si hay mas de uno
+	    jsonData.forEach(function(period) {
+	        // Crear una opcion para cada curso y agregarla al desplegable
+	        $('#period_id').append('<option value="' + period.id + '">' + period.name + '</option>');
+	    });
+	    $('#period_id').val(data.period_id);
+    });
+    
+    // Fetch courses and populate the course dropdown
+    $.post("../../controllers/ClassroomController.php?op=listClassrooms", function (classrooms) {
+		jsonData = JSON.parse(classrooms);
+        $('#classroom_id').empty();
+	
+	    // Puedes iterar sobre los cursos si hay mas de uno
+	    jsonData.forEach(function(classroom) {
+	        // Crear una opcion para cada curso y agregarla al desplegable
+	        $('#classroom_id').append('<option value="' + classroom.id + '">' + classroom.name + '</option>');
+	    });
+	    $('#classroom_id').val(data.classroom_id);
     });
 	
 	$('#modalGestionUserCourse').modal('show');
