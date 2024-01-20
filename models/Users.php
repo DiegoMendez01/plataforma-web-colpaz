@@ -171,9 +171,25 @@ class Users extends Connect
             $stmt->bindValue(13, $resetPassword);
             $stmt->bindValue(14, $emailToken);
             $stmt->bindValue(15, $smsCode);
-            $stmt->execute();
+            $result = $stmt->execute();
             
-            return $result = $stmt->fetchAll();
+            if ($result) {
+                
+                $idUser = $conectar->lastInsertId();
+                
+                $sql2 = "
+                    INSERT INTO
+                        auths (user_id, source_id, created, source)
+                    VALUES
+                        (?, 1, now(), 'WEB')
+                ";
+                
+                $stmt2 = $conectar->prepare($sql2);
+                $stmt2->bindValue(1, $idUser);
+                $stmt2->execute();
+            }
+            
+            return $result;
         }
     }
     /*

@@ -5,7 +5,6 @@ require_once("../models/Users.php");
 require_once("../models/Auths.php");
 
 $user = new Users();
-$auth = new Auths();
 
 switch($_GET['op']){
     /*
@@ -15,7 +14,6 @@ switch($_GET['op']){
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
             $user->insertUser($_POST['name'], $_POST['lastname'], $_POST['username'], $_POST['identification_type_id'], $_POST['identification'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2'], $_POST['birthdate'], $_POST['sex']);
-            $auth->insertAuths($_POST['username']);
         }else{
             $user->updateUserById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['username'], $_POST['identification_type_id'], $_POST['identification'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2'], $_POST['birthdate'], $_POST['sex']);
         }

@@ -24,8 +24,8 @@ class Auths extends Connect
         $stmtUser->bindValue(1, $username);
         $stmtUser->execute();
         
-        $resultUser = $stmtUser->fetchAll();
-
+        $resultUser = $stmtUser->fetch(PDO::FETCH_ASSOC);
+        
         $sql = "
             INSERT INTO
                 auths (user_id, source_id, created, source)
