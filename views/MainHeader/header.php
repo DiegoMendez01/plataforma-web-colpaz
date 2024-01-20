@@ -44,7 +44,7 @@
 				
 				<div class="dropdown dropdown-typical">
 					<a href="../Perfil/" class="dropdown-toggle no-arr">
-						<span class="font-icon font-icon-user"></span>
+						<span class="font-icon font-icon-user bg-dark"></span>
 						<span class="lblcontactonomx"><?php echo $_SESSION['name'].' '.$_SESSION['lastname']; ?></span>
 					</a>
 				</div>
