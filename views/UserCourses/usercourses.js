@@ -119,8 +119,10 @@ function editar(id){
 		
 		    // Puedes iterar sobre los usuarios si hay mas de uno
 		    jsonData.forEach(function(user) {
-		        // Crear una opcion para cada usuario y agregarla al desplegable
-		        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
+				if(user.role_id == 3 || user.role_id == 4){
+			        // Crear una opcion para cada usuario y agregarla al desplegable
+			        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
+		    	}
 		    });
 		    $('#user_id').val(data.user_id);
 	    });
@@ -207,8 +209,10 @@ $(document).on("click", "#btnnuevo", function(){
 	
 	    // Puedes iterar sobre los usuarios si hay mas de uno
 	    jsonData.forEach(function(user) {
-	        // Crear una opcion para cada usuario y agregarla al desplegable
-	        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
+			if(user.role_id == 3 || user.role_id == 4){
+		        // Crear una opcion para cada usuario y agregarla al desplegable
+		        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
+	        }
 	    });
     });
 

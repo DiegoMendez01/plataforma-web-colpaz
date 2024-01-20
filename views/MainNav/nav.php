@@ -59,9 +59,9 @@
 		}elseif($_SESSION['role_id'] == 3){
         ?>
         	<li class="blue-dirty">
-    			<a href="..\UserCourses\">
+    			<a href="..\Courses\">
     				<span class="glyphicon glyphicon-th"></span>
-    				<span class="lbl">Cursos Usuarios</span>
+    				<span class="lbl">Mis Cursos</span>
     			</a>
     		</li>
         <?php 
