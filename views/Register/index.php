@@ -16,8 +16,8 @@
                     <div class="tbl-row">
                         <div class="tbl-cell">
                             <ol class="breadcrumb breadcrumb-simple">
-                                <li><a href="../Site/">Login</a></li>
-                                <li class="active">Register</li>
+                                <li><a href="../Site/">Inicio</a></li>
+                                <li class="active">Registro</li>
                             </ol>
                         </div>
                     </div>
