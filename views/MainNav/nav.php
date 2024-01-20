@@ -26,8 +26,8 @@
                 </span>
                 <ul>
                     <li><a href="..\Users\"><span class="lbl">Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\Roles\"><span class="lbl">Zonas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\UserCourses\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\Zones\"><span class="lbl">Zonas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\Roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
