@@ -23,11 +23,14 @@ switch($_GET['op']){
      */
     case 'listCourse':
         $datos = $course->getCourses();
+        $data  = [];
         foreach($datos as $row){
             $sub_array   = [];
             $sub_array[] = $row['name'];
             $sub_array[] = $row['description'];
-            $sub_array[] = $row['created'];
+            if($row['is_active'] == 1){
+                $sub_array[] = '<span class="label label-success">Activo</span>';
+            }
             
             $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
             $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';

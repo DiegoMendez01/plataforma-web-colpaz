@@ -27,10 +27,10 @@ switch($_GET['op'])
             $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id']);
         }
         break;
-        /*
-         * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
-         * Ademas, de dibujar una tabla para mostrar los registros.
-         */
+    /*
+     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+     * Ademas, de dibujar una tabla para mostrar los registros.
+     */
     case 'listUserCourses':
         $datos = $userCourse->getUserCourses();
         $data  = [];
@@ -63,18 +63,18 @@ switch($_GET['op'])
         ];
         echo json_encode($results);
         break;
-        /*
-         * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
-         */
+    /*
+     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+     */
     case 'deleteUserCourseById':
         if(isset($_POST['id'])){
             $userCourse->deleteUserCourseById($_POST['id']);
         }
         break;
-        /*
-         * Es para listar/obtener los usuarios que existen registrados en el sistema.
-         * Pero debe mostrar el usuario por medio de su identificador unico
-         */
+    /*
+     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Pero debe mostrar el usuario por medio de su identificador unico
+     */
     case 'listUserCourseById':
         $datos = $userCourse->getUserCourseById($_POST['id']);
         
