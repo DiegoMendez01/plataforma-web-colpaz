@@ -34,15 +34,22 @@ function insertOrUpdate(e)
 			contentType: false,
 			processData: false,
 			success: function(data){
-				$('#usercourse_form')[0].reset();
-				$('#modalGestionUserCourse').modal('hide');
-				$('#usercourse_data').DataTable().ajax.reload();
-	        	swal({
-					title: "ColPaz Quipama",
-					text: "Registro completado.",
-					type: "success",
-					confirmButtonClass: "btn-success"
-				});
+				if(data == ''){
+					$('#usercourse_form')[0].reset();
+					$('#modalGestionUserCourse').modal('hide');
+					$('#usercourse_data').DataTable().ajax.reload();
+		        	swal({
+						title: "ColPaz Quipama",
+						text: "Registro completado.",
+						type: "success",
+						confirmButtonClass: "btn-success"
+					});
+				}else{
+					var data = JSON.parse(data);
+					if(data.status == false){
+						swal('Atencion', data.msg, 'error');
+					}
+				}
 			}
 		});
     }

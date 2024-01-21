@@ -9,20 +9,46 @@ class UserCourses extends Connect
     {
         $conectar = parent::connection();
         parent::set_names();
-
-        $sql = "
-            INSERT INTO
-                user_courses (user_id, course_id, classroom_id, period_id, created, is_active) 
-            VALUES (?, ?, ?, ?, now(), 1)
-        ";
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $user_id);
-        $stmt->bindValue(2, $course_id);
-        $stmt->bindValue(3, $classroom_id);
-        $stmt->bindValue(4, $period_id);
-        $stmt->execute();
-
-        return $conectar->lastInsertId();
+        
+        // Consulta para insertar
+        $sql = '
+            SELECT
+                *
+            FROM
+                user_courses
+            WHERE
+                user_id = ? AND course_id = ? AND classroom_id = ? AND period_id = ? AND is_active != 0
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $user_id);
+        $query->bindValue(2, $course_id);
+        $query->bindValue(3, $classroom_id);
+        $query->bindValue(4, $period_id);
+        $query->execute();
+        $resultInsert = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($resultInsert > 0){
+            $answer = [
+                'status' => false,
+                'msg'    => 'El grado, curso, materia y profesor/estudiante existen, seleccione otro'
+            ];
+            echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+        }else{
+            $sqlInsert = "
+                INSERT INTO
+                    user_courses (user_id, course_id, classroom_id, period_id, created, is_active) 
+                VALUES (?, ?, ?, ?, now(), 1)
+            ";
+            $stmt = $conectar->prepare($sqlInsert);
+            $stmt->bindValue(1, $user_id);
+            $stmt->bindValue(2, $course_id);
+            $stmt->bindValue(3, $classroom_id);
+            $stmt->bindValue(4, $period_id);
+            $stmt->execute();
+            
+            return $conectar->lastInsertId();
+        }
     }
     /*
      * Funcion para actualizar registros de asignaciones de usuarios por cursos
