@@ -103,7 +103,7 @@ class UserCourses extends Connect
     /*
      * Funcion para desinscribir a un usuario de un curso (eliminado logico)
      */
-    public function deleteUserCourseById($user_course_id)
+    public function deleteUserCourseById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -117,7 +117,7 @@ class UserCourses extends Connect
                 id = ?
         ";
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $user_course_id);
+        $stmt->bindValue(1, $id);
         $stmt->execute();
 
         return true;
@@ -126,11 +126,11 @@ class UserCourses extends Connect
     /*
      * Funcion para obtener informacion de la inscripcion de un usuario en un curso mediante el ID de inscripcion
      */
-    public function getUserCourseById($user_course_id)
+    public function getUserCourseById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
         $sql = "
             SELECT
                 *
@@ -140,9 +140,9 @@ class UserCourses extends Connect
                 id = ?
         ";
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $user_course_id);
+        $stmt->bindValue(1, $id);
         $stmt->execute();
-
+        
         return $result = $stmt->fetchAll();
     }
 }
