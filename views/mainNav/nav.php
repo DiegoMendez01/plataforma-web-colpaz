@@ -1,7 +1,7 @@
 <nav class="side-menu">
     <ul class="side-menu-list">
     	<li class="blue-dirty">
-    		<a href="..\Home\">
+    		<a href="..\home\">
 				<i class="font-icon font-icon-home"></i>
 				<span class="lbl">Inicio</span>
 			</a>
@@ -15,8 +15,8 @@
                     <span class="lbl">Gestion Cursos</span>
                 </span>
                 <ul>
-                    <li><a href="..\Courses\"><span class="lbl">Cursos</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\UserCourses\"><span class="lbl">Cursos Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\courses\"><span class="lbl">Cursos</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\userCourses\"><span class="lbl">Cursos Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
@@ -25,9 +25,9 @@
                     <span class="lbl">Gestion Usuarios</span>
                 </span>
                 <ul>
-                    <li><a href="..\Users\"><span class="lbl">Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\Zones\"><span class="lbl">Zonas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\Roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\users\"><span class="lbl">Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\zones\"><span class="lbl">Zonas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
@@ -36,7 +36,7 @@
                     <span class="lbl">Gestion Aulas</span>
                 </span>
                 <ul>
-                    <li><a href="..\Classrooms\"><span class="lbl">Aulas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\classrooms\"><span class="lbl">Aulas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
@@ -45,7 +45,7 @@
                     <span class="lbl">Gestion Grados</span>
                 </span>
                 <ul>
-                    <li><a href="..\Degrees\"><span class="lbl">Grados</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\degrees\"><span class="lbl">Grados</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
@@ -54,14 +54,14 @@
                     <span class="lbl">Gestion Periodos</span>
                 </span>
                 <ul>
-                    <li><a href="..\Periods\"><span class="lbl">Periodo Academico</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\periods\"><span class="lbl">Periodo Academico</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
 		<?php 
 		}elseif($_SESSION['role_id'] == 3){
         ?>
         	<li class="blue-dirty">
-    			<a href="..\Courses\">
+    			<a href="..\courses\">
     				<span class="glyphicon glyphicon-th"></span>
     				<span class="lbl">Mis Cursos</span>
     			</a>

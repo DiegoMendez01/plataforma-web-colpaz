@@ -8,21 +8,21 @@ if(isset($_SESSION['id'])){
 <html>
 <head lang="es">
 	<?php
-    require_once ("../MainHead/head.php");
+    require_once ("../mainHead/head.php");
     ?>
-    <title>Aula Virtual::Gestion de Usuarios</title>
+    <title>Aula Virtual::Gestion de Cursos</title>
 </head>
 <body class="with-side-menu">
 	
 	<?php
-    require_once ("../MainHeader/header.php");
+    require_once ("../mainHeader/header.php");
     ?>
 	<!--.site-header-->
 
 	<div class="mobile-menu-left-overlay"></div>
 	
 	<?php
-    require_once ("../MainNav/nav.php");
+    require_once ("../mainNav/nav.php");
     ?>
     
     <!-- Contenido  -->
@@ -32,10 +32,10 @@ if(isset($_SESSION['id'])){
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Gestion Usuario</h3>
+							<h3>Gestion Curso</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="../Home/">Inicio</a></li>
-								<li class="active">Gestion Usuario</li>
+								<li><a href="../home/">Inicio</a></li>
+								<li class="active">Gestion Curso</li>
 							</ol>
 						</div>
 					</div>
@@ -44,14 +44,13 @@ if(isset($_SESSION['id'])){
 			
 			<div class="box-typical box-typical-padding">
 				<button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-				<table id="user_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+				<table id="course_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 					<thead>
 						<tr>
-							<th style="width: 15%;">Nombre</th> 
-							<th style="width: 15%;">Apellido</th> 
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Correo</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Identificacion</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Rol</th>
+							<th style="width: 30%;">Nombre</th> 
+							<th style="width: 30%;">Descripcion</th> 
+							<th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
+							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
 						</tr>
@@ -64,22 +63,18 @@ if(isset($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modalGestionUsuario.php");
+    require_once("modalGestionCurso.php");
     ?>
     
     <?php
-    require_once("modalAsignRole.php");
+    require_once ("../mainJs/js.php");
     ?>
-    
-    <?php
-    require_once ("../MainJs/js.php");
-    ?>
-    <script src="users.js" type="text/javascript"></script>
+    <script src="courses.js" type="text/javascript"></script>
 </body>
 </html>
 <?php 
 }else{
-    header("Location:" . Connect::route() . "views/login/");
+    header("Location:" . Connect::route() . "views/site/");
     exit;
 }
 ?>

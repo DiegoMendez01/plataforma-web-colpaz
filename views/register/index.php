@@ -3,7 +3,7 @@
 
 <head lang="es">
     <?php 
-	require_once("../MainHead/head.php");
+	require_once("../mainHead/head.php");
 	?>
 	<title>Aula Virtual::Registro</title>
 </head>
@@ -16,7 +16,7 @@
                     <div class="tbl-row">
                         <div class="tbl-cell">
                             <ol class="breadcrumb breadcrumb-simple">
-                                <li><a href="../Site/">Inicio</a></li>
+                                <li><a href="../site/">Inicio</a></li>
                                 <li class="active">Registro</li>
                             </ol>
                         </div>
@@ -128,7 +128,7 @@
     </div>
     <!--.page-center-->
 	<?php
-	require_once("../MainJs/js.php");
+	require_once("../mainJs/js.php");
 	?>
 	<script src="register.js" type="text/javascript"></script>
 </body>

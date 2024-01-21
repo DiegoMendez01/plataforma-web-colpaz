@@ -8,7 +8,7 @@ if($_SESSION['id']){
 <html>
 <head lang="es">
 	<?php 
-	require_once("../MainHead/head.php");
+	require_once("../mainHead/head.php");
 	?>
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" >
     <title>Aula Virtual::Inicio</title>
@@ -16,14 +16,14 @@ if($_SESSION['id']){
 <body class="with-side-menu">
 	
 	<?php 
-	require_once("../MainHeader/header.php");
+	require_once("../mainHeader/header.php");
 	?>
 	<!--.site-header-->
 
 	<div class="mobile-menu-left-overlay"></div>
 	
 	<?php 
-	require_once("../MainNav/nav.php");
+	require_once("../mainNav/nav.php");
 	?>
 	
 	<!-- Contenido  -->
@@ -50,7 +50,7 @@ if($_SESSION['id']){
                                     <div class="card-body">
                                         <h4 class="card-title text-center"><?php echo $data['nameCourse'] ?></h4>
                                         <h5 class="card-title">Grado <kbd class="bg-info"><?php echo $data['nameDegree'] ?></kbd> - Aula <kbd class="bg-info"><?php echo $data['nameClassroom'] ?></kbd></h5>
-                                        <a href="contents.php?course=<?= $data['id'] ?>" class="btn btn-primary">Acceder</a>
+                                        <a href="../contents/index.php?course=<?= $data['id'] ?>" class="btn btn-primary">Acceder</a>
                                         <a href="#" class="btn btn-warning">Ver Alumnos</a>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@ if($_SESSION['id']){
 	</div>
 	
 	<?php
-	require_once("../MainJs/js.php");
+	require_once("../mainJs/js.php");
 	?>
 	<!-- Contenido  -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
@@ -76,7 +76,7 @@ if($_SESSION['id']){
 </html>
 <?php 
 }else{
-    header("Location:".Connect::route()."views/login/");
+    header("Location:".Connect::route()."views/site/");
     exit;
 }
 ?>

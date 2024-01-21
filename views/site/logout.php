@@ -2,7 +2,7 @@
 
 require_once("../../config/connection.php");
 session_destroy();
-header("Location:".Connect::route()."views/Site/");
+header("Location:".Connect::route()."views/site/");
 exit;
 
 ?>

@@ -8,21 +8,21 @@ if (isset($_SESSION['id'])) {
 <html>
 <head lang="es">
 	<?php
-    require_once ("../MainHead/head.php");
+    require_once ("../mainHead/head.php");
     ?>
     <title>Aula Virtual::Perfil</title>
 </head>
 <body class="with-side-menu">
 	
 	<?php
-    require_once ("../MainHeader/header.php");
+    require_once ("../mainHeader/header.php");
     ?>
 	<!--.site-header-->
 
 	<div class="mobile-menu-left-overlay"></div>
 	
 	<?php
-    require_once ("../MainNav/nav.php");
+    require_once ("../mainNav/nav.php");
     ?>
 	
 	<!-- Contenido  -->
@@ -34,7 +34,7 @@ if (isset($_SESSION['id'])) {
 						<div class="tbl-cell">
 							<h3>Perfil</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="../Home/">Inicio</a></li>
+								<li><a href="../home/">Inicio</a></li>
 								<li class="active">Perfil de Usuario</li>
 							</ol>
 						</div>
@@ -173,7 +173,7 @@ if (isset($_SESSION['id'])) {
 	<!-- Contenido  -->
 
 	<?php
-    require_once ("../MainJs/js.php");
+    require_once ("../mainJs/js.php");
     ?>
 
 <script src="perfil.js" type="text/javascript"></script>
@@ -182,6 +182,7 @@ if (isset($_SESSION['id'])) {
 </html>
 <?php
 } else {
-    header("Location:" . Connect::route() . "index.php");
+    header("Location:" . Connect::route() . "views/site/");
+    exit;
 }
 ?>

@@ -10,15 +10,15 @@ if (isset($_SESSION['id'])) {
 <html lang="es">
 
 <head>
-    <?php require_once("../MainHead/head.php"); ?>
+    <?php require_once("../mainHead/head.php"); ?>
     <title>Aula Virtual:Zonas</title>
 </head>
 
 <body class="with-side-menu">
 
-    <?php require_once("../MainHeader/header.php"); ?>
+    <?php require_once("../mainHeader/header.php"); ?>
     <div class="mobile-menu-left-overlay"></div>
-    <?php require_once("../MainNav/nav.php"); ?>
+    <?php require_once("../mainNav/nav.php"); ?>
 
     <!-- Contenido  -->
     <div class="page-content">
@@ -29,7 +29,7 @@ if (isset($_SESSION['id'])) {
                         <div class="tbl-cell">
                             <h3>Gestion zonas</h3>
                             <ol class="breadcrumb breadcrumb-simple">
-                                <li><a href="../Home/">Inicio</a></li>
+                                <li><a href="../home/">Inicio</a></li>
                                 <li class="active">Gestion zonas</li>
                             </ol>
                         </div>
@@ -57,7 +57,7 @@ if (isset($_SESSION['id'])) {
     
     <?php require_once("modalGestionZones.php"); ?>
     
-    <?php require_once ("../MainJs/js.php"); ?>
+    <?php require_once ("../mainJs/js.php"); ?>
     
     <script src="zones.js" type="text/javascript"></script>
 </body>
@@ -65,7 +65,7 @@ if (isset($_SESSION['id'])) {
 
 <?php
 } else {
-    header("Location:" . Connect::route() . "views/Site/");
+    header("Location:" . Connect::route() . "views/site/");
     exit;
 }
 ?>

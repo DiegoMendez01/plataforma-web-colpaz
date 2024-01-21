@@ -89,7 +89,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                         <button id="btnacceder" type="submit" class="btn btn-primary">Acceder</button>
                     </div>
                     <div class="form-group" style="display: flex; justify-content: center; align-items: center; ">
-                        <a href="../Register/" id="btnregistrar ">Registrar cuenta</a>
+                        <a href="../register/" id="btnregistrar ">Registrar cuenta</a>
                     </div>
                 </form>
             </div>
