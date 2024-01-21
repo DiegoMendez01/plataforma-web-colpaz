@@ -74,17 +74,33 @@
                     <li><a href="..\roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
-		<?php 
-		}elseif($_SESSION['role_id'] == 3){
-        ?>
-        	<li class="blue-dirty">
-    			<a href="..\courses\">
-    				<span class="glyphicon glyphicon-th"></span>
-    				<span class="lbl">Mis Cursos</span>
-    			</a>
-    		</li>
-        <?php 
-        }
-        ?>
+		<?php
+		}
+        if($_SESSION['role_id'] == 3) {
+            require_once("../../models/UserCourses.php");
+        
+            $userCourse = new UserCourses();
+            $dataAll = $userCourse->getUserCourseByTeacher($_SESSION['id']);
+            ?>
+        
+            <li class="blue-dirty with-sub">
+                <span>
+                    <i class="font-icon font-icon-notebook"></i>
+                    <span class="lbl">Mis Cursos</span>
+                </span>
+                <?php if ($dataAll['row'] > 0) { ?>
+                    <ul>
+                        <?php while ($data = $dataAll['query']->fetch()) { ?>
+                            <li>
+                                <a href="../contents/index.php?course=<?= $data['id'] ?>">
+                                    <span class="lbl"><?= $data['nameCourse']; ?> - <?= $data['nameDegree']; ?> - <?= $data['nameClassroom'] ?></span>
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                <?php } ?>
+            </li>
+        
+        <?php } ?>
 	</ul>
 </nav>
