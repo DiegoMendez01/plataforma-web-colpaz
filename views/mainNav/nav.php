@@ -16,7 +16,7 @@
                 </span>
                 <ul>
                     <li><a href="..\courses\"><span class="lbl">Cursos</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\userCourses\"><span class="lbl">Cursos Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\teacherCourses\"><span class="lbl">Cursos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
@@ -26,7 +26,7 @@
                 </span>
                 <ul>
                     <li><a href="..\users\"><span class="lbl">Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\userCourses\"><span class="lbl">Cursos Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\teacherCourses\"><span class="lbl">Cursos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
@@ -77,10 +77,10 @@
 		<?php
 		}
         if($_SESSION['role_id'] == 3) {
-            require_once("../../models/UserCourses.php");
+            require_once("../../models/TeacherCourses.php");
         
-            $userCourse = new UserCourses();
-            $dataAll = $userCourse->getUserCourseByTeacher($_SESSION['id']);
+            $teacherCourse = new TeacherCourses();
+            $dataAll = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id']);
             ?>
         
             <li class="blue-dirty with-sub">

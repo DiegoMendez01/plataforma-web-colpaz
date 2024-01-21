@@ -1,11 +1,11 @@
 <?php
 
-class UserCourses extends Connect
+class TeacherCourses extends Connect
 {
     /*
-     * Funcion para inscribir a un usuario en un curso mediante un formulario
+     * Funcion para inscribir a un docente en un curso mediante un formulario
      */
-    public function insertUserCourse($user_id, $course_id, $classroom_id, $period_id, $degree_id)
+    public function insertTeacherCourse($user_id, $course_id, $classroom_id, $period_id, $degree_id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -15,7 +15,7 @@ class UserCourses extends Connect
             SELECT
                 *
             FROM
-                user_courses
+                teacher_courses
             WHERE
                 user_id = ? AND course_id = ? AND classroom_id = ? AND period_id = ? AND degree_id = ? AND is_active != 0
         ';
@@ -38,7 +38,7 @@ class UserCourses extends Connect
         }else{
             $sqlInsert = "
                 INSERT INTO
-                    user_courses (user_id, course_id, classroom_id, period_id, degree_id, created, is_active) 
+                    teacher_courses (user_id, course_id, classroom_id, period_id, degree_id, created, is_active) 
                 VALUES (?, ?, ?, ?, ?, now(), 1)
             ";
             $stmt = $conectar->prepare($sqlInsert);
@@ -53,16 +53,16 @@ class UserCourses extends Connect
         }
     }
     /*
-     * Funcion para actualizar registros de asignaciones de usuarios por cursos
+     * Funcion para actualizar registros de asignaciones de docentes por cursos
      */
-    public function updateUserCourse($id, $user_id, $course_id, $classroom_id, $period_id)
+    public function updateTeacherCourse($id, $user_id, $course_id, $classroom_id, $period_id)
     {
         $conectar = parent::connection();
         parent::set_names();
         
         $sql = "
             UPDATE
-                user_courses
+                teacher_courses
             SET
                 user_id   = ?,
                 course_id = ?,
@@ -83,7 +83,7 @@ class UserCourses extends Connect
     /*
      * Funcion para obtener todos los cursos en los que un usuario esta inscrito
      */
-    public function getUserCourses()
+    public function getTeacherCourses()
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -92,7 +92,7 @@ class UserCourses extends Connect
             SELECT
                 * 
             FROM 
-                user_courses
+                teacher_courses
             WHERE
                 is_active = 1
         ";
@@ -105,14 +105,14 @@ class UserCourses extends Connect
     /*
      * Funcion para desinscribir a un usuario de un curso (eliminado logico)
      */
-    public function deleteUserCourseById($id)
+    public function deleteTeacherCourseById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
 
         $sql = "
             UPDATE
-                user_courses
+                teacher_courses
             SET
                 is_active = 0
             WHERE
@@ -128,7 +128,7 @@ class UserCourses extends Connect
     /*
      * Funcion para obtener informacion de la inscripcion de un usuario en un curso mediante el ID de inscripcion
      */
-    public function getUserCourseById($id)
+    public function getTeacherCourseById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -137,7 +137,7 @@ class UserCourses extends Connect
             SELECT
                 *
             FROM
-                user_courses
+                teacher_courses
             WHERE
                 id = ?
         ";
@@ -150,7 +150,7 @@ class UserCourses extends Connect
     /*
      * Funcion para obtener los usuarios por curso, si es rol docente
      */
-    public function getUserCourseByTeacher($id_user)
+    public function getTeacherCourseByIdUser($id_user)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -164,7 +164,7 @@ class UserCourses extends Connect
                 d.name as nameDegree,
                 p.name as namePeriod
             FROM
-                user_courses as uc
+                teacher_courses as uc
             INNER JOIN users u ON uc.user_id = u.id
             INNER JOIN courses c ON uc.course_id = c.id
             INNER JOIN degrees d ON uc.degree_id = d.id

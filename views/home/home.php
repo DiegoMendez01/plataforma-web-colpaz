@@ -36,10 +36,10 @@ if($_SESSION['id']){
                 <img src="../../public/img/school.svg" alt="Imagen Colegio" />
                 <?php 
                 }elseif($_SESSION['role_id'] == 3){
-                    require_once("../../models/UserCourses.php");
+                    require_once("../../models/TeacherCourses.php");
                     
-                    $userCourse     = new UserCourses();
-                    $dataAll        = $userCourse->getUserCourseByTeacher($_SESSION['id']);
+                    $teacherCourse   = new TeacherCourses();
+                    $dataAll         = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id']);
                     
                     if($dataAll['row'] > 0){
                         while($data = $dataAll['query']->fetch(PDO::FETCH_ASSOC)){

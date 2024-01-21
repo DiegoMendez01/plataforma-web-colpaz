@@ -1,19 +1,19 @@
 <?php
 // Importa la clase del modelo
 require_once("../config/connection.php");
-require_once("../models/UserCourses.php");
+require_once("../models/TeacherCourses.php");
 require_once("../models/Users.php");
 require_once("../models/Courses.php");
 require_once("../models/Periods.php");
 require_once("../models/Classrooms.php");
 require_once("../models/Degrees.php");
 
-$userCourse = new UserCourses();
-$user       = new Users();
-$course     = new Courses();
-$classroom  = new Classrooms();
-$period     = new Periods();
-$degree     = new Degrees();
+$teacherCourse = new TeacherCourses();
+$user          = new Users();
+$course        = new Courses();
+$classroom     = new Classrooms();
+$period        = new Periods();
+$degree        = new Degrees();
 
 switch($_GET['op'])
 {
@@ -23,17 +23,17 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $userCourse->insertUserCourse($_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
+            $teacherCourse->insertTeacherCourse($_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
         } else {
-            $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
+            $teacherCourse->updateTeacherCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
         }
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
-    case 'listUserCourses':
-        $datos = $userCourse->getUserCourses();
+    case 'listTeacherCourses':
+        $datos = $teacherCourse->getTeacherCourses();
         $data  = [];
         foreach ($datos as $row) {
             $userData      = $user->getUserById($row['user_id']);
@@ -69,17 +69,17 @@ switch($_GET['op'])
     /*
      * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
      */
-    case 'deleteUserCourseById':
+    case 'deleteTeacherCourseById':
         if(isset($_POST['id'])){
-            $userCourse->deleteUserCourseById($_POST['id']);
+            $teacherCourse->deleteTeacherCourseById($_POST['id']);
         }
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
-    case 'listUserCourseById':
-        $datos = $userCourse->getUserCourseById($_POST['id']);
+    case 'listTeacherCourseById':
+        $datos = $teacherCourse->getTeacherCourseById($_POST['id']);
         
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){

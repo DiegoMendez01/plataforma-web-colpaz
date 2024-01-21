@@ -9,7 +9,7 @@ if (isset($_SESSION['id'])) {
 
 <head>
     <?php require_once("../mainHead/head.php"); ?>
-    <title>Aula Virtual::Cursos Usuarios</title>
+    <title>Aula Virtual::Cursos Profesor</title>
 </head>
 
 <body class="with-side-menu">
@@ -25,10 +25,10 @@ if (isset($_SESSION['id'])) {
                 <div class="tbl">
                     <div class="tbl-row">
                         <div class="tbl-cell">
-                            <h3>Cursos Usuarios</h3>
+                            <h3>Cursos Profesor</h3>
                             <ol class="breadcrumb breadcrumb-simple">
                                 <li><a href="../home/">Inicio</a></li>
-                                <li class="active">Cursos Usuarios</li>
+                                <li class="active">Cursos Profesor</li>
                             </ol>
                         </div>
                     </div>
@@ -37,7 +37,7 @@ if (isset($_SESSION['id'])) {
             
             <div class="box-typical box-typical-padding">
                 <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="usercourse_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="teachercourse_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
                             <th style="width: 15%;">Materia</th>
@@ -56,11 +56,11 @@ if (isset($_SESSION['id'])) {
         </div>
     </div>
     
-    <?php require_once("modalGestionUserCourse.php"); ?>
+    <?php require_once("modalGestionTeacherCourse.php"); ?>
     
     <?php require_once ("../mainJs/js.php"); ?>
     
-    <script src="usercourses.js" type="text/javascript"></script>
+    <script src="teachercourses.js" type="text/javascript"></script>
 </body>
 </html>
 

@@ -2,7 +2,7 @@ var tabla;
 
 function init()
 {
-	$('#usercourse_form').on("submit", function(e){
+	$('#teachercourse_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
 }
@@ -10,7 +10,7 @@ function init()
 function insertOrUpdate(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#usercourse_form')[0]);
+	var formData = new FormData($('#teachercourse_form')[0]);
 	
 	var camposVacios = false;
 	
@@ -28,16 +28,16 @@ function insertOrUpdate(e)
         swal("Error!", "Campos vacios", "error");
     } else {
     	$.ajax({
-			url: "../../controllers/UserCourseController.php?op=insertOrUpdate",
+			url: "../../controllers/TeacherCourseController.php?op=insertOrUpdate",
 			type: "POST",
 			data: formData,
 			contentType: false,
 			processData: false,
 			success: function(data){
 				if(data == ''){
-					$('#usercourse_form')[0].reset();
-					$('#modalGestionUserCourse').modal('hide');
-					$('#usercourse_data').DataTable().ajax.reload();
+					$('#teachercourse_form')[0].reset();
+					$('#modalGestionTeacherCourse').modal('hide');
+					$('#teachercourse_data').DataTable().ajax.reload();
 		        	swal({
 						title: "ColPaz Quipama",
 						text: "Registro completado.",
@@ -56,7 +56,7 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
-	tabla = $('#usercourse_data').dataTable({
+	tabla = $('#teachercourse_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
@@ -70,7 +70,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/UserCourseController.php?op=listUserCourses',
+			url: '../../controllers/TeacherCourseController.php?op=listTeacherCourses',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -112,7 +112,7 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/UserCourseController.php?op=listUserCourseById", { id : id}, function(data) {
+	$.post("../../controllers/TeacherCourseController.php?op=listTeacherCourseById", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val('');
     	$('#degree_id').empty();
@@ -187,7 +187,7 @@ function editar(id){
 	    });
     });
 	
-	$('#modalGestionUserCourse').modal('show');
+	$('#modalGestionTeacherCourse').modal('show');
 }
 
 function eliminar(id){
@@ -204,7 +204,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/UserCourseController.php?op=deleteUserCourseById", { id : id}, function(data) {
+			$.post("../../controllers/TeacherCourseController.php?op=deleteTeacherCourseById", { id : id}, function(data) {
         	});
         	
         	$('#usercourse_data').DataTable().ajax.reload();
@@ -221,7 +221,7 @@ function eliminar(id){
 
 $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
-	$('#usercourse_form')[0].reset();
+	$('#teachercourse_form')[0].reset();
 	$.post("../../controllers/DegreeController.php?op=listDegrees", function (degrees) {
 			jsonData = JSON.parse(degrees);
 	        $('#degree_id').empty();
@@ -285,7 +285,7 @@ $(document).on("click", "#btnnuevo", function(){
 	    $('#classroom_id').val(data.classroom_id);
     });
 	
-	$('#modalGestionUserCourse').modal('show');
+	$('#modalGestionTeacherCourse').modal('show');
 });
 
 init();
