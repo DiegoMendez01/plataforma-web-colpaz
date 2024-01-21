@@ -5,7 +5,7 @@ class UserCourses extends Connect
     /*
      * Funcion para inscribir a un usuario en un curso mediante un formulario
      */
-    public function insertUserCourse($user_id, $course_id, $classroom_id, $period_id)
+    public function insertUserCourse($user_id, $course_id, $classroom_id, $period_id, $degree_id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -17,7 +17,7 @@ class UserCourses extends Connect
             FROM
                 user_courses
             WHERE
-                user_id = ? AND course_id = ? AND classroom_id = ? AND period_id = ? AND is_active != 0
+                user_id = ? AND course_id = ? AND classroom_id = ? AND period_id = ? AND degree_id = ? AND is_active != 0
         ';
         
         $query  = $conectar->prepare($sql);
@@ -25,6 +25,7 @@ class UserCourses extends Connect
         $query->bindValue(2, $course_id);
         $query->bindValue(3, $classroom_id);
         $query->bindValue(4, $period_id);
+        $query->bindValue(5, $degree_id);
         $query->execute();
         $resultInsert = $query->fetch(PDO::FETCH_ASSOC);
         
@@ -37,14 +38,15 @@ class UserCourses extends Connect
         }else{
             $sqlInsert = "
                 INSERT INTO
-                    user_courses (user_id, course_id, classroom_id, period_id, created, is_active) 
-                VALUES (?, ?, ?, ?, now(), 1)
+                    user_courses (user_id, course_id, classroom_id, period_id, degree_id, created, is_active) 
+                VALUES (?, ?, ?, ?, ?, now(), 1)
             ";
             $stmt = $conectar->prepare($sqlInsert);
             $stmt->bindValue(1, $user_id);
             $stmt->bindValue(2, $course_id);
             $stmt->bindValue(3, $classroom_id);
             $stmt->bindValue(4, $period_id);
+            $stmt->bindValue(5, $degree_id);
             $stmt->execute();
             
             return $conectar->lastInsertId();

@@ -40,11 +40,12 @@ if (isset($_SESSION['id'])) {
                 <table id="usercourse_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
-                            <th style="width: 10%;">Grado</th>
-                            <th style="width: 15%;">Curso</th>
+                            <th style="width: 15%;">Materia</th>
+                            <th style="width: 15%;">Aula</th>
+                            <th style="width: 15%;">Grado</th>
                             <th style="width: 10%;">Periodo</th>
                             <th style="width: 25%;">Usuario</th>
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
+                            <th class="d-none d-sm-table-cell" style="width: 5%;">Estado</th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>
                             <th class="text-center" style="width: 5%"></th>

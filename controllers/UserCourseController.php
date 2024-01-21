@@ -6,13 +6,14 @@ require_once("../models/Users.php");
 require_once("../models/Courses.php");
 require_once("../models/Periods.php");
 require_once("../models/Classrooms.php");
-
+require_once("../models/Degrees.php");
 
 $userCourse = new UserCourses();
 $user       = new Users();
 $course     = new Courses();
 $classroom  = new Classrooms();
 $period     = new Periods();
+$degree     = new Degrees();
 
 switch($_GET['op'])
 {
@@ -22,9 +23,9 @@ switch($_GET['op'])
      */
     case 'insertOrUpdate':
         if(empty($_POST['id'])){
-            $userCourse->insertUserCourse($_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id']);
+            $userCourse->insertUserCourse($_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
         } else {
-            $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id']);
+            $userCourse->updateUserCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
         }
         break;
     /*
@@ -39,10 +40,12 @@ switch($_GET['op'])
             $courseData    = $course->getCourseById($row['course_id']);
             $classroomData = $classroom->getClassroomById($row['classroom_id']);
             $periodData    = $period->getPeriodsById($row['period_id']);
+            $degreeData    = $degree->getDegreeById($row['degree_id']);
             
             $sub_array      = [];
-            $sub_array[]    = $classroomData[0]['name'];
             $sub_array[]    = $courseData[0]['name'];
+            $sub_array[]    = $classroomData[0]['name'];
+            $sub_array[]    = $degreeData[0]['name'];
             $sub_array[]    = $periodData[0]['name'];
             $sub_array[]    = $userData[0]['name'].' '.$userData[0]['lastname'];
             if($row['is_active'] == 1){
@@ -85,6 +88,7 @@ switch($_GET['op'])
                 $output["course_id"]    = $row['course_id'];
                 $output["classroom_id"] = $row['classroom_id'];
                 $output["period_id"]    = $row['period_id'];
+                $output["degree_id"]    = $row['degree_id'];
             }
             echo json_encode($output);
         }

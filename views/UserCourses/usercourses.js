@@ -115,11 +115,24 @@ function editar(id){
 	$.post("../../controllers/UserCourseController.php?op=listUserCourseById", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val('');
+    	$('#degree_id').empty();
     	$('#user_id').empty();
     	$('#course_id').empty();
     	$('#classroom_id').empty();
     	$('#period_id').empty();
     	$('#id').val(data.id);
+    	$.post("../../controllers/DegreeController.php?op=listDegrees", function (degrees) {
+			jsonData = JSON.parse(degrees);
+	        $('#degree_id').empty();
+		
+		    // Puedes iterar sobre los usuarios si hay mas de uno
+		    jsonData.forEach(function(degree) {
+		        // Crear una opcion para cada usuario y agregarla al desplegable
+		        $('#degree_id').append('<option value="' + degree.id + '">' + degree.name + '</option>');
+		    });
+		    $('#degree_id').val(data.user_id);
+	    });
+    	
     	$.post("../../controllers/UserController.php?op=listUsers", function (users) {
 			jsonData = JSON.parse(users);
 	        $('#user_id').empty();
@@ -209,6 +222,17 @@ function eliminar(id){
 $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#usercourse_form')[0].reset();
+	$.post("../../controllers/DegreeController.php?op=listDegrees", function (degrees) {
+			jsonData = JSON.parse(degrees);
+	        $('#degree_id').empty();
+		
+		    // Puedes iterar sobre los usuarios si hay mas de uno
+		    jsonData.forEach(function(degree) {
+		        // Crear una opcion para cada usuario y agregarla al desplegable
+		        $('#degree_id').append('<option value="' + degree.id + '">' + degree.name + '</option>');
+		    });
+		    $('#degree_id').val(data.user_id);
+	    });
 	// Fetch users and populate the user dropdown
     $.post("../../controllers/UserController.php?op=listUsers", function (data) {
 		jsonData = JSON.parse(data);
