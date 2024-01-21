@@ -12,11 +12,7 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $period->insertPeriod($_POST['name']);
-        } else {
-            $period->updatePeriodById($_POST['id'], $_POST['name']);
-        }
+        $period->insertOrUpdatePeriod($_POST['id'], $_POST['name']);
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
