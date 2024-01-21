@@ -9,7 +9,7 @@ if(isset($_SESSION['id'])){
 <html lang="es">
 <head>
     <?php require_once("../MainHead/head.php"); ?>
-    <title>Aula Virtual::Gestion de Grados</title>
+    <title>Aula Virtual::Gestion de Aulas</title>
 </head>
 <body class="with-side-menu">
 
@@ -24,10 +24,10 @@ if(isset($_SESSION['id'])){
                 <div class="tbl">
                     <div class="tbl-row">
                         <div class="tbl-cell">
-                            <h3>Gestion de Grados</h3>
+                            <h3>Gestion de Aulas</h3>
                             <ol class="breadcrumb breadcrumb-simple">
                                 <li><a href="../Home/">Inicio</a></li>
-                                <li class="active">Gestion de Grados</li>
+                                <li class="active">Gestion de Aulas</li>
                             </ol>
                         </div>
                     </div>
