@@ -2,7 +2,7 @@ var tabla;
 
 function init()
 {
-	$('#classroom_form').on("submit", function(e){
+	$('#degree_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
 }
@@ -10,7 +10,7 @@ function init()
 function insertOrUpdate(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#classroom_form')[0]);
+	var formData = new FormData($('#degree_form')[0]);
 	
 	var camposVacios = false;
 	
@@ -28,15 +28,15 @@ function insertOrUpdate(e)
         swal("Error!", "Campos vacios", "error");
     } else {
     	$.ajax({
-			url: "../../controllers/ClassroomController.php?op=insertOrUpdate",
+			url: "../../controllers/DegreeController.php?op=insertOrUpdate",
 			type: "POST",
 			data: formData,
 			contentType: false,
 			processData: false,
 			success: function(data){
-				$('#classroom_form')[0].reset();
-				$('#modalGestionClassroom').modal('hide');
-				$('#classroom_data').DataTable().ajax.reload();
+				$('#degree_form')[0].reset();
+				$('#modalGestionDegree').modal('hide');
+				$('#degree_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
 					text: "Registro completado.",
@@ -63,7 +63,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/ClassroomController.php?op=listClassroom',
+			url: '../../controllers/DegreeController.php?op=listDegree',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -105,19 +105,19 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/ClassroomController.php?op=listClassroomById", { id : id}, function(data) {
+	$.post("../../controllers/ClassroomController.php?op=listDegreeById", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
     });
 	
-	$('#modalGestionClassroom').modal('show');
+	$('#modalGestionDegree').modal('show');
 }
 
 function eliminar(id){
 	swal({
     	title: "ColPaz Quipama",
-    	text: "¿Esta seguro de eliminar el aula academica?",
+    	text: "¿Esta seguro de eliminar el grado academico?",
     	type: "error",
     	showCancelButton: true,
     	confirmButtonClass: "btn-danger",
@@ -128,10 +128,10 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/ClassroomController.php?op=deleteClassroomById", { id : id}, function(data) {
+			$.post("../../controllers/DegreeController.php?op=deleteDegreeById", { id : id}, function(data) {
         	});
         	
-        	$('#classroom_data').DataTable().ajax.reload();
+        	$('#degree_data').DataTable().ajax.reload();
         	
 			swal({
 				title: "ColPaz Quipama",
@@ -145,8 +145,8 @@ function eliminar(id){
 
 $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
-	$('#classroom_form')[0].reset();
-	$('#modalGestionClassroom').modal('show');
+	$('#degree_form')[0].reset();
+	$('#modalGestionDegree').modal('show');
 });
 
 init();
