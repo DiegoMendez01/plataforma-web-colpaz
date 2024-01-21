@@ -3,7 +3,7 @@
 class Classrooms extends Connect
 {
     /*
-     * Funcion para insertar/registrar grados academicos por medio de un formulario
+     * Funcion para insertar/registrar aulas academicas por medio de un formulario
      */
     public function insertClassroom($name)
     {
@@ -22,7 +22,7 @@ class Classrooms extends Connect
         return $result = $stmt->fetchAll();
     }
     /*
-     * Funcion para traer todos los grados academicos registrados hasta el momento
+     * Funcion para traer todos las aulas academicas registrados hasta el momento
      */
     public function getClassrooms()
     {
@@ -43,7 +43,7 @@ class Classrooms extends Connect
         return $result = $stmt->fetchAll();
     }
     /*
-     * Funcion para actualizar registros de grados academicos
+     * Funcion para actualizar registros de aulas academicas
      */
     public function updateClassroom($id, $name)
     {
@@ -65,7 +65,7 @@ class Classrooms extends Connect
         return $result = $stmt->fetchAll();
     }
     /*
-     * Funcion para eliminar totalmente registros de grados existentes (eliminado logico)
+     * Funcion para eliminar totalmente registros de aulas academicas existentes (eliminado logico)
      */
     public function deleteClassroomById($id)
     {
@@ -86,7 +86,7 @@ class Classrooms extends Connect
         return $result = $stmt->fetchAll();
     }
     /*
-     * Funcion para traer los usuarios mediante el ID del usuario
+     * Funcion para traer un aula academica segun el ID
      */
     public function getClassroomById($id)
     {

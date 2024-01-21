@@ -33,10 +33,10 @@
             <li class="blue-dirty with-sub">
                 <span>
                     <i class="font-icon font-icon-contacts"></i>
-                    <span class="lbl">Gestion Grados</span>
+                    <span class="lbl">Gestion Aulas</span>
                 </span>
                 <ul>
-                    <li><a href="..\Classrooms\"><span class="lbl">Grados</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\Classrooms\"><span class="lbl">Aulas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
