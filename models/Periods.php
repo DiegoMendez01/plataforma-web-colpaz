@@ -3,47 +3,88 @@
 class Periods extends Connect
 {
     /*
-     * Funcion para insertar/registrar un nuevo periodo
+     * Funcion para insertar/actualizar un nuevo periodo
      */
-    public function insertPeriod($name)
+    public function insertOrUpdatePeriod($id = null, $name)
     {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            INSERT INTO
-                periods (name, created) 
-            VALUES (?, now())
-        ";
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $name);
-        $stmt->execute();
-        
-        return $stmt->fetchAll();
-    }
-    /*
-     * Funcion para actualizar registros de periodos
-     */
-    public function updatePeriodById($id, $name)
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            UPDATE
-                periods
-            SET
-                name = ?
-            WHERE
-                id = ?
-        ";
-        
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $id);
-        $stmt->execute();
-        
-        return $stmt->fetchAll();
+        if(empty($name)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            $conectar = parent::connection();
+            parent::set_names();
+            
+            $sql = '
+                SELECT
+                    *
+                FROM
+                    periods
+                WHERE
+                    name = ? AND id != ? AND is_active != 0
+            ';
+            
+            $query  = $conectar->prepare($sql);
+            $query->bindValue(1, $name);
+            $query->bindValue(2, $id);
+            $query->execute();
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            
+            if($result){
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'El periodo academico ya existe'
+                ];
+            }else{
+                if(empty($id)){
+                    $sqlInsert = "
+                        INSERT INTO
+                            periods (name, created)
+                        VALUES (?, now())
+                    ";
+                    $stmtInsert = $conectar->prepare($sqlInsert);
+                    $stmtInsert->bindValue(1, $name);
+                    $request    = $stmtInsert->execute();
+                    $action     = 1;
+                }else{
+                    $sqlUpdate = "
+                        UPDATE
+                            periods
+                        SET
+                            name = ?
+                        WHERE
+                            id = ?
+                    ";
+                    
+                    $stmtUpdate = $conectar->prepare($sqlUpdate);
+                    $stmtUpdate->bindValue(1, $name);
+                    $stmtUpdate->bindValue(2, $id);
+                    $request    = $stmtUpdate->execute();
+                    $action     = 2;
+                }
+                
+                if($request){
+                    if($action == 1){
+                        $answer = [
+                            'status' => true,
+                            'msg'    => 'Periodo creado correctamente'
+                        ];
+                    }else{
+                        $answer = [
+                            'status' => true,
+                            'msg'    => 'Periodo actualizado correctamente'
+                        ];
+                    }
+                }else{
+                    $answer = [
+                        'status' => false,
+                        'msg'    => 'Error al crear el periodo'
+                    ];
+                }
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
     }
     /*
      * Funcion para obtener todos los periodos
