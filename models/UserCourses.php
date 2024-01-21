@@ -147,4 +147,39 @@ class UserCourses extends Connect
         
         return $result = $stmt->fetchAll();
     }
+    /*
+     * Funcion para obtener los usuarios por curso, si es rol docente
+     */
+    public function getUserCourseByTeacher($id_user)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                uc.id,
+                u.name as nameUser,
+                c.name as nameCourse,
+                cs.name as nameClassroom,
+                d.name as nameDegree,
+                p.name as namePeriod
+            FROM
+                user_courses as uc
+            INNER JOIN users u ON uc.user_id = u.id
+            INNER JOIN courses c ON uc.course_id = c.id
+            INNER JOIN degrees d ON uc.degree_id = d.id
+            INNER JOIN classrooms cs ON uc.classroom_id = cs.id
+            INNER JOIN periods p ON uc.period_id = p.id
+            WHERE
+                u.id = ? AND u.role_id = 3 AND uc.is_active = 1
+        ';
+        
+        $query = $conectar->prepare($sql);
+        $query->bindValue(1, $id_user);
+        $query->execute();
+        return [
+            'row'  => $query->rowCount(),
+            'query' => $query
+        ];
+    }
 }
