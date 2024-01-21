@@ -49,7 +49,7 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
-	tabla = $('#classroom_data').dataTable({
+	tabla = $('#degree_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
@@ -105,7 +105,7 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/ClassroomController.php?op=listDegreeById", { id : id}, function(data) {
+	$.post("../../controllers/DegreeController.php?op=listDegreeById", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);

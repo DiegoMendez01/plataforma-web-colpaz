@@ -52,7 +52,7 @@ switch($_GET['op'])
      */
     case 'deleteDegreeById':
         if(isset($_POST['id'])){
-            $degree->deleteDegreedById($_POST['id']);
+            $degree->deleteDegreeById($_POST['id']);
         }
         break;
     /*
@@ -60,7 +60,7 @@ switch($_GET['op'])
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
     case 'listDegreeById':
-        $datos = $degree->getDegreesById($_POST['id']);
+        $datos = $degree->getDegreeById($_POST['id']);
 
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
@@ -74,7 +74,7 @@ switch($_GET['op'])
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
      */
     case 'listDegrees':
-        $datos = $degree->getPeriods();
+        $datos = $degree->getDegrees();
         echo json_encode($datos);
         break;
 }

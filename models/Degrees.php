@@ -1,29 +1,24 @@
 <?php
 
-class Grades extends Connect
+class Degrees extends Connect
 {
     /*
      * Funcion para insertar/registrar grados por medio de un formulario
      */
-    public function insertGrades($name, $description = null)
+    public function insertDegree($name)
     {
         $conectar = parent::connection();
         parent::set_names();
-
-        // Concatenar y formatear las credenciales para generar el token
-        $token = sprintf("%s-%s-%s-%s-%s", substr(md5($name), 0, 8), substr(md5($name), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 8));
-
+        
         $sql = "
             INSERT INTO
-                grades (name, description, token, created)
+                degrees (name, created)
             VALUES
-                (?, ?, ?, now())
+                (?, now())
         ";
-
+        
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $description);
-        $stmt->bindValue(3, $token);
         $stmt->execute();
 
         return $result = $stmt->fetchAll();
@@ -32,24 +27,23 @@ class Grades extends Connect
     /*
      * Funcion para actualizar registros de grados existentes por su ID
      */
-    public function updateGradeById($id, $name, $description = null)
+    public function updateDegreeById($id, $name)
     {
         $conectar = parent::connection();
         parent::set_names();
 
         $sql = "
             UPDATE
-                grades
+                degrees
             SET
-                name = ?, description = ?
+                name = ?
             WHERE
                 id = ?
         ";
 
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $description);
-        $stmt->bindValue(3, $id);
+        $stmt->bindValue(2, $id);
         $stmt->execute();
 
         return $result = $stmt->fetchAll();
@@ -58,7 +52,7 @@ class Grades extends Connect
     /*
      * Funcion para traer todos los grados registrados hasta el momento
      */
-    public function getGrades()
+    public function getDegrees()
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -67,7 +61,7 @@ class Grades extends Connect
             SELECT
                 *
             FROM
-                grades
+                degrees
             WHERE
                 is_active = 1
         ";
@@ -81,14 +75,14 @@ class Grades extends Connect
     /*
      * Funcion para eliminar totalmente registros de grados existentes por su ID
      */
-    public function deleteGradeById($id)
+    public function deleteDegreeById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
 
         $sql = "
             UPDATE
-                grades
+                degrees
             SET
                 is_active = 0
             WHERE
@@ -105,7 +99,7 @@ class Grades extends Connect
     /*
      * Funcion para traer los grados mediante el ID del grado
      */
-    public function getGradeById($id)
+    public function getDegreeById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -114,7 +108,7 @@ class Grades extends Connect
             SELECT
                 *
             FROM
-                grades
+                degrees
             WHERE
                 id = ?
         ";
