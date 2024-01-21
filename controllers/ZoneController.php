@@ -8,18 +8,13 @@ $zone = new Zones();
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
-     * se tomara un flujo.
+     * Insertar o actualizar el registro de una zona.
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $zone->insertZone($_POST['name']);
-        } else {
-            $zone->updateZoneById($_POST['id'], $_POST['name']);
-        }
+        $zone->insertOrUpdateZone($_POST['id'], $_POST['name']);
         break;
     /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+     * Es para listar/obtener las zonas que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listZone':
@@ -48,7 +43,7 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     /*
-     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+     * Eliminar totalmente registros de zonas existentes por su ID (eliminado logico).
      */
     case 'deleteZoneById':
         if(isset($_POST['id'])){
@@ -56,8 +51,8 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
+     * Es para listar/obtener las zonas que existen registrados en el sistema.
+     * Pero debe mostrar la zona por medio de su identificador unico
      */
     case 'listZoneById':
         $datos = $zone->getZoneById($_POST['id']);
@@ -71,7 +66,7 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Es para listar/obtener las zonas que existen registrados en el sistema.
      */
     case 'listZones':
         $datos = $zone->getZones();

@@ -26,8 +26,7 @@
                 </span>
                 <ul>
                     <li><a href="..\users\"><span class="lbl">Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\zones\"><span class="lbl">Zonas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\userCourses\"><span class="lbl">Cursos Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
@@ -55,6 +54,24 @@
                 </span>
                 <ul>
                     <li><a href="..\periods\"><span class="lbl">Periodo Academico</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                </ul>
+            </li>
+            <li class="blue-dirty with-sub">
+                <span>
+                    <i class="font-icon font-icon-users"></i>
+                    <span class="lbl">Gestion Zonas</span>
+                </span>
+                <ul>
+                    <li><a href="..\zones\"><span class="lbl">Zonas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                </ul>
+            </li>
+            <li class="blue-dirty with-sub">
+                <span>
+                    <i class="font-icon font-icon-users"></i>
+                    <span class="lbl">Gestion Roles</span>
+                </span>
+                <ul>
+                    <li><a href="..\roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
 		<?php 

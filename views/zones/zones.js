@@ -25,27 +25,32 @@ function insertOrUpdate(e)
 	});
     
     if (camposVacios) {
-        swal("Error!", "Campos vacios", "error");
-    } else {
-    	$.ajax({
-			url: "../../controllers/ZoneController.php?op=insertOrUpdate",
-			type: "POST",
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: function(data){
+        swal("Atencion", "Todos los campos son necesarios", "error");
+        return false;
+    }
+	$.ajax({
+		url: "../../controllers/ZoneController.php?op=insertOrUpdate",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
 				$('#zones_form')[0].reset();
 				$('#modalGestionZones').modal('hide');
 				$('#zone_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
-					text: "Registro completado.",
+					text: data.msg,
 					type: "success",
 					confirmButtonClass: "btn-success"
 				});
+			}else{
+				swal("Atencion", data.msg, "error");
 			}
-		});
-    }
+		}
+	});
 }
 
 $(document).ready(function(){
