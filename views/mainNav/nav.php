@@ -57,6 +57,7 @@
                     <li><a href="..\periods\"><span class="lbl">Periodo Academico</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
+            <?php if($_SESSION['role_id'] == 1){ ?>
             <li class="blue-dirty with-sub">
                 <span>
                     <i class="font-icon font-icon-users"></i>
@@ -75,6 +76,7 @@
                     <li><a href="..\roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
+            <?php } ?>
 		<?php
 		}
         if($_SESSION['role_id'] == 3) {
