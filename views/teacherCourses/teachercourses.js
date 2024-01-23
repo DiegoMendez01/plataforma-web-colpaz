@@ -139,7 +139,7 @@ function editar(id){
 		
 		    // Puedes iterar sobre los usuarios si hay mas de uno
 		    jsonData.forEach(function(user) {
-				if(user.role_id == 3 || user.role_id == 4){
+				if(user.role_id == 3){
 			        // Crear una opcion para cada usuario y agregarla al desplegable
 			        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
 		    	}
@@ -240,7 +240,7 @@ $(document).on("click", "#btnnuevo", function(){
 	
 	    // Puedes iterar sobre los usuarios si hay mas de uno
 	    jsonData.forEach(function(user) {
-			if(user.role_id == 3 || user.role_id == 4){
+			if(user.role_id == 3){
 		        // Crear una opcion para cada usuario y agregarla al desplegable
 		        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
 	        }
