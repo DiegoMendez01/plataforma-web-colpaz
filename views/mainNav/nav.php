@@ -105,5 +105,11 @@
             </li>
         
         <?php } ?>
+        <li class="blue-dirty">
+    		<a href="..\site\logout.php">
+				<i class="font-icon glyphicon glyphicon-log-out"></i>
+				<span class="lbl">Cerrar Sesion</span>
+			</a>
+		</li>
 	</ul>
 </nav>
