@@ -27,6 +27,7 @@
                 <ul>
                     <li><a href="..\users\"><span class="lbl">Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                     <li><a href="..\teacherCourses\"><span class="lbl">Cursos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\studentTeachers\"><span class="lbl">Alumnos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">

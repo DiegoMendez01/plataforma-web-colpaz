@@ -5,7 +5,7 @@ class StudentTeachers extends Connect
     /*
      * Funcion para inscribir a un estudiante en un curso mediante un formulario
      */
-    public function insertStudentCourse($user_id, $teacher_course_id, $period_id)
+    public function insertStudentTeacher($user_id, $teacher_course_id, $period_id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -51,7 +51,7 @@ class StudentTeachers extends Connect
     /*
      * Funcion para actualizar registros de asignaciones de estudiantes por cursos
      */
-    public function updateStudentCourse($id, $user_id, $teacher_course_id, $period_id)
+    public function updateStudentTeacher($id, $user_id, $teacher_course_id, $period_id)
     {
         $conectar = parent::connection();
         parent::set_names();

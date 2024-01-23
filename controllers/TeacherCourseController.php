@@ -93,5 +93,11 @@ switch($_GET['op'])
             echo json_encode($output);
         }
         break;
+    /*
+     * Es para listar/obtener los docentes por cursos con su otra data anexada que existen registrados en el sistema.
+     */
+    case 'getTeacherCourses':
+        $teacherCourse->getTeacherCoursesAllData();
+        break;
 }
 ?>

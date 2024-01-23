@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="user_id" class="col-sm-2 form-control-label">Usuario <b>*</b></label>
+                        <label for="user_id" class="col-sm-2 form-control-label">Estudiante <b>*</b></label>
                         <div class="col-sm-10">
                             <select id="user_id" class="form-control" name="user_id">
 							</select>
