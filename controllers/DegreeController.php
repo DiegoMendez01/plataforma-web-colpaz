@@ -1,24 +1,29 @@
 <?php
 // Importa la clase del modelo
 require_once("../config/connection.php");
-require_once("../models/Zones.php");
+require_once("../models/Degrees.php");
 
-$zone = new Zones();
+$degree = new Degrees();
 
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de una zona.
+     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
+     * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $zone->insertOrUpdateZone($_POST['id'], $_POST['name']);
+        if(empty($_POST['id'])){
+            $degree->insertDegree($_POST['name']);
+        } else {
+            $degree->updateDegreeById($_POST['id'], $_POST['name']);
+        }
         break;
     /*
-     * Es para listar/obtener las zonas que existen registrados en el sistema con una condicion que este activo.
+     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
-    case 'listZone':
-        $datos = $zone->getZones();
+    case 'listDegree':
+        $datos = $degree->getDegrees();
         $data  = [];
         foreach ($datos as $row) {
             $sub_array      = [];
@@ -27,11 +32,11 @@ switch($_GET['op'])
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }
-            
+
             $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
             $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
             $sub_array[] = '<button type="button" onClick="ver('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
-            
+
             $data[] = $sub_array;
         }
         $results = [
@@ -43,19 +48,19 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     /*
-     * Eliminar totalmente registros de zonas existentes por su ID (eliminado logico).
+     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
      */
-    case 'deleteZoneById':
+    case 'deleteDegreeById':
         if(isset($_POST['id'])){
-            $zone->deleteZoneById($_POST['id']);
+            $degree->deleteDegreeById($_POST['id']);
         }
         break;
     /*
-     * Es para listar/obtener las zonas que existen registrados en el sistema.
-     * Pero debe mostrar la zona por medio de su identificador unico
+     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Pero debe mostrar el usuario por medio de su identificador unico
      */
-    case 'listZoneById':
-        $datos = $zone->getZoneById($_POST['id']);
+    case 'listDegreeById':
+        $datos = $degree->getDegreeById($_POST['id']);
 
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){
@@ -66,10 +71,10 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener las zonas que existen registrados en el sistema.
+     * Es para listar/obtener los usuarios que existen registrados en el sistema.
      */
-    case 'listZones':
-        $datos = $zone->getZones();
+    case 'listDegrees':
+        $datos = $degree->getDegrees();
         echo json_encode($datos);
         break;
 }

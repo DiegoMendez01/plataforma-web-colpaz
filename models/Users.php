@@ -20,7 +20,7 @@ class Users extends Connect
             $password_hash      = $_POST['password_hash'];
             
             if(empty($identification) AND empty($password_hash)){
-                header("Location:".Connect::route()."views/Site/index.php?m=2");
+                header("Location:".Connect::route()."views/site/index.php?m=2");
                 exit;
             }else{
                 $sql = "
@@ -77,10 +77,10 @@ class Users extends Connect
                     $_SESSION['role_id']        = $result['role_id'];
                     $_SESSION['role_name']      = $resultUser['role_name'];
                     $_SESSION['campuse']        = $resultUser['campuse'];
-                    header("Location:".Connect::route()."views/Home/");
+                    header("Location:".Connect::route()."views/home/");
                     exit;
                 }else{
-                    header("Location:".Connect::route()."views/Site/index.php?m=1");
+                    header("Location:".Connect::route()."views/site/index.php?m=1");
                     exit;
                 }
             }
