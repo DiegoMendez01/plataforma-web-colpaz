@@ -101,7 +101,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                   		</div>
                         <div class="column-content" style="background-color: white; padding: 20px;">
                             <p style="text-align: center; font-size: 1.5rem;">Docente COLPAZ, solicite sus cursos&nbsp;
-                                <a style="font-size: 1.5rem; background-color: #ffffff; text-align: left;" href="#" target="_blank" rel="noreferrer noopener">aquí</a>
+                                <a style="font-size: 1.5rem; background-color: #ffffff; text-align: left;" href="https://docs.google.com/forms/d/e/1FAIpQLScHl84AR4iK2HMYg7hHZ4fSN02j5CqKMoOwM0E_QaBcr4HDUw/viewform" target="_blank" rel="noreferrer noopener">aquí</a>
                             </p>
                             <div class="d-flex mt-2 text-center">
                                 <div class="login-languagemenu">
