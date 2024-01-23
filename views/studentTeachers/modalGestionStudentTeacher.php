@@ -1,4 +1,4 @@
-<div id="modalGestionTeacherCourseId" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="modalGestionStudentTeacher" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,27 +7,13 @@
                 </button>
                 <h4 class="modal-title" id="mdltitulo"></h4>
             </div>
-            <form method="post" id="teachercourseId_form">
+            <form method="post" id="studentteacher_form">
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id" />
                     <div class="form-group row">
-                        <label for="degree_id" class="col-sm-2 form-control-label">Grado <b>*</b></label>
+                        <label for="teacher_course_id" class="col-sm-2 form-control-label">Profesor <b>*</b></label>
                         <div class="col-sm-10">
-                            <select id="degree_id" class="form-control" name="degree_id">
-							</select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="course_id" class="col-sm-2 form-control-label">Curso <b>*</b></label>
-                        <div class="col-sm-10">
-                            <select id="course_id" class="form-control" name="course_id">
-							</select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="classroom_id" class="col-sm-2 form-control-label">Aula <b>*</b></label>
-                        <div class="col-sm-10">
-                            <select id="classroom_id" class="form-control" name="classroom_id">
+                            <select id="teacher_course_id" class="form-control" name="teacher_course_id">
 							</select>
                         </div>
                     </div>
