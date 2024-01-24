@@ -47,7 +47,11 @@ $('#user_register').on("submit", function(e){
 								$('#user_register')[0].reset();
 					        	swal("Correctamente!", "Ha sido registrado correctamente, por favor verifica tu correo electronico", "success");
 							}else{
-								swal("Error!", "Existe un documento, nombre de usuario, correo o telefono existente", "error");
+								var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
+						        data.message.forEach(function (duplicateInfo) {
+						            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
+						        });
+						        swal("Error", errorMessage, "error");
 				        	}
 						}
 					});

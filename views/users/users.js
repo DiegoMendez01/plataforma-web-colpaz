@@ -72,15 +72,9 @@ function insertOrUpdate(e)
 						contentType: false,
 						processData: false,
 						success: function(data){
-							if(data !== ''){
-								jsonData = JSON.parse(data);
-						        var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
-						        jsonData.message.forEach(function (duplicateInfo) {
-						            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
-						        });
-						        swal("Error", errorMessage, "error");
-							}else{
-								$('#user_form')[0].reset();
+							data = JSON.parse(data);
+							if(data.status){
+						        $('#user_form')[0].reset();
 								$('#modalGestionUsuario').modal('hide');
 								$('#user_data').DataTable().ajax.reload();
 					        	swal({
@@ -89,6 +83,12 @@ function insertOrUpdate(e)
 									type: "success",
 									confirmButtonClass: "btn-success"
 								});
+							}else{
+								var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
+						        data.message.forEach(function (duplicateInfo) {
+						            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
+						        });
+						        swal("Error", errorMessage, "error");
 				        	}
 						}
 					});
@@ -103,15 +103,9 @@ function insertOrUpdate(e)
 					contentType: false,
 					processData: false,
 					success: function(data){
-						if(data !== ''){
-							jsonData = JSON.parse(data);
-					        var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
-					        jsonData.message.forEach(function (duplicateInfo) {
-					            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
-					        });
-					        swal("Error", errorMessage, "error");
-						}else{
-							$('#user_form')[0].reset();
+						data = JSON.parse(data);
+						if(data.status){
+					        $('#user_form')[0].reset();
 							$('#modalGestionUsuario').modal('hide');
 							$('#user_data').DataTable().ajax.reload();
 				        	swal({
@@ -120,6 +114,12 @@ function insertOrUpdate(e)
 								type: "success",
 								confirmButtonClass: "btn-success"
 							});
+						}else{
+							var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
+					        data.message.forEach(function (duplicateInfo) {
+					            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
+					        });
+					        swal("Error", errorMessage, "error");
 			        	}
 					}
 				});
