@@ -41,11 +41,13 @@ $('#user_register').on("submit", function(e){
 						contentType: false,
 						processData: false,
 						success: function(data){
-							if(data !== ''){
-								swal("Error!", "Existe un documento, nombre de usuario, correo o telefono existente", "error");
-							}else{
+							if(data.status){
+								$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
+        						});
 								$('#user_register')[0].reset();
-					        	swal("Correctamente!", "Ha sido registrado correctamente", "success");
+					        	swal("Correctamente!", "Ha sido registrado correctamente, por favor verifica tu correo electronico", "success");
+							}else{
+								swal("Error!", "Existe un documento, nombre de usuario, correo o telefono existente", "error");
 				        	}
 						}
 					});
@@ -60,16 +62,18 @@ $('#user_register').on("submit", function(e){
 					contentType: false,
 					processData: false,
 					success: function(data){
-						if(data !== ''){
-							jsonData = JSON.parse(data);
+						data = JSON.parse(data);
+						if(data.status){
+							$('#user_register')[0].reset();
+							$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
+        					});
+				        	swal("Correctamente!", "Ha sido registrado correctamente, por favor verifica tu correo electronico", "success");
+						}else{
 					        var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
-					        jsonData.message.forEach(function (duplicateInfo) {
+					        data.message.forEach(function (duplicateInfo) {
 					            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
 					        });
 					        swal("Error", errorMessage, "error");
-						}else{
-							$('#user_register')[0].reset();
-				        	swal("Correctamente!", "Ha sido registrado correctamente", "success");
 			        	}
 					}
 				});

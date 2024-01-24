@@ -139,7 +139,7 @@ class Users extends Connect
                 }
             }
             
-            echo json_encode(["error" => true, "message" => $duplicates]);
+            echo json_encode(["status" => false, "message" => $duplicates]);
         }else{
             $resetPassword  = str_replace("$", "a", crypt($email.$lastname.$phone, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
             $emailToken     = str_replace("$", "a", crypt($email.$username.$name, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
@@ -187,9 +187,9 @@ class Users extends Connect
                 $stmt2 = $conectar->prepare($sql2);
                 $stmt2->bindValue(1, $idUser);
                 $stmt2->execute();
+                
+                echo json_encode(["status" => true, "message" => $idUser]);
             }
-            
-            return $result;
         }
     }
     /*
