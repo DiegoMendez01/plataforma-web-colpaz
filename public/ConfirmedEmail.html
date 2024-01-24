@@ -25,6 +25,7 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            text-align: left;
         }
 
         h2 {
@@ -52,6 +53,8 @@
             border-radius: 4px;
             cursor: pointer;
             margin-bottom: 15px;
+            display: block;
+            margin: 0 auto; /* Centrar el botón */
         }
 
         button:hover {
@@ -59,7 +62,7 @@
         }
 
         .footer {
-            text-align: center;
+            text-align: left;
             color: #666;
             margin-top: 20px;
             padding-top: 10px;
@@ -69,6 +72,13 @@
         .institution-info {
             margin-top: 5px;
             line-height: 1.2;
+        }
+
+        .footer-line {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -80,13 +90,11 @@
         <p>Por favor, confirma tu participación haciendo clic en el siguiente enlace:</p>
         <a href="*url*" target="_blank">Enlace de Confirmación</a>
         <button type="button">Confirmar</button>
-    </div>
-
-    <div class="footer">
-        <p>Atentamente,</p>
-        <p>________</p>
-        <div class="institution-info">
-            <p><strong>Institución Educativa Técnica Nuestra Señora de la Paz</strong> &bull; Dirección: Quípama, Boyacá &bull; Teléfono: (123) 456-7890 &bull; Correo electrónico: ticolpaz@gmail.com</p>
+        <div class="footer">
+            <hr class="footer-line">
+            <div class="institution-info">
+                <p><strong>Institución Educativa Técnica Nuestra Señora de la Paz</strong> &bull; Dirección: Quípama, Boyacá &bull; Teléfono: (123) 456-7890 &bull; Correo electrónico: ticolpaz@gmail.com</p>
+            </div>
         </div>
     </div>
 </body>
