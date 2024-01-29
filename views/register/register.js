@@ -41,6 +41,7 @@ $('#user_register').on("submit", function(e){
 						contentType: false,
 						processData: false,
 						success: function(data){
+							data = JSON.parse(data);
 							if(data.status){
 								$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
         						});
