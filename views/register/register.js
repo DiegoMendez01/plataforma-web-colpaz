@@ -43,9 +43,9 @@ $('#user_register').on("submit", function(e){
 						success: function(data){
 							data = JSON.parse(data);
 							if(data.status){
-								$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
-        						});
 								$('#user_register')[0].reset();
+								$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
+	        					});
 					        	swal("Correctamente!", "Ha sido registrado correctamente, por favor verifica tu correo electronico", "success");
 							}else{
 								var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
