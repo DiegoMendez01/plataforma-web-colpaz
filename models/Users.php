@@ -40,45 +40,50 @@ class Users extends Connect
                 $result = $stmt->fetch();
                 
                 if(is_array($result) AND count($result) > 0){
-                    $userData = '
-                        SELECT
-                            u.id,
-                            u.name,
-                            u.lastname,
-                            u.email,
-                            u.identification,
-                            u.password_hash,
-                            u.is_active,
-                            u.created,
-                            u.role_id,
-                            r.name AS role_name,
-                            c.name AS campuse
-                        FROM
-                            users u
-                        INNER JOIN roles r ON u.role_id = r.id
-                        INNER JOIN campuses c ON u.idr = c.idr
-                        WHERE
-                            u.id = ?
-                    ';
-                    
-                    $stmtUser = $conectar->prepare($userData);
-                    $stmtUser->bindValue(1, $result['id']);
-                    $stmtUser->execute();
-                    $resultUser = $stmtUser->fetch();
-                    
-                    $_SESSION['id']             = $result['id'];
-                    $_SESSION['name']           = $result['name'];
-                    $_SESSION['lastname']       = $result['lastname'];
-                    $_SESSION['email']          = $result['email'];
-                    $_SESSION['identification'] = $result['identification'];
-                    $_SESSION['password_hash']  = $result['password_hash'];
-                    $_SESSION['is_active']      = $result['is_active'];
-                    $_SESSION['created']        = $result['created'];
-                    $_SESSION['role_id']        = $result['role_id'];
-                    $_SESSION['role_name']      = $resultUser['role_name'];
-                    $_SESSION['campuse']        = $resultUser['campuse'];
-                    header("Location:".Connect::route()."views/home/");
-                    exit;
+                    if($result['validate'] == 1){
+                        $userData = '
+                            SELECT
+                                u.id,
+                                u.name,
+                                u.lastname,
+                                u.email,
+                                u.identification,
+                                u.password_hash,
+                                u.is_active,
+                                u.created,
+                                u.role_id,
+                                r.name AS role_name,
+                                c.name AS campuse
+                            FROM
+                                users u
+                            INNER JOIN roles r ON u.role_id = r.id
+                            INNER JOIN campuses c ON u.idr = c.idr
+                            WHERE
+                                u.id = ?
+                        ';
+                        
+                        $stmtUser = $conectar->prepare($userData);
+                        $stmtUser->bindValue(1, $result['id']);
+                        $stmtUser->execute();
+                        $resultUser = $stmtUser->fetch();
+                        
+                        $_SESSION['id']             = $result['id'];
+                        $_SESSION['name']           = $result['name'];
+                        $_SESSION['lastname']       = $result['lastname'];
+                        $_SESSION['email']          = $result['email'];
+                        $_SESSION['identification'] = $result['identification'];
+                        $_SESSION['password_hash']  = $result['password_hash'];
+                        $_SESSION['is_active']      = $result['is_active'];
+                        $_SESSION['created']        = $result['created'];
+                        $_SESSION['role_id']        = $result['role_id'];
+                        $_SESSION['role_name']      = $resultUser['role_name'];
+                        $_SESSION['campuse']        = $resultUser['campuse'];
+                        header("Location:".Connect::route()."views/home/");
+                        exit;
+                    }else{
+                        header("Location:".Connect::route()."views/site/index.php?m=3");
+                        exit;
+                    }
                 }else{
                     header("Location:".Connect::route()."views/site/index.php?m=1");
                     exit;

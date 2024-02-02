@@ -8,9 +8,6 @@ require_once("../../config/connection.php");
     require_once ("../mainHead/head.php");
     ?>
     <title>Aula Virtual: Reenviar Correo Electrónico</title>
-    <!-- Incluye Bootstrap y FontAwesome -->
-    <link rel="stylesheet" href="../../public/css/lib/font-awesome/font-awesome.min.css">
-    <link rel="stylesheet" href="../../public/css/lib/bootstrap/bootstrap.min.css">
 </head>
 <body>
     <div class="page-content" style="margin-top: 0; padding-top: 20px;">
