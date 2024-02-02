@@ -45,8 +45,26 @@ $('#user_register').on("submit", function(e){
 							if(data.status){
 								$('#user_register')[0].reset();
 								$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
+	        					
 	        					});
-					        	swal("Correctamente!", "Ha sido registrado correctamente, por favor verifica tu correo electronico", "success");
+								swal({
+							    	title: "ColPaz Quipama",
+							    	text: "El usuario ha sido creado correctamente. Un correo ha sido enviado, si no lo recibe puede reenviarlo oprimiendo el boton 'reenviar'",
+							    	type: "success",
+							    	showCancelButton: true,
+							    	confirmButtonClass: "btn-success",
+							    	confirmButtonText: "Reenviar",
+							    	cancelButtonText: "Salir",
+							    	closeOnConfirm: false
+								},
+								function(isConfirm)
+								{
+									if(isConfirm){
+										$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
+	        								window.open('http://localhost/plataforma-web-colpaz/views/site/submitted-email.php?msg=1');
+	        							});
+									}
+								});
 							}else{
 								var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
 						        data.message.forEach(function (duplicateInfo) {
@@ -71,8 +89,26 @@ $('#user_register').on("submit", function(e){
 						if(data.status){
 							$('#user_register')[0].reset();
 							$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
+        					
         					});
-				        	swal("Correctamente!", "Ha sido registrado correctamente, por favor verifica tu correo electronico", "success");
+							swal({
+						    	title: "ColPaz Quipama",
+						    	text: "El usuario ha sido creado correctamente. Un correo ha sido enviado, si no lo recibe puede reenviarlo oprimiendo el boton 'reenviar'",
+						    	type: "success",
+						    	showCancelButton: true,
+						    	confirmButtonClass: "btn-success",
+						    	confirmButtonText: "Reenviar",
+						    	cancelButtonText: "Salir",
+						    	closeOnConfirm: false
+							},
+							function(isConfirm)
+							{
+								if(isConfirm){
+									$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.message}, function(data) {
+        								window.open('http://localhost/plataforma-web-colpaz/views/site/submitted-email.php?msg=1');
+        							});
+								}
+							});
 						}else{
 					        var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
 					        data.message.forEach(function (duplicateInfo) {

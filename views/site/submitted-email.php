@@ -2,7 +2,6 @@
 
 require_once("../../config/connection.php");
 
-if(isset($_SESSION['id'])){
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,34 +9,16 @@ if(isset($_SESSION['id'])){
 	<?php
     require_once ("../mainHead/head.php");
     ?>
-    <title>Aula Virtual:Correo Electronico Enviado</title>
+    <title>Aula Virtual:Reenviar Correo Electronico</title>
 </head>
 <body class="with-side-menu">
-	
-	<?php
-    require_once ("../mainHeader/header.php");
-    ?>
-	<!--.site-header-->
-
-	<div class="mobile-menu-left-overlay"></div>
-	
-	<?php
-    require_once ("../mainNav/nav.php");
-    ?>
-    
-    <?php
-    require_once("submitted-email.php");
-    ?>
+    <!-- Contenido  -->
+	<div class="page-content">
+	</div>
     
     <?php
     require_once ("../mainJs/js.php");
     ?>
-    <script src="submitted-email.js" type="text/javascript"></script>
+    <script src="submittedEmail.js" type="text/javascript"></script>
 </body>
 </html>
-<?php 
-}else{
-    header("Location:" . Connect::route() . "views/site/");
-    exit;
-}
-?>
