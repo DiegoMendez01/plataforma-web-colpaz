@@ -54,7 +54,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                                     ?>
                                     	<div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
                 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                								<span aria-hidden="true">×</span>
+                								<span aria-hidden="true">X</span>
                 							</button>
                 							<i class="font-icon font-icon-warning"></i>
                 							Documento y/o contraseña incorrectos
@@ -65,10 +65,21 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                                     ?>
                                     	<div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
                 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                								<span aria-hidden="true">×</span>
+                								<span aria-hidden="true">X</span>
                 							</button>
                 							<i class="font-icon font-icon-warning"></i>
                 							Los campos estan vacíos
+                						</div>
+                                    <?php
+                                        break;
+                                    case "3":
+                                        ?>
+                                    	<div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
+                							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                								<span aria-hidden="true">X</span>
+                							</button>
+                							<i class="font-icon font-icon-warning"></i>
+                							Cuenta no verificada. Por favor debe ingresar a <a href="submitted.php">Validar Cuenta</a>.
                 						</div>
                                     <?php
                                         break;
