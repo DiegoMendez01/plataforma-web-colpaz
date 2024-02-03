@@ -25,30 +25,37 @@ $('#submitted_email').on("submit", function(e){
     }
     
 	var email = formData.get('email');
-	$('#submitted_email')[0].reset();
-	swal({
-    	title: "ColPaz Quipama",
-    	text: "El correo ha sido enviado a tu bandeja de entrada. Por favor verifica.",
-    	type: "success",
-    	showCancelButton: true,
-    	cancelButtonText: "Salir",
-    	closeOnConfirm: false
-	},
-	function(isConfirm)
-	{
-		if(isConfirm){
-			$.post("../../controllers/EmailController.php?op=confirmed_email", { email : email}, function(data) {
-				var newURL = window.location.href.split('?')[0];
-	            window.history.replaceState({}, document.title, newURL);
-	            // Recargar la pagina
-	            location.reload();
+	
+	$.post("../../controllers/EmailController.php?op=confirmed_email", { email : email}, function(data) {
+		data = JSON.parse(data);
+		if(data.status){
+			$('#submitted_email')[0].reset();
+			swal({
+		    	title: "ColPaz Quipama",
+		    	text: "El correo ha sido enviado a tu bandeja de entrada. Por favor verifica.",
+		    	type: "success",
+		    	showCancelButton: true,
+		    	cancelButtonText: "Salir",
+		    	closeOnConfirm: false
+			},
+			function(isConfirm)
+			{
+				if(isConfirm){
+					var newURL = window.location.href.split('?')[0];
+		            window.history.replaceState({}, document.title, newURL);
+		            // Recargar la pagina
+		            location.reload();
+				}
 			});
-		}
+		}else{
+			swal("Error", data.msg, "error");
+			$('#submitted_email')[0].reset();
+        }
 	});
 });
 
 function visualTimer(btnEnviar) {
-    var tiempoRestante = 15;
+    var tiempoRestante = 5;
     var temporizadorVisual = setInterval(function() {
         btnEnviar.html('Enviando correo (' + tiempoRestante + 's)');
         tiempoRestante--;
