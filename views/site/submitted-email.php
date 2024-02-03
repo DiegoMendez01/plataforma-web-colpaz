@@ -28,6 +28,20 @@ require_once("../../config/connection.php");
                 <p>
                     Módulo que permite al usuario el reenvio de un correo electronico para confirmar su cuenta.
                 </p>
+                <?php 
+                if(isset($_GET['msg'])){
+                    switch($_GET['msg'])
+                    {
+                        case "1":
+                        ?>
+                            <div class="alert alert-success text-center">
+                                <legend>Se ha reenviado tu correo electronico. Verifica la bandeja de entrada</legend>
+                            </div>
+                        <?php
+                        break;
+                    }
+                }
+                 ?>
                 <div class="col-md-12 text-center">
                     <img class="hidden-md-down" src="../../public/img/LogoCOLPAZ.png" alt="Logo" style="height: 20vh;">
                 </div>

@@ -19,8 +19,23 @@ $('#submitted_email').on("submit", function(e){
     
 	var email = formData.get('email');
 	$('#submitted_email')[0].reset();
-	swal("Atencion", "El correo ha sido enviado a tu bandeja de entrada. Por favor verifica.", "success");
-	$.post("../../controllers/EmailController.php?op=confirmed_email", { email : email}, function(data) {
-	
+	swal({
+    	title: "ColPaz Quipama",
+    	text: "El correo ha sido enviado a tu bandeja de entrada. Por favor verifica.",
+    	type: "success",
+    	showCancelButton: true,
+    	cancelButtonText: "Salir",
+    	closeOnConfirm: false
+	},
+	function(isConfirm)
+	{
+		if(isConfirm){
+			$.post("../../controllers/EmailController.php?op=confirmed_email", { email : email}, function(data) {
+				var newURL = window.location.href.split('?')[0];
+	            window.history.replaceState({}, document.title, newURL);
+	            // Recargar la pagina
+	            location.reload();
+			});
+		}
 	});
 });
