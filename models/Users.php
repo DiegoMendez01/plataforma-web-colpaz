@@ -457,6 +457,29 @@ class Users extends Connect
         return $result = $stmt->fetchAll();
     }
     /*
+     * Funcion para traer los usuarios mediante el token del usuario
+     */
+    public function getUserByToken($token)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                email_confirmed_token = ?
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $token);
+        $stmt->execute();
+        
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    /*
      * Funcion para traer los usuarios mediante el email del usuario
      */
     public function getUserByEmail($email)
@@ -497,6 +520,30 @@ class Users extends Connect
         ";
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $role_id);
+        $sql->bindValue(2, $id);
+        $sql->execute();
+        
+        return $result = $sql->fetchAll();
+    }
+    /*
+     *  Funcion para actualizar el token del usuario
+     */
+    public function updateTokenUser($id, $tokenEmail)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            UPDATE
+                users
+            SET
+                validate = 1,
+                email_confirmed_token = ?
+            WHERE
+                id = ?
+        ";
+        $sql = $conectar->prepare($sql);
+        $sql->bindValue(1, $tokenEmail);
         $sql->bindValue(2, $id);
         $sql->execute();
         

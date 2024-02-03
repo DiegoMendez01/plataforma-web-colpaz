@@ -39,6 +39,27 @@ require_once("../../config/connection.php");
                             </div>
                         <?php
                         break;
+                        case "2":
+                            ?>
+                            <div class="alert alert-danger text-center">
+                                <legend>No tienes un token de validacion de cuenta. Por favor vuelve a reenviar el correo electronico.</legend>
+                            </div>
+                        <?php
+                        break;
+                        case "3":
+                            ?>
+                            <div class="alert alert-danger text-center">
+                                <legend>El usuario se encuentra validado. Por favor inicia sesión para ingreso de la plataforma.</legend>
+                            </div>
+                        <?php
+                        break;
+                        case "4":
+                            ?>
+                            <div class="alert alert-danger text-center">
+                                <legend>El token con el que accedes esta vencido. Realiza un reenvio de correo electronico</legend>
+                            </div>
+                        <?php
+                        break;
                     }
                 }
                  ?>

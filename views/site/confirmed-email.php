@@ -1,3 +1,17 @@
+<?php 
+
+require_once ("../../config/connection.php");
+
+if(!empty($_GET['token'])){
+    $token    = $_GET['token'];
+    require_once ("../../models/Users.php");
+    $user = new Users();
+    $dataUser = $user->getUserByToken($token);
+    if($dataUser['validate'] === 0){
+        if($dataUser['email_confirmed_token'] === $token){
+            $emailToken     = str_replace("$", "a", crypt($token.$dataUser['username'].time(), '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
+            $user->updateTokenUser($dataUser['id'], $emailToken);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -43,3 +57,19 @@
     </div>
 </body>
 </html>
+<?php
+        }else{
+            header("Location:".Connect::route()."views/site/submitted-email.php?msg=4");
+            exit;
+        }
+    }else{
+        header("Location:".Connect::route()."views/site/submitted-email.php?msg=3");
+        exit;
+    }
+}else{
+    header("Location:".Connect::route()."views/site/submitted-email.php?msg=2");
+    exit;
+}
+?>
+}
+

@@ -55,7 +55,7 @@ $('#submitted_email').on("submit", function(e){
 });
 
 function visualTimer(btnEnviar) {
-    var tiempoRestante = 5;
+    var tiempoRestante = 15;
     var temporizadorVisual = setInterval(function() {
         btnEnviar.html('Enviando correo (' + tiempoRestante + 's)');
         tiempoRestante--;
