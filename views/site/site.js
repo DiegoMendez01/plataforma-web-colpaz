@@ -1,3 +1,10 @@
+$(document).ready(function(){
+	var btnEnviar = $('#btnsubmit');
+    // Deshabilitar el boton al cargar la pagina
+    btnEnviar.prop('disabled', true);
+	visualTimer(btnEnviar);
+})
+
 $('#submitted_email').on("submit", function(e){
 	e.preventDefault();
 	var formData = new FormData($('#submitted_email')[0]);
@@ -39,3 +46,17 @@ $('#submitted_email').on("submit", function(e){
 		}
 	});
 });
+
+function visualTimer(btnEnviar) {
+    var tiempoRestante = 15;
+    var temporizadorVisual = setInterval(function() {
+        btnEnviar.html('Enviando correo (' + tiempoRestante + 's)');
+        tiempoRestante--;
+        
+        if (tiempoRestante < 0) {
+            clearInterval(temporizadorVisual);
+            btnEnviar.prop('disabled', false);
+            btnEnviar.html('Enviar Correo');
+        }
+    }, 1000);
+}

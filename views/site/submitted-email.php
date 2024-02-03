@@ -52,7 +52,7 @@ require_once("../../config/connection.php");
                         <input type="email" id="email" name="email" class="form-control" placeholder="Ingrese la dirección de correo electronico">
                     </div>
                     <div class="text-center">
-                    	<button type="submit" class="btn btn-primary">Enviar Correo</button>
+                    	<button type="submit" class="btn btn-primary" id="btnsubmit">Enviar Correo</button>
                     </div>
                 </form>
             </div>
