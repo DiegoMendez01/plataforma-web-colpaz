@@ -9,7 +9,11 @@ switch($_GET['op'])
 {
     // Caso cuando se deba confirmar el correo del usuario registrado
     case 'confirmed_email':
-        $email->confirmedEmail($_POST['id']);
+        if(empty($_POST['id'])){
+            $email->confirmedEmail(null, $_POST['email']);
+        }else{
+            $email->confirmedEmail($_POST['id'], null);
+        }
         break;
 }
 

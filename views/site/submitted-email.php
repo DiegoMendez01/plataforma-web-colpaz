@@ -47,5 +47,7 @@ require_once("../../config/connection.php");
     <?php
     require_once ("../mainJs/js.php");
     ?>
+    
+    <script src="site.js"></script>
 </body>
 </html>

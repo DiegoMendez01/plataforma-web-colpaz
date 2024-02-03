@@ -16,11 +16,11 @@ Class Emails extends PHPMailer
     protected $gestorCorreo = 'sapdevertzone@gmail.com';
     protected $gestorPass   = 'oitw nvgh eqyf vpac ';
     
-    public function confirmedEmail($id_user)
+    public function confirmedEmail($id_user = null, $emailSubmmit = null)
     {
         $tbody    = '';
         $user     = new Users();
-        $dataUser = $user->getUserById($id_user);
+        $dataUser = ($id_user)? $user->getUserById($id_user) : $user->getUserByEmail($emailSubmmit);
         
         foreach($dataUser as $row){
             $id                 = $row['id'];
@@ -55,7 +55,7 @@ Class Emails extends PHPMailer
                       <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, "helvetica neue", arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#666666;font-size:14px">Por favor verifica tu cuenta, debes oprimir el boton de confirmación. Tu correo electronico '.$email.' sera usado para confirmar unicamente tu cuenta para recibir notificaciones de la plataforma o recuperación de tu clave de seguridad por perdida.</p></td>
                      </tr>
                      <tr style="border-collapse:collapse">
-                       <td align="center" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#4A7EB0;background:#2CB543;border-width:0px;display:inline-block;border-radius:0px;width:auto"><button type="button" style="mso-style-priority:100 !important; text-decoration:none !important; mso-line-height-rule:exactly; font-family:arial, "helvetica neue", helvetica, sans-serif; font-size:18px; color:#4A7EB0; padding:10px 25px; display:inline-block; background:#EFEFEF; border-radius:0px; font-weight:normal; font-style:normal; line-height:22px; width:auto; text-align:center; letter-spacing:0; mso-padding-alt:0; mso-border-alt:10px solid #EFEFEF"><a href="https://localhost/plataforma-web-colpaz/views/confirmedEmail.php?token=<?php echo $emailConfirmToken; ?>" target="_blank" style="color: inherit; text-decoration: none;">Verificar cuenta</a></button></span></td>
+                       <td align="center" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#4A7EB0;background:#2CB543;border-width:0px;display:inline-block;border-radius:0px;width:auto"><button type="button" style="mso-style-priority:100 !important; text-decoration:none !important; mso-line-height-rule:exactly; font-family:arial, "helvetica neue", helvetica, sans-serif; font-size:18px; color:#4A7EB0; padding:10px 25px; display:inline-block; background:#EFEFEF; border-radius:0px; font-weight:normal; font-style:normal; line-height:22px; width:auto; text-align:center; letter-spacing:0; mso-padding-alt:0; mso-border-alt:10px solid #EFEFEF"><a href="https://localhost/plataforma-web-colpaz/views/site/confirmed-email.php?token='.$emailConfirmToken.'" target="_blank" style="color: inherit; text-decoration: none;">Verificar cuenta</a></button></span></td>
                       </tr>
                      <tr style="border-collapse:collapse">
                       <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, "helvetica neue", arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#666666;font-size:14px">Si necesitas ayuda, visita la página <a target="_blank" href="https://viewstripo.email/" style="mso-line-height-rule:exactly;text-decoration:underline;font-family:helvetica, "helvetica neue", arial, verdana, sans-serif;font-size:14px;color:#4A7EB0">Ayuda</a> o <a target="_blank" href="https://viewstripo.email/" style="mso-line-height-rule:exactly;text-decoration:underline;font-family:helvetica, "helvetica neue", arial, verdana, sans-serif;font-size:14px;color:#4A7EB0">contactanos</a>.</p></td>

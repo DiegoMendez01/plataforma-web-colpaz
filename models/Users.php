@@ -457,6 +457,29 @@ class Users extends Connect
         return $result = $stmt->fetchAll();
     }
     /*
+     * Funcion para traer los usuarios mediante el email del usuario
+     */
+    public function getUserByEmail($email)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                email = ?
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $email);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll();
+    }
+    /*
      *  Funcion para actualizar la asignacion del Ticket
      */
     public function updateAsignRole($id, $role_id)
