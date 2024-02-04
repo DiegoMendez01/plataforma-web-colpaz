@@ -72,7 +72,7 @@ class Users extends Connect
     /*
      * Funcion para insertar/registrar usuarios por medio de un formulario
      */
-    public function insertUser($name, $lastname, $username, $identification_type_id, $identification, $password_hash, $email, $phone, $phone2 = null, $birthdate, $sex)
+    public function insertOrUpdateUser($id = null, $name, $lastname, $username, $identification_type_id, $identification, $password_hash = null, $email, $phone, $phone2 = null, $birthdate, $sex)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -86,94 +86,165 @@ class Users extends Connect
                 identification = ? OR username = ? OR email = ? OR phone = ?
         ";
         
-        $stmtDNI = $conectar->prepare($validateData);
-        $stmtDNI->bindValue(1, $identification);
-        $stmtDNI->bindValue(2, $username);
-        $stmtDNI->bindValue(3, $email);
-        $stmtDNI->bindValue(4, $phone);
-        $stmtDNI->execute();
+        $stmtDuplicate = $conectar->prepare($validateData);
+        $stmtDuplicate->bindValue(1, $identification);
+        $stmtDuplicate->bindValue(2, $username);
+        $stmtDuplicate->bindValue(3, $email);
+        $stmtDuplicate->bindValue(4, $phone);
+        $stmtDuplicate->execute();
         
-        $duplicatedUsers = $stmtDNI->fetchAll(PDO::FETCH_ASSOC);
+        $duplicatedUser = $stmtDuplicate->fetch(PDO::FETCH_ASSOC);
         
-        if(is_array($duplicatedUsers) && count($duplicatedUsers) > 0) {
-            $duplicates = [];
+        if(is_array($duplicatedUser) && count($duplicatedUser) > 0) {
+            $duplicates    = [];
+            $duplicateInfo = [];
             
-            foreach ($duplicatedUsers as $dataDuplicate) {
-                $duplicateInfo = [];
-                
-                if ($dataDuplicate['identification'] == $identification) {
-                    $duplicateInfo[] = ['type' => 'Identificación', 'value' => $dataDuplicate['identification']];
-                }
-                
-                if ($dataDuplicate['username'] == $username) {
-                    $duplicateInfo[] = ['type' => 'Nombre de usuario', 'value' => $dataDuplicate['username']];
-                }
-                
-                if ($dataDuplicate['email'] == $email) {
-                    $duplicateInfo[] = ['type' => 'Correo', 'value' => $dataDuplicate['email']];
-                }
-                
-                if ($dataDuplicate['phone'] == $phone) {
-                    $duplicateInfo[] = ['type' => 'Telefono', 'value' => $dataDuplicate['phone']];
-                }
-                
-                if (!empty($duplicateInfo)) {
-                    $duplicates = array_merge($duplicates, $duplicateInfo);
-                }
+            if ($duplicatedUser['identification'] == $identification) {
+                $duplicateInfo[] = ['type' => 'Identificación', 'value' => $duplicatedUser['identification']];
+            }
+            if ($duplicatedUser['username'] == $username) {
+                $duplicateInfo[] = ['type' => 'Nombre de usuario', 'value' => $duplicatedUser['username']];
+            }
+            if ($duplicatedUser['email'] == $email) {
+                $duplicateInfo[] = ['type' => 'Correo', 'value' => $duplicatedUser['email']];
+            }
+            if ($duplicatedUser['phone'] == $phone) {
+                $duplicateInfo[] = ['type' => 'Telefono', 'value' => $duplicatedUser['phone']];
             }
             
-            echo json_encode(["status" => false, "message" => $duplicates]);
+            if (!empty($duplicateInfo)) {
+                $duplicates = array_merge($duplicates, $duplicateInfo);
+            }
+            
+            $answer = [
+                'status' => false,
+                'msg'    => $duplicates
+            ];
         }else{
-            $resetPassword  = str_replace("$", "a", crypt($email.$lastname.$phone, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
-            $emailToken     = str_replace("$", "a", crypt($email.$username.$name, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
-            $smsCode        = rand(1000, 9999);;
-            
-            // Concatenar y formatear las credenciales para generar el API key
-            $apiKey = sprintf("%s-%s-%s-%s-%s", substr(md5($email), 0, 8), substr(md5($lastname), 0, 4), substr(md5($name), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 8));
-            
-            $sql = "
-                INSERT INTO
-                    users (name, lastname, username, identification_type_id, identification, password_hash, email, phone, phone2, birthdate, sex, created, role_id, api_key, password_reset_token, email_confirmed_token, sms_code, profile_image)
-                VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), 5, ?, ?, ?, ?, 'nodisponible.jpg')
-            ";
-            
-            $stmt = $conectar->prepare($sql);
-            $stmt->bindValue(1, $name);
-            $stmt->bindValue(2, $lastname);
-            $stmt->bindValue(3, $username);
-            $stmt->bindValue(4, $identification_type_id);
-            $stmt->bindValue(5, $identification);
-            $stmt->bindValue(6, $password_hash);
-            $stmt->bindValue(7, $email);
-            $stmt->bindValue(8, $phone);
-            $stmt->bindValue(9, $phone2);
-            $stmt->bindValue(10, $birthdate);
-            $stmt->bindValue(11, $sex);
-            $stmt->bindValue(12, $apiKey);
-            $stmt->bindValue(13, $resetPassword);
-            $stmt->bindValue(14, $emailToken);
-            $stmt->bindValue(15, $smsCode);
-            $result = $stmt->execute();
-            
-            if ($result) {
+            if(empty($id)){
+                $resetPassword  = str_replace("$", "a", crypt($email.$lastname.$phone, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
+                $emailToken     = str_replace("$", "a", crypt($email.$username.$name, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
+                $smsCode        = rand(1000, 9999);;
                 
-                $idUser = $conectar->lastInsertId();
+                // Concatenar y formatear las credenciales para generar el API key
+                $apiKey = sprintf("%s-%s-%s-%s-%s", substr(md5($email), 0, 8), substr(md5($lastname), 0, 4), substr(md5($name), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 8));
                 
-                $sql2 = "
+                $sql = "
                     INSERT INTO
-                        auths (user_id, source_id, created, source)
+                        users (name, lastname, username, identification_type_id, identification, password_hash, email, phone, phone2, birthdate, sex, created, role_id, api_key, password_reset_token, email_confirmed_token, sms_code, profile_image, idr)
                     VALUES
-                        (?, 1, now(), 'WEB')
+                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), 5, ?, ?, ?, ?, 'nodisponible.jpg', 1)
                 ";
                 
-                $stmt2 = $conectar->prepare($sql2);
-                $stmt2->bindValue(1, $idUser);
-                $stmt2->execute();
+                $stmt = $conectar->prepare($sql);
+                $stmt->bindValue(1, $name);
+                $stmt->bindValue(2, $lastname);
+                $stmt->bindValue(3, $username);
+                $stmt->bindValue(4, $identification_type_id);
+                $stmt->bindValue(5, $identification);
+                $stmt->bindValue(6, $password_hash);
+                $stmt->bindValue(7, $email);
+                $stmt->bindValue(8, $phone);
+                $stmt->bindValue(9, $phone2);
+                $stmt->bindValue(10, $birthdate);
+                $stmt->bindValue(11, $sex);
+                $stmt->bindValue(12, $apiKey);
+                $stmt->bindValue(13, $resetPassword);
+                $stmt->bindValue(14, $emailToken);
+                $stmt->bindValue(15, $smsCode);
+                $request = $stmt->execute();
+                $action  = 1;
                 
-                echo json_encode(["status" => true, "message" => $idUser]);
+                if($request){
+                    
+                    $idUser = $conectar->lastInsertId();
+                    
+                    $sql2 = "
+                        INSERT INTO
+                            auths (user_id, source_id, created, source)
+                        VALUES
+                            (?, 1, now(), 'WEB')
+                    ";
+                    
+                    $stmt2         = $conectar->prepare($sql2);
+                    $stmt2->bindValue(1, $idUser);
+                    $requestAuth   = $stmt2->execute();
+                }
+            }else{
+                if(empty($password_hash)){
+                    $sql = "
+                        UPDATE
+                            users
+                        SET
+                            name                    = ?,
+                            lastname                = ?,
+                            email                   = ?,
+                            phone                   = ?,
+                            phone2                  = ?
+                        WHERE
+                            id = ? AND is_active = 1
+                    ";
+                    
+                    $stmtUpdate    = $conectar->prepare($sql);
+                    $stmtUpdate->bindValue(1, $name);
+                    $stmtUpdate->bindValue(2, $lastname);
+                    $stmtUpdate->bindValue(3, $email);
+                    $stmtUpdate->bindValue(4, $phone);
+                    $stmtUpdate->bindValue(5, $phone2);
+                    $stmtUpdate->bindValue(6, $id);
+                    $request = $stmtUpdate->execute();
+                    $action  = 2;
+                }else{
+                    $sql = "
+                        UPDATE
+                            users
+                        SET
+                            name                    = ?,
+                            lastname                = ?,
+                            password_hash           = ?,
+                            email                   = ?,
+                            phone                   = ?,
+                            phone2                  = ?
+                        WHERE
+                            id = ? AND is_active = 1
+                    ";
+                    
+                    $stmtUpdate = $conectar->prepare($sql);
+                    $stmtUpdate->bindValue(1, $name);
+                    $stmtUpdate->bindValue(2, $lastname);
+                    $stmtUpdate->bindValue(3, $password_hash);
+                    $stmtUpdate->bindValue(4, $email);
+                    $stmtUpdate->bindValue(5, $phone);
+                    $stmtUpdate->bindValue(6, $phone2);
+                    $stmtUpdate->bindValue(7, $id);
+                    $request = $stmtUpdate->execute();
+                    $action  = 3;
+                }
+            }
+            if($request > 0){
+                if($action == 1){
+                    if($requestAuth > 0){
+                        $answer = [
+                            'status' => true,
+                            'msg'    => 'El usuario ha sido creado correctamente. Un correo ha sido enviado, si no lo recibe puede reenviarlo oprimiendo el boton "reenviar"',
+                            'id'     => $idUser
+                        ];
+                    }
+                }else{
+                    $answer = [
+                        'status' => true,
+                        'msg'    => 'El usuario ha sido actualizado correctamente',
+                    ];
+                }
+            }else{
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'Error al crear el usuario',
+                    'error'  => true
+                ];
             }
         }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
     }
     /*
      * Funcion para actualizar usuario por medio de perfil
@@ -243,99 +314,6 @@ class Users extends Connect
             $stmt->bindValue(5, $phone);
             $stmt->bindValue(6, $phone2);
             $stmt->bindValue(7, $id);
-            $stmt->execute();
-            
-            return $result = $stmt->fetchAll();
-        }
-    }
-    /*
-     * Funcion para actualizar registros de usuarios
-     */
-    public function updateUserById($id, $name, $lastname, $username, $identification_type_id, $identification, $password_hash, $email = null, $phone = null, $phone2 = null, $birthdate, $sex)
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $validateData = "
-            SELECT
-                identification, username, email, phone
-            FROM
-                users
-            WHERE
-                (identification = ? OR username = ? OR email = ? OR phone = ?) AND id <> ?
-        ";
-        
-        $stmtDNI = $conectar->prepare($validateData);
-        $stmtDNI->bindValue(1, $identification);
-        $stmtDNI->bindValue(2, $username);
-        $stmtDNI->bindValue(3, $email);
-        $stmtDNI->bindValue(4, $phone);
-        $stmtDNI->bindValue(5, $id);
-        $stmtDNI->execute();
-        
-        $duplicatedUsers = $stmtDNI->fetchAll(PDO::FETCH_ASSOC);
-        
-        if(is_array($duplicatedUsers) && count($duplicatedUsers) > 0) {
-            $duplicates = [];
-            
-            foreach ($duplicatedUsers as $dataDuplicate) {
-                $duplicateInfo = [];
-                
-                if ($dataDuplicate['identification'] == $identification) {
-                    $duplicateInfo[] = ['type' => 'Identificación', 'value' => $dataDuplicate['identification']];
-                }
-                
-                if ($dataDuplicate['username'] == $username) {
-                    $duplicateInfo[] = ['type' => 'Nombre de usuario', 'value' => $dataDuplicate['username']];
-                }
-                
-                if ($dataDuplicate['email'] == $email && !empty($dataDuplicate['email'])) {
-                    $duplicateInfo[] = ['type' => 'Correo', 'value' => $dataDuplicate['email']];
-                }
-                
-                if ($dataDuplicate['phone'] == $phone && !empty($dataDuplicate['phone'])) {
-                    $duplicateInfo[] = ['type' => 'Telefono', 'value' => $dataDuplicate['phone']];
-                }
-                
-                if (!empty($duplicateInfo)) {
-                    $duplicates = array_merge($duplicates, $duplicateInfo);
-                }
-            }
-            
-            echo json_encode(["error" => true, "message" => $duplicates]);
-        }else{
-            $sql = "
-                UPDATE
-                    users
-                SET
-                    name                    = ?,
-                    lastname                = ?,
-                    username                = ?,
-                    identification_type_id  = ?,
-                    identification          = ?,
-                    password_hash           = ?,
-                    email                   = ?,
-                    phone                   = ?,
-                    phone2                  = ?,
-                    birthdate               = ?,
-                    sex                     = ?
-                WHERE
-                    id = ? AND is_active = 1
-            ";
-            
-            $stmt = $conectar->prepare($sql);
-            $stmt->bindValue(1, $name);
-            $stmt->bindValue(2, $lastname);
-            $stmt->bindValue(3, $username);
-            $stmt->bindValue(4, $identification_type_id);
-            $stmt->bindValue(5, $identification);
-            $stmt->bindValue(6, $password_hash);
-            $stmt->bindValue(7, $email);
-            $stmt->bindValue(8, $phone);
-            $stmt->bindValue(9, $phone2);
-            $stmt->bindValue(10, $birthdate);
-            $stmt->bindValue(11, $sex);
-            $stmt->bindValue(12, $id);
             $stmt->execute();
             
             return $result = $stmt->fetchAll();

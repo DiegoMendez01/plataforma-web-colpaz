@@ -12,11 +12,7 @@ switch($_GET['op']){
      * se tomara un flujo
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $user->insertUser($_POST['name'], $_POST['lastname'], $_POST['username'], $_POST['identification_type_id'], $_POST['identification'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2'], $_POST['birthdate'], $_POST['sex']);
-        }else{
-            $user->updateUserById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['username'], $_POST['identification_type_id'], $_POST['identification'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2'], $_POST['birthdate'], $_POST['sex']);
-        }
+        $user->insertOrUpdateUser(((!empty($_POST['id'])) ? $_POST['id'] : null), $_POST['name'], $_POST['lastname'], $_POST['username'], $_POST['identification_type_id'], $_POST['identification'], ((!empty($_POST['password_hash'])) ? $_POST['password_hash'] : null), $_POST['email'], $_POST['phone'], $_POST['phone2'], $_POST['birthdate'], $_POST['sex']);
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema con una condicion que este activo.

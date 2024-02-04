@@ -36,7 +36,7 @@ if($_SESSION['id']){
                 <img src="../../public/img/school.svg" alt="Imagen Colegio" />
                 <?php 
                 }elseif($_SESSION['role_id'] == 3){
-                    require_once("../../models/TeacherCourses.php");
+                    require_once("../../models/TeacherCourses");
                     
                     $teacherCourse   = new TeacherCourses();
                     $dataAll         = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id']);
@@ -50,7 +50,7 @@ if($_SESSION['id']){
                                     <div class="card-body">
                                         <h4 class="card-title text-center"><?php echo $data['nameCourse'] ?></h4>
                                         <h5 class="card-title">Grado <kbd class="bg-info"><?php echo $data['nameDegree'] ?></kbd> - Aula <kbd class="bg-info"><?php echo $data['nameClassroom'] ?></kbd></h5>
-                                        <a href="../contents/index.php?course=<?= $data['id'] ?>" class="btn btn-primary">Acceder</a>
+                                        <a href="../contents/index?course=<?= $data['id'] ?>" class="btn btn-primary">Acceder</a>
                                         <a href="#" class="btn btn-warning">Ver Alumnos</a>
                                     </div>
                                 </div>
@@ -60,6 +60,35 @@ if($_SESSION['id']){
                     }
                 ?>
                 <?php
+                }elseif($_SESSION['role_id'] == 5){
+                ?>
+                <header class="section-header">
+    				<div class="tbl">
+    					<div class="tbl-row">
+    						<div class="tbl-cell">
+    							<h3>Inicio</h3>
+    							<ol class="breadcrumb breadcrumb-simple">
+    								<li><a href="../home/">Inicio</a></li>
+    								<li class="active">Inicio</li>
+    							</ol>
+    						</div>
+    					</div>
+    				</div>
+				</header>
+				<div class="container mt-5">
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <section class="section-header text-center mb-4">
+                                <h2 class="display-4">¡Bienvenido a la Plataforma!</h2>
+                                <p class="lead">Estamos encantados de tenerte como parte de nuestra comunidad.</p>
+                            </section>
+                            <div class="alert alert-info" role="alert">
+                                <p class="mb-0">¡Bienvenido! Parece que eres un usuario con un rol que requiere confirmación. Por favor, envía un correo electrónico para confirmar tu rol al administrador de la plataforma.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php 
                 }
                 ?>
 			</div>

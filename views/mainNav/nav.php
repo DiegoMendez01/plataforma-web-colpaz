@@ -80,7 +80,7 @@
 		<?php
 		}
         if($_SESSION['role_id'] == 3) {
-            require_once("../../models/TeacherCourses.php");
+            require_once("../../models/TeacherCourses");
         
             $teacherCourse = new TeacherCourses();
             $dataAll = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id']);
@@ -95,7 +95,7 @@
                     <ul>
                         <?php while ($data = $dataAll['query']->fetch()) { ?>
                             <li>
-                                <a href="../contents/index.php?course=<?= $data['id'] ?>">
+                                <a href="../contents/index?course=<?= $data['id'] ?>">
                                     <span class="lbl"><?= $data['nameCourse']; ?> - <?= $data['nameDegree']; ?> - <?= $data['nameClassroom'] ?></span>
                                 </a>
                             </li>
@@ -104,9 +104,22 @@
                 <?php } ?>
             </li>
         
-        <?php } ?>
+        <?php
+        }
+        if($_SESSION['role_id'] == 5)
+        {
+        ?>
+        	<li class="blue-dirty">
+        		<a href="..\home\submitted">
+    				<i class="font-icon font-icon-mail"></i>
+    				<span class="lbl">Envio de Confirmacion</span>
+    			</a>
+			</li>
+        <?php
+        }
+        ?>
         <li class="blue-dirty">
-    		<a href="..\site\logout.php">
+    		<a href="..\site\logout">
 				<i class="font-icon glyphicon glyphicon-log-out"></i>
 				<span class="lbl">Cerrar Sesion</span>
 			</a>

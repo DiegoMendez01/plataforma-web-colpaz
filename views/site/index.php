@@ -67,7 +67,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                 								<span aria-hidden="true">X</span>
                 							</button>
                 							<i class="font-icon font-icon-warning"></i>
-                							Cuenta no verificada. Por favor debe ingresar a <a href="submitted-email.php">Validar Cuenta</a>.
+                							Cuenta no verificada. Por favor debe ingresar a <a href="submitted-email">Validar Cuenta</a>.
                 						</div>
                                     <?php
                                         break;
