@@ -13,6 +13,9 @@
 	type="image/png">
 <link href="../../public/img/favicon.png" rel="icon" type="image/png">
 <link href="../../public/img/favicon.ico" rel="shortcut icon">
+<link href="../../public/img/favicon.144x144.png" rel="apple-touch-icon" type="image/png" sizes="144x144">
+<link href="../../public/img/favicon.72x72.png" rel="apple-touch-icon" type="image/png" sizes="72x72">
+<link href="../../public/img/favicon.57x57.png" rel="apple-touch-icon" type="image/png">
 
 <link rel="stylesheet" href="../../public/css/separate/vendor/fancybox.min.css">
 <link rel="stylesheet" href="../../public/css/separate/pages/activity.min.css">
@@ -30,7 +33,9 @@
 <link rel="stylesheet" href="../../public/css/lib/datatables-net/datatables.min.css">
 <link rel="stylesheet" href="../../public/css/separate/vendor/datatables-net.min.css">
 
+<link rel="stylesheet" href="../../public/css/separate/vendor/slick.min.css">
 <link rel="stylesheet" href="../../public/css/separate/vendor/select2.min.css">
+<link rel="stylesheet" href="../../public/css/separate/pages/widgets.min.css">
 
 <link rel="stylesheet" href="../../public/css/main.css">
 <link rel="stylesheet" href="../../public/css/style.css">

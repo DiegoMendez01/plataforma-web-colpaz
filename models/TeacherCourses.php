@@ -148,7 +148,7 @@ class TeacherCourses extends Connect
         return $result = $stmt->fetchAll();
     }
     /*
-     * Funcion para obtener los usuarios por curso, si es rol docente
+     * Funcion para obtener los usuarios por curso, si es rol docente por ID
      */
     public function getTeacherCourseByIdUser($id_user)
     {
@@ -181,5 +181,38 @@ class TeacherCourses extends Connect
             'row'  => $query->rowCount(),
             'query' => $query
         ];
+    }
+    /*
+     * Funcion para obtener los usuarios por curso, si es rol docente
+     */
+    public function getTeacherCoursesAllData()
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                uc.id,
+                u.name as nameTeacher,
+                c.name as nameCourse,
+                cs.name as nameClassroom,
+                d.name as nameDegree,
+                p.name as namePeriod
+            FROM
+                teacher_courses as uc
+            INNER JOIN users u ON uc.user_id = u.id
+            INNER JOIN courses c ON uc.course_id = c.id
+            INNER JOIN degrees d ON uc.degree_id = d.id
+            INNER JOIN classrooms cs ON uc.classroom_id = cs.id
+            INNER JOIN periods p ON uc.period_id = p.id
+            WHERE
+                uc.is_active = 1
+        ';
+        
+        $query = $conectar->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 }

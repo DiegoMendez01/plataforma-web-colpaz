@@ -27,6 +27,7 @@
                 <ul>
                     <li><a href="..\users\"><span class="lbl">Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                     <li><a href="..\teacherCourses\"><span class="lbl">Cursos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                    <li><a href="..\studentTeachers\"><span class="lbl">Alumnos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
             <li class="blue-dirty with-sub">
@@ -56,6 +57,7 @@
                     <li><a href="..\periods\"><span class="lbl">Periodo Academico</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
+            <?php if($_SESSION['role_id'] == 1){ ?>
             <li class="blue-dirty with-sub">
                 <span>
                     <i class="font-icon font-icon-users"></i>
@@ -74,6 +76,7 @@
                     <li><a href="..\roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
+            <?php } ?>
 		<?php
 		}
         if($_SESSION['role_id'] == 3) {
@@ -102,5 +105,11 @@
             </li>
         
         <?php } ?>
+        <li class="blue-dirty">
+    		<a href="..\site\logout.php">
+				<i class="font-icon glyphicon glyphicon-log-out"></i>
+				<span class="lbl">Cerrar Sesion</span>
+			</a>
+		</li>
 	</ul>
 </nav>
