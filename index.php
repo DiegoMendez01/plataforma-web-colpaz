@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                             <div class="dropdown dropdown-typical">
-                                <a href="views/Site/" class="dropdown-toggle no-arr" style="color: white;">
+                                <a href="views/site/" class="dropdown-toggle no-arr" style="color: white;">
                                     <span class="fa fa-graduation-cap"></span>
                                     <span class="lbl">Aula virtual</span>
                                 </a>

@@ -20,16 +20,21 @@ class Users extends Connect
             $password_hash      = $_POST['password_hash'];
             
             if(empty($identification) AND empty($password_hash)){
-                header("Location:".Connect::route()."views/site/index.php?m=2");
+                header("Location:".Connect::route()."views/site/index?msg=2");
                 exit;
             }else{
                 $sql = "
                     SELECT
-                        *
+                        u.*,
+                        r.name as role_name,
+                        r.id as role_id,
+                        c.name as campuse
                     FROM
-                        users
+                        users as u
+                    INNER JOIN roles r ON u.role_id = r.id
+                    INNER JOIN campuses c ON u.idr = c.idr
                     WHERE
-                        identification = ? AND password_hash = ? AND is_active = 1
+                        u.identification = ? AND u.password_hash = ? AND u.is_active = 1
                 ";
                 
                 $stmt = $conectar->prepare($sql);
@@ -37,55 +42,28 @@ class Users extends Connect
                 $stmt->bindValue(2, $password_hash);
                 $stmt->execute();
                 
-                $result = $stmt->fetch();
-                
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 if(is_array($result) AND count($result) > 0){
-                    if($result['validate'] == 1){
-                        $userData = '
-                            SELECT
-                                u.id,
-                                u.name,
-                                u.lastname,
-                                u.email,
-                                u.identification,
-                                u.password_hash,
-                                u.is_active,
-                                u.created,
-                                u.role_id,
-                                r.name AS role_name,
-                                c.name AS campuse
-                            FROM
-                                users u
-                            INNER JOIN roles r ON u.role_id = r.id
-                            INNER JOIN campuses c ON u.idr = c.idr
-                            WHERE
-                                u.id = ?
-                        ';
-                        
-                        $stmtUser = $conectar->prepare($userData);
-                        $stmtUser->bindValue(1, $result['id']);
-                        $stmtUser->execute();
-                        $resultUser = $stmtUser->fetch();
-                        
-                        $_SESSION['id']             = $result['id'];
-                        $_SESSION['name']           = $result['name'];
-                        $_SESSION['lastname']       = $result['lastname'];
-                        $_SESSION['email']          = $result['email'];
-                        $_SESSION['identification'] = $result['identification'];
-                        $_SESSION['password_hash']  = $result['password_hash'];
-                        $_SESSION['is_active']      = $result['is_active'];
-                        $_SESSION['created']        = $result['created'];
-                        $_SESSION['role_id']        = $result['role_id'];
-                        $_SESSION['role_name']      = $resultUser['role_name'];
-                        $_SESSION['campuse']        = $resultUser['campuse'];
+                    if($result[0]['validate'] == 1){
+                        $_SESSION['id']             = $result[0]['id'];
+                        $_SESSION['name']           = $result[0]['name'];
+                        $_SESSION['lastname']       = $result[0]['lastname'];
+                        $_SESSION['email']          = $result[0]['email'];
+                        $_SESSION['identification'] = $result[0]['identification'];
+                        $_SESSION['password_hash']  = $result[0]['password_hash'];
+                        $_SESSION['is_active']      = $result[0]['is_active'];
+                        $_SESSION['created']        = $result[0]['created'];
+                        $_SESSION['role_id']        = $result[0]['role_id'];
+                        $_SESSION['role_name']      = $result[0]['role_name'];
+                        $_SESSION['campuse']        = $result[0]['campuse'];
                         header("Location:".Connect::route()."views/home/");
                         exit;
                     }else{
-                        header("Location:".Connect::route()."views/site/index.php?m=3");
+                        header("Location:".Connect::route()."views/site/index?msg=3");
                         exit;
                     }
                 }else{
-                    header("Location:".Connect::route()."views/site/index.php?m=1");
+                    header("Location:".Connect::route()."views/site/index?msg=1");
                     exit;
                 }
             }
@@ -155,9 +133,9 @@ class Users extends Connect
             
             $sql = "
                 INSERT INTO
-                    users (name, lastname, username, identification_type_id, identification, password_hash, email, phone, phone2, birthdate, sex, created, role_id, api_key, password_reset_token, email_confirmed_token, sms_code)
+                    users (name, lastname, username, identification_type_id, identification, password_hash, email, phone, phone2, birthdate, sex, created, role_id, api_key, password_reset_token, email_confirmed_token, sms_code, profile_image)
                 VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), 5, ?, ?, ?, ?)
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), 5, ?, ?, ?, ?, 'nodisponible.jpg')
             ";
             
             $stmt = $conectar->prepare($sql);

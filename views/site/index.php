@@ -14,22 +14,10 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
 <html>
 
 <head lang="es">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <?php
+    require_once("../mainHead/head.php");
+    ?>
     <title>Aula Virtual::Acceso</title>
-
-    <link href="../../public/img/favicon.144x144.png" rel="apple-touch-icon" type="image/png" sizes="144x144">
-    <link href="../../public/img/favicon.114x114.png" rel="apple-touch-icon" type="image/png" sizes="114x114">
-    <link href="../../public/img/favicon.72x72.png" rel="apple-touch-icon" type="image/png" sizes="72x72">
-    <link href="../../public/img/favicon.57x57.png" rel="apple-touch-icon" type="image/png">
-    <link href="../../public/img/favicon.png" rel="icon" type="image/png">
-    <link href="../../public/img/favicon.ico" rel="shortcut icon">
-
-    <link rel="stylesheet" href="../../public/css/separate/pages/login.min.css">
-    <link rel="stylesheet" href="../../public/css/lib/font-awesome/font-awesome.min.css">
-    <link rel="stylesheet" href="../../public/css/lib/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="../../public/css/main.css">
 </head>
 
 <body>
@@ -47,8 +35,8 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                             <!-- Nos sirve para validar si la clave/documento es incorrecta o los campos vacios
                                  Por medio del modelo Users se valida el case según el valor (1 o 2) que provenga de ese modelo  -->
                             <?php 
-                            if(isset($_GET['m'])){
-                                switch($_GET['m'])
+                            if(isset($_GET['msg'])){
+                                switch($_GET['msg'])
                                 {
                                     case "1":
                                     ?>
@@ -134,13 +122,9 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
         </div>
     </div>
     <!--.page-center-->
-
-    <script src="../../public/js/lib/jquery/jquery.min.js "></script>
-    <script src="../../public/js/lib/tether/tether.min.js "></script>
-    <script src="../../public/js/lib/bootstrap/bootstrap.min.js "></script>
-    <script src="../../public/js/plugins.js "></script>
-    <script type="text/javascript " src="../../public/js/lib/match-height/jquery.matchHeight.min.js "></script>
-    <script src="../../public/js/app.js "></script>
+    <?php
+	require_once("../mainJs/js.php");
+	?>
 </body>
 
 </html>

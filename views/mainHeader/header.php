@@ -1,7 +1,5 @@
 <?php 
-
-    require_once("../../config/connection.php");
-
+require_once("../../config/connection.php");
 ?>
 
 <header class="site-header">
