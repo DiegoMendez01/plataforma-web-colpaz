@@ -14,7 +14,7 @@ function insertOrUpdate(e)
 	
 	var camposVacios = false;
 	
-    formData.forEach(function(value, key) {
+    formData.forEach(function(value, key){
 	    // Excluir id del chequeo de campos vacios
 	    if (key !== 'id' && key !== 'description') {
 	        if (value === "") {
@@ -24,28 +24,33 @@ function insertOrUpdate(e)
 	    }
 	});
     
-    if (camposVacios) {
-        swal("Error!", "Campos vacios", "error");
-    } else {
-    	$.ajax({
-			url: "../../controllers/CourseController.php?op=insertOrUpdate",
-			type: "POST",
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: function(data){
+    if(camposVacios){
+        swal("Error!", "Todos los campos son necesarios", "error");
+        return false;
+    }
+	$.ajax({
+		url: "../../controllers/CourseController.php?op=insertOrUpdate",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
 				$('#course_form')[0].reset();
 				$('#modalGestionCurso').modal('hide');
 				$('#course_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
-					text: "Registro completado.",
+					text: data.msg,
 					type: "success",
 					confirmButtonClass: "btn-success"
 				});
+			}else{
+				swal("Atencion", data.msg, "error");
 			}
-		});
-    }
+		}
+	});
 }
 
 $(document).ready(function(){
@@ -110,6 +115,7 @@ function editar(id){
     	$('#id').val(data.id);
     	$('#name').val(data.name);
     	$('#description').val(data.description);
+    	$('#is_active').val(data.is_active).trigger('change');
     });
 	
 	$('#modalGestionCurso').modal('show');
@@ -142,6 +148,11 @@ function eliminar(id){
 			});
 		}
 	});
+}
+
+function ver(id)
+{
+	window.open("http://localhost/plataforma-web-colpaz/views/courses/view?id=" + id);
 }
 
 $(document).on("click", "#btnnuevo", function(){

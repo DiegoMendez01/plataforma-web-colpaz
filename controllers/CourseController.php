@@ -11,11 +11,7 @@ switch($_GET['op']){
      * se tomara un flujo
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $course->insertCourse($_POST['name'], $_POST['description']);
-        }else{
-            $course->updateCourseById($_POST['id'], $_POST['name'], $_POST['description']);
-        }
+        $course->InsertOrupdateCourse((!empty($_POST['id']) ? $_POST['id'] : null), $_POST['name'], $_POST['description'], $_POST['is_active']);
         break;
     /*
      * Es para listar/obtener los cursos que existen registrados en el sistema con una condicion que este activo.
@@ -57,16 +53,14 @@ switch($_GET['op']){
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
     case 'listCourseById':
-        $datos = $course->getCourseById($_POST['id']);
+        $data = $course->getCourseById($_POST['id']);
         
-        if(is_array($datos) == true AND count($datos)){
-            foreach($datos as $row){
-                $output["id"]                       = $row['id'];
-                $output["name"]                     = $row['name'];
-                $output["description"]                 = $row['description'];
-            }
-            echo json_encode($output);
-        }
+        $output["id"]           = $data['id'];
+        $output["name"]         = $data['name'];
+        $output["description"]  = $data['description'];
+        $output["is_active"]    = $data['is_active'];
+        
+        echo json_encode($output);
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.

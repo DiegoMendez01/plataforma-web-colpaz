@@ -11,7 +11,7 @@
     			<div class="modal-body">
     				<input type="hidden" id="id" name="id" />
     				<div class="form-group row">
-                        <label for="name" class="col-sm-2 form-control-label">Nombre<b>*</b></label>
+                        <label for="name" class="col-sm-2 form-control-label">Nombre <b>*</b></label>
                         <div class="col-sm-10">
                             <p class="form-control-static"><input type="text" class="form-control" id="name" name="name" placeholder="Ingrese el nombre del curso"></p>
                         </div>
@@ -20,6 +20,16 @@
                         <label for="description" class="col-sm-2 form-control-label">Descripcion</label>
                         <div class="col-sm-10">
                             <p class="form-control-static"><input type="text" class="form-control" id="description" name="description" placeholder="Ingrese una descripción"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="is_active" class="col-sm-2 form-control-label">Estado <b>*</b></label>
+                        <div class="col-sm-10">
+                            <select id="is_active" class="form-control" name="is_active">
+                                <option value="">.:: Seleccione ::.</option>
+								<option value="1">Activo</option>
+								<option value="0">Inactivo</option>
+							</select>
                         </div>
                     </div>
     			</div>
