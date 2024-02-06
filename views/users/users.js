@@ -45,58 +45,41 @@ function insertOrUpdate(e)
 	var camposVacios = false;
 	
     formData.forEach(function(value, key) {
-	    // Excluir phone2 y id del chequeo de campos vacios
-	    if (key !== "phone2" && key !== 'id') {
-	        if (value === "") {
-	            camposVacios = true;
-	            return false;  // Para salir del bucle si se encuentra un campo vacio
+		var idFieldValue = formData.get('id');
+	    var isEditing    = idFieldValue !== null && idFieldValue !== undefined && idFieldValue !== '';
+	
+	    if (isEditing){
+	        if(key !== "phone2" && key !== 'password_hash' && key !== 'repeatPass'){
+	            if(value === ""){
+	                camposVacios = true;
+	                return false;
+	            }
+	        }
+	    }else{
+			// Excluir phone2 y id del chequeo de campos vacios
+	        if(key !== "phone2" && key !== 'id'){
+	            if(value === ""){
+	                camposVacios = true;
+	                return false;
+	            }
 	        }
 	    }
 	});
     
-    if (camposVacios) {
+    if(camposVacios){
         swal("Error!", "Campos vacios", "error");
-    } else {
-        var repeatPass = formData.get('repeatPass');
-        var password = formData.get('password_hash');
-        if (repeatPass === password) {
-			formData.delete('repeatPass');
-			var phone = formData.get('phone');
-        	var phone2 = formData.get('phone2');
-        	if(phone2 !== ""){
-				if(phone2 !== phone){
-	            	$.ajax({
-						url: "../../controllers/UserController.php?op=insertOrUpdate",
-						type: "POST",
-						data: formData,
-						contentType: false,
-						processData: false,
-						success: function(data){
-							data = JSON.parse(data);
-							if(data.status){
-						        $('#user_form')[0].reset();
-								$('#modalGestionUsuario').modal('hide');
-								$('#user_data').DataTable().ajax.reload();
-					        	swal({
-									title: "ColPaz Quipama",
-									text: "Registro completado.",
-									type: "success",
-									confirmButtonClass: "btn-success"
-								});
-							}else{
-								var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
-						        data.message.forEach(function (duplicateInfo) {
-						            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
-						        });
-						        swal("Error", errorMessage, "error");
-				        	}
-						}
-					});
-				}else{
-					swal("Error!", "Los celulares deben ser diferentes", "error");
-				}
-			}else{
-				$.ajax({
+        return false;
+    }
+    
+    var repeatPass   = formData.get('repeatPass');
+    var password     = formData.get('password_hash');
+    if (repeatPass === password) {
+		formData.delete('repeatPass');
+		var phone = formData.get('phone');
+    	var phone2 = formData.get('phone2');
+    	if(phone2 !== ""){
+			if(phone2 !== phone){
+            	$.ajax({
 					url: "../../controllers/UserController.php?op=insertOrUpdate",
 					type: "POST",
 					data: formData,
@@ -108,26 +91,65 @@ function insertOrUpdate(e)
 					        $('#user_form')[0].reset();
 							$('#modalGestionUsuario').modal('hide');
 							$('#user_data').DataTable().ajax.reload();
+							
 				        	swal({
 								title: "ColPaz Quipama",
-								text: "Registro completado.",
+								text: data.msg,
 								type: "success",
 								confirmButtonClass: "btn-success"
 							});
 						}else{
-							var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
-					        data.message.forEach(function (duplicateInfo) {
-					            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
-					        });
-					        swal("Error", errorMessage, "error");
+							if(data.error){
+								swal("Advertencia", data.msg, "error");
+							}else{
+								var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
+						        data.msg.forEach(function (duplicateInfo) {
+						            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
+						        });
+						        swal("Advertencia", errorMessage, "error");
+					        }
 			        	}
 					}
 				});
+			}else{
+				swal("Error!", "Los celulares deben ser diferentes", "error");
 			}
-        } else {
-            swal("Error!", "Las claves no coinciden", "error");
-        }
-    };
+		}else{
+			$.ajax({
+				url: "../../controllers/UserController.php?op=insertOrUpdate",
+				type: "POST",
+				data: formData,
+				contentType: false,
+				processData: false,
+				success: function(data){
+					data = JSON.parse(data);
+					if(data.status){
+				        $('#user_form')[0].reset();
+						$('#modalGestionUsuario').modal('hide');
+						$('#user_data').DataTable().ajax.reload();
+			        	swal({
+							title: "ColPaz Quipama",
+							text: data.msg,
+							type: "success",
+							confirmButtonClass: "btn-success"
+						});
+					}else{
+						if(data.error){
+							swal("Advertencia", data.msg, "error");
+						}else{
+							var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
+					        data.msg.forEach(function (duplicateInfo) {
+					            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
+					        });
+					        swal("Advertencia", errorMessage, "error");
+				        }
+		        	}
+				}
+			});
+		}
+    } else {
+        swal("Error!", "Las claves no coinciden", "error");
+    }
 }
 
 $(document).ready(function(){
@@ -199,8 +221,6 @@ function editar(id){
     	$('#email').val(data.email);
     	$('#identification_type_id').val(data.identification_type_id).trigger('change');
     	$('#identification').val(data.identification);
-    	$('#repeatPass').val(data.password_hash);
-    	$('#password_hash').val(data.password_hash);
     	$('#phone').val(data.phone);
     	$('#phone2').val(data.phone2);
     	$('#birthdate').val(data.birthdate);
@@ -250,6 +270,7 @@ function editarRol(id)
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#user_form')[0].reset();
 	$('#modalGestionUsuario').modal('show');

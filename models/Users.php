@@ -77,13 +77,19 @@ class Users extends Connect
         $conectar = parent::connection();
         parent::set_names();
         
+        if(!empty($id)){
+            $condition = 'AND id <> ?';
+        }else{
+            $condition  = '';
+        }
+        
         $validateData = "
             SELECT
                 identification, username, email, phone
             FROM
                 users
             WHERE
-                identification = ? OR username = ? OR email = ? OR phone = ?
+                (identification = ? OR username = ? OR email = ? OR phone = ?)".$condition."
         ";
         
         $stmtDuplicate = $conectar->prepare($validateData);
@@ -91,6 +97,9 @@ class Users extends Connect
         $stmtDuplicate->bindValue(2, $username);
         $stmtDuplicate->bindValue(3, $email);
         $stmtDuplicate->bindValue(4, $phone);
+        if(!empty($id)){
+            $stmtDuplicate->bindValue(5, $id);
+        }
         $stmtDuplicate->execute();
         
         $duplicatedUser = $stmtDuplicate->fetch(PDO::FETCH_ASSOC);
@@ -172,51 +181,71 @@ class Users extends Connect
                 }
             }else{
                 if(empty($password_hash)){
-                    $sql = "
+                    $sqlU = "
                         UPDATE
                             users
                         SET
                             name                    = ?,
                             lastname                = ?,
+                            username                = ?,
+                            identification_type_id  = ?,
+                            identification          = ?,
                             email                   = ?,
                             phone                   = ?,
-                            phone2                  = ?
+                            phone2                  = ?,
+                            birthdate               = ?,
+                            sex                     = ?
                         WHERE
                             id = ? AND is_active = 1
                     ";
                     
-                    $stmtUpdate    = $conectar->prepare($sql);
+                    $stmtUpdate    = $conectar->prepare($sqlU);
                     $stmtUpdate->bindValue(1, $name);
                     $stmtUpdate->bindValue(2, $lastname);
-                    $stmtUpdate->bindValue(3, $email);
-                    $stmtUpdate->bindValue(4, $phone);
-                    $stmtUpdate->bindValue(5, $phone2);
-                    $stmtUpdate->bindValue(6, $id);
+                    $stmtUpdate->bindValue(3, $username);
+                    $stmtUpdate->bindValue(4, $identification_type_id);
+                    $stmtUpdate->bindValue(5, $identification);
+                    $stmtUpdate->bindValue(6, $email);
+                    $stmtUpdate->bindValue(7, $phone);
+                    $stmtUpdate->bindValue(8, $phone2);
+                    $stmtUpdate->bindValue(9, $birthdate);
+                    $stmtUpdate->bindValue(10, $sex);
+                    $stmtUpdate->bindValue(11, $id);
                     $request = $stmtUpdate->execute();
                     $action  = 2;
                 }else{
-                    $sql = "
+                    $sqlU = "
                         UPDATE
                             users
                         SET
                             name                    = ?,
                             lastname                = ?,
+                            username                = ?,
+                            identification_type_id  = ?,
+                            identification          = ?,
                             password_hash           = ?,
                             email                   = ?,
                             phone                   = ?,
-                            phone2                  = ?
+                            phone2                  = ?,
+                            birthdate               = ?,
+                            sex                     = ?
                         WHERE
                             id = ? AND is_active = 1
                     ";
                     
-                    $stmtUpdate = $conectar->prepare($sql);
+                    $stmtUpdate = $conectar->prepare($sqlU);
                     $stmtUpdate->bindValue(1, $name);
                     $stmtUpdate->bindValue(2, $lastname);
-                    $stmtUpdate->bindValue(3, $password_hash);
-                    $stmtUpdate->bindValue(4, $email);
-                    $stmtUpdate->bindValue(5, $phone);
-                    $stmtUpdate->bindValue(6, $phone2);
-                    $stmtUpdate->bindValue(7, $id);
+                    $stmtUpdate->bindValue(3, $username);
+                    $stmtUpdate->bindValue(4, $identification_type_id);
+                    $stmtUpdate->bindValue(5, $identification);
+                    $stmtUpdate->bindValue(6, $password_hash);
+                    $stmtUpdate->bindValue(7, $email);
+                    $stmtUpdate->bindValue(8, $phone);
+                    $stmtUpdate->bindValue(9, $phone2);
+                    $stmtUpdate->bindValue(10, $birthdate);
+                    $stmtUpdate->bindValue(11, $sex);
+                    $stmtUpdate->bindValue(12, $id);
                     $request = $stmtUpdate->execute();
                     $action  = 3;
                 }
