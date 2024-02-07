@@ -150,6 +150,7 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#periods_form')[0].reset();
 	$('#modalGestionPeriods').modal('show');
