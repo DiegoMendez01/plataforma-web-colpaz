@@ -26,26 +26,31 @@ function insertOrUpdate(e)
     
     if (camposVacios) {
         swal("Error!", "Campos vacios", "error");
-    } else {
-    	$.ajax({
-			url: "../../controllers/RoleController.php?op=insertOrUpdate",
-			type: "POST",
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: function(data){
+        return false;
+    }
+	$.ajax({
+		url: "../../controllers/RoleController.php?op=insertOrUpdate",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
 				$('#roles_form')[0].reset();
 				$('#modalGestionRoles').modal('hide');
 				$('#role_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
-					text: "Registro completado.",
+					text: data.msg,
 					type: "success",
 					confirmButtonClass: "btn-success"
 				});
+			}else{
+				swal("Atencion", data.msg, "error");
 			}
-		});
-    }
+		}
+	});
 }
 
 $(document).ready(function(){
@@ -145,6 +150,7 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#roles_form')[0].reset();
 	$('#modalGestionRoles').modal('show');

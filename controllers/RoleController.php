@@ -12,11 +12,7 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $roles->insertRole($_POST['name'], $_POST['functions']);
-        } else {
-            $roles->updateRoleById($_POST['id'], $_POST['name'], $_POST['functions']);
-        }
+        $roles->updateOrInsertRole($_POST['id'], $_POST['name'], $_POST['functions']);
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.

@@ -25,34 +25,33 @@ function insertOrUpdate(e)
 	});
     
     if (camposVacios) {
-        swal("Error!", "Campos vacios", "error");
-    } else {
-    	$.ajax({
-			url: "../../controllers/StudentTeacherController.php?op=insertOrUpdate",
-			type: "POST",
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: function(data){
-				if(data == ''){
-					$('#studentteacher_form')[0].reset();
-					$('#modalGestionStudentTeacher').modal('hide');
-					$('#studentteacher_data').DataTable().ajax.reload();
-		        	swal({
-						title: "ColPaz Quipama",
-						text: "Registro completado.",
-						type: "success",
-						confirmButtonClass: "btn-success"
-					});
-				}else{
-					var data = JSON.parse(data);
-					if(data.status == false){
-						swal('Atencion', data.msg, 'error');
-					}
-				}
-			}
-		});
+        swal("Error!", "Todos los campos son necesarios", "error");
+        return false;
     }
+    
+	$.ajax({
+		url: "../../controllers/StudentTeacherController.php?op=insertOrUpdate",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
+				$('#studentteacher_form')[0].reset();
+				$('#modalGestionStudentTeacher').modal('hide');
+				$('#studentteacher_data').DataTable().ajax.reload();
+	        	swal({
+					title: "ColPaz Quipama",
+					text: data.msg,
+					type: "success",
+					confirmButtonClass: "btn-success"
+				});
+			}else{
+				swal("Atencion", data.msg, "error");
+			}
+		}
+	});
 }
 
 $(document).ready(function(){
@@ -194,6 +193,7 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#studentteacher_form')[0].reset();
 	// Fetch users and populate the user dropdown

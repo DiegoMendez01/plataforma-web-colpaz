@@ -22,11 +22,7 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $teacherCourse->insertTeacherCourse($_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
-        } else {
-            $teacherCourse->updateTeacherCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
-        }
+        $teacherCourse->insertOrUpdateTeacherCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
@@ -43,10 +39,10 @@ switch($_GET['op'])
             $degreeData    = $degree->getDegreeById($row['degree_id']);
             
             $sub_array      = [];
-            $sub_array[]    = $courseData[0]['name'];
-            $sub_array[]    = $classroomData[0]['name'];
-            $sub_array[]    = $degreeData[0]['name'];
-            $sub_array[]    = $periodData[0]['name'];
+            $sub_array[]    = $courseData['name'];
+            $sub_array[]    = $classroomData['name'];
+            $sub_array[]    = $degreeData['name'];
+            $sub_array[]    = $periodData['name'];
             $sub_array[]    = $userData[0]['name'].' '.$userData[0]['lastname'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
