@@ -76,6 +76,15 @@
                     <li><a href="..\roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
+            <li class="blue-dirty with-sub">
+                <span>
+                    <i class="font-icon font-icon-notebook"></i>
+                    <span class="lbl">Gestion Sedes</span>
+                </span>
+                <ul>
+                    <li><a href="..\campuses\"><span class="lbl">Sedes</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                </ul>
+            </li>
             <?php } ?>
 		<?php
 		}

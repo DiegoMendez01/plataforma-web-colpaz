@@ -20,7 +20,7 @@
                         <div class="form-group row">
                             <label for="functions" class="col-sm-2 form-control-label">Funciones<b>*</b></label>
                             <div class="col-sm-10">
-                                <p class="form-control-static"><textarea type="text" class="form-control" id="functions" name="functions" placeholder="Ingrese la funcion del rol"></textarea></p>
+                                <p class="form-control-static"><textarea id="functions" class="form-control" name="functions" rows="4"></textarea></p>
                             </div>
                         </div>
     				</div>

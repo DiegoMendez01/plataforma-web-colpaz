@@ -3,7 +3,7 @@
 require_once("../config/connection.php");
 require_once("../models/Campuses.php");
 
-$campuses = new $Campuses();
+$campuse = new Campuses();
 
 switch($_GET['op'])
 {
@@ -12,31 +12,26 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $Campuses->insertCampuse($_POST['name'], $_POST['description']);
-        } else {
-            $Campuses->updateCampuseById($_POST['id'], $_POST['name'], $_POST['description']);
-        }
+        $campuse->insertOrUpdateCampuse($_POST['idr'], $_POST['name'], $_POST['description']);
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listCampuse':
-        $datos = $campuses->getCampuses();
+        $datos = $campuse->getCampuses();
         $data  = [];
         foreach ($datos as $row) {
             $sub_array      = [];
             $sub_array[]    = $row['name'];
-            $sub_array[]    = $row['description'];
             $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }
             
-            $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
-            $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
-            $sub_array[] = '<button type="button" onClick="ver('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
+            $sub_array[] = '<button type="button" onClick="editar('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
+            $sub_array[] = '<button type="button" onClick="eliminar('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
+            $sub_array[] = '<button type="button" onClick="ver('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
             
             $data[] = $sub_array;
         }
@@ -51,26 +46,23 @@ switch($_GET['op'])
     /*
      * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
      */
-    case 'deleteCampuseById':
-        if(isset($_POST['id'])){
-            $roles->deleteCampusesById($_POST['id']);
+    case 'deleteCampuseByIdr':
+        if(isset($_POST['idr'])){
+            $campuse->deleteCampuseById($_POST['idr']);
         }
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
-    case 'listCampuseById':
-        $datos = $campuses->getCampusesById($_POST['id']);
+    case 'listCampuseByIdr':
+        $data = $campuse->getCampuseById($_POST['idr']);
         
-        if(is_array($datos) == true AND count($datos)){
-            foreach($datos as $row){
-                $output["id"]           = $row['id'];
-                $output["name"]         = $row['name'];
-                $output["description"]  = $row['description'];
-            }
-            echo json_encode($output);
-        }
+        $output["idr"]          = $data['idr'];
+        $output["name"]         = $data['name'];
+        $output["description"]  = $data['description'];
+        
+        echo json_encode($output);
         break;
 }
 ?>

@@ -56,15 +56,13 @@ switch($_GET['op'])
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
     case 'listPeriodById':
-        $datos = $period->getPeriodsById($_POST['id']);
+        $data = $period->getPeriodsById($_POST['id']);
 
-        if(is_array($datos) == true AND count($datos)){
-            foreach($datos as $row){
-                $output["id"]                       = $row['id'];
-                $output["name"]                     = $row['name'];
-            }
-            echo json_encode($output);
-        }
+        
+        $output["id"]                       = $data['id'];
+        $output["name"]                     = $data['name'];
+        
+        echo json_encode($output);
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
