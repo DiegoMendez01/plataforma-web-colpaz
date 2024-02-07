@@ -5,7 +5,7 @@ class Courses extends Connect
     /*
      * Funcion para insertar/registrar cursos por medio de un formulario
      */
-    public function insertOrUpdateCourse($id = null, $name, $description)
+    public function insertOrUpdateCourse($id = null, $name, $description = null)
     {
         if(empty($name)){
             $answer = [

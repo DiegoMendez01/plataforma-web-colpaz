@@ -11,7 +11,7 @@ switch($_GET['op']){
      * se tomara un flujo
      */
     case 'insertOrUpdate':
-        $course->InsertOrupdateCourse((!empty($_POST['id']) ? $_POST['id'] : null), $_POST['name'], (!empty($_POST['description']) ? $_POST['description'] : null));
+        $course->InsertOrupdateCourse($_POST['id'], $_POST['name'], $_POST['description']);
         break;
     /*
      * Es para listar/obtener los cursos que existen registrados en el sistema con una condicion que este activo.

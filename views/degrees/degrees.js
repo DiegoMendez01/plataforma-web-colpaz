@@ -26,26 +26,32 @@ function insertOrUpdate(e)
     
     if (camposVacios) {
         swal("Error!", "Campos vacios", "error");
-    } else {
-    	$.ajax({
-			url: "../../controllers/DegreeController.php?op=insertOrUpdate",
-			type: "POST",
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: function(data){
+        return false;
+    }
+    
+	$.ajax({
+		url: "../../controllers/DegreeController.php?op=insertOrUpdate",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
 				$('#degree_form')[0].reset();
 				$('#modalGestionDegree').modal('hide');
 				$('#degree_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
-					text: "Registro completado.",
+					text: data.msg,
 					type: "success",
 					confirmButtonClass: "btn-success"
 				});
+			}else{
+				swal("Atencion", data.msg, "error");
 			}
-		});
-    }
+		}
+	});
 }
 
 $(document).ready(function(){
@@ -144,6 +150,7 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#degree_form')[0].reset();
 	$('#modalGestionDegree').modal('show');
