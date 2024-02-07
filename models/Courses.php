@@ -5,7 +5,7 @@ class Courses extends Connect
     /*
      * Funcion para insertar/registrar cursos por medio de un formulario
      */
-    public function insertOrUpdateCourse($id = null, $name, $description = null, $is_active)
+    public function insertOrUpdateCourse($id = null, $name, $description)
     {
         if(empty($name)){
             $answer = [
@@ -43,16 +43,15 @@ class Courses extends Connect
                     
                     $sqlInsert = "
                         INSERT INTO
-                            courses (name, description, token, is_active, created)
+                            courses (name, description, token, created)
                         VALUES
-                            (?, ?, ?, ?, now())
+                            (?, ?, ?, now())
                     ";
                     
                     $stmtInsert = $conectar->prepare($sqlInsert);
                     $stmtInsert->bindValue(1, $name);
                     $stmtInsert->bindValue(2, $description);
                     $stmtInsert->bindValue(3, $token);
-                    $stmtInsert->bindValue(4, $is_active);
                     $request    = $stmtInsert->execute();
                     $action     = 1;
                 }else{
@@ -61,8 +60,7 @@ class Courses extends Connect
                             courses
                         SET
                             name = ?,
-                            description = ?,
-                            is_active = ?
+                            description = ?
                         WHERE
                             id = ?
                     ";
@@ -70,8 +68,7 @@ class Courses extends Connect
                     $stmtUpdate = $conectar->prepare($sqlUpdate);
                     $stmtUpdate->bindValue(1, $name);
                     $stmtUpdate->bindValue(2, $description);
-                    $stmtUpdate->bindValue(3, $is_active);
-                    $stmtUpdate->bindValue(4, $id);
+                    $stmtUpdate->bindValue(3, $id);
                     $request    = $stmtUpdate->execute();
                     $action     = 2;
                 }

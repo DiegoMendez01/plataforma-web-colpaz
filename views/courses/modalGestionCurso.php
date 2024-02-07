@@ -22,16 +22,6 @@
                             <p class="form-control-static"><input type="text" class="form-control" id="description" name="description" placeholder="Ingrese una descripción"></p>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="is_active" class="col-sm-2 form-control-label">Estado <b>*</b></label>
-                        <div class="col-sm-10">
-                            <select id="is_active" class="form-control" name="is_active">
-                                <option value="">.:: Seleccione ::.</option>
-								<option value="1">Activo</option>
-								<option value="0">Inactivo</option>
-							</select>
-                        </div>
-                    </div>
     			</div>
     			<div class="modal-footer">
     				<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Cerrar</button>

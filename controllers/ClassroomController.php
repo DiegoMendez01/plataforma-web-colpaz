@@ -12,11 +12,7 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $classroom->insertClassroom($_POST['name']);
-        } else {
-            $classroom->updateClassroom($_POST['id'], $_POST['name']);
-        }
+        $classroom->InsertOrupdateClassroom((!empty($_POST['id']) ? $_POST['id'] : null), $_POST['name']);
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
@@ -60,15 +56,12 @@ switch($_GET['op'])
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
     case 'listClassroomById':
-        $datos = $classroom->getClassroomById($_POST['id']);
+        $data = $classroom->getClassroomById($_POST['id']);
         
-        if(is_array($datos) == true AND count($datos)){
-            foreach($datos as $row){
-                $output["id"]                       = $row['id'];
-                $output["name"]                     = $row['name'];
-            }
-            echo json_encode($output);
-        }
+        $output["id"]           = $data['id'];
+        $output["name"]         = $data['name'];
+        
+        echo json_encode($output);
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.

@@ -16,7 +16,7 @@ function insertOrUpdate(e)
 	
     formData.forEach(function(value, key) {
 	    // Excluir id del chequeo de campos vacios
-	    if (key !== 'id') {
+	    if (key !== 'id'){
 	        if (value === "") {
 	            camposVacios = true;
 	            return false;  // Para salir del bucle si se encuentra un campo vacio
@@ -24,28 +24,33 @@ function insertOrUpdate(e)
 	    }
 	});
     
-    if (camposVacios) {
-        swal("Error!", "Campos vacios", "error");
-    } else {
-    	$.ajax({
-			url: "../../controllers/ClassroomController.php?op=insertOrUpdate",
-			type: "POST",
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: function(data){
+    if(camposVacios){
+        swal("Error!", "Todos los campos son necesarios", "error");
+        return false;
+    }
+	$.ajax({
+		url: "../../controllers/ClassroomController.php?op=insertOrUpdate",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
 				$('#classroom_form')[0].reset();
 				$('#modalGestionClassroom').modal('hide');
 				$('#classroom_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
-					text: "Registro completado.",
+					text: data.msg,
 					type: "success",
 					confirmButtonClass: "btn-success"
 				});
+			}else{
+				swal("Atencion", data.msg, "error");
 			}
-		});
-    }
+		}
+	});
 }
 
 $(document).ready(function(){
@@ -144,6 +149,7 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#classroom_form')[0].reset();
 	$('#modalGestionClassroom').modal('show');
