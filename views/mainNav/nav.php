@@ -80,7 +80,7 @@
 		<?php
 		}
         if($_SESSION['role_id'] == 3) {
-            require_once("../../models/TeacherCourses");
+            require_once("../../models/TeacherCourses.php");
         
             $teacherCourse = new TeacherCourses();
             $dataAll = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id']);
