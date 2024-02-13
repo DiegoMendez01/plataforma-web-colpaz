@@ -1,9 +1,12 @@
 <?php
 require_once("../../config/connection.php");
+require_once("../../models/Contents.php");
 
-if(!empty($_GET['course']) AND isset($_SESSION['id'])){
-    $courseId = $_GET['course'];
-    
+if(!empty($_SESSION['id'])){
+    if(!empty($_GET['course']) AND isset($_SESSION['id'])){
+        $courseId   = $_GET['course'];
+        $content    = new Contents();
+        $dataAllContent    = $content->getContentByTeacherCourseId($courseId)
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,9 +48,13 @@ if(!empty($_GET['course']) AND isset($_SESSION['id'])){
 			<div class="box-typical box-typical-padding">
 				<button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
 			</div>
-			
-			<div class="col-md-12">
-			</div>
+			<?php
+    			if($dataAllContent['rowContent'] > 0){
+    			    while($data = $dataAllContent['queryContent']->fetch(PDO::FETCH_ASSOC)){ ?>
+	                    
+    			<?php
+    			    }
+    			}?>
 		</div>
 	</div>
     
@@ -61,7 +68,8 @@ if(!empty($_GET['course']) AND isset($_SESSION['id'])){
     <script src="contents.js" type="text/javascript"></script>
 </body>
 </html>
-<?php 
+<?php
+    }
 }else{
     header("Location:" . Connect::route() . "views/site/");
     exit;

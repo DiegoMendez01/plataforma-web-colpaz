@@ -218,6 +218,7 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#teachercourse_form')[0].reset();
 	$.post("../../controllers/DegreeController.php?op=listDegrees", function (degrees) {
