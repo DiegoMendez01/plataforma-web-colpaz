@@ -128,7 +128,7 @@ class Periods extends Connect
         $stmt->bindValue(1, $id);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     /*

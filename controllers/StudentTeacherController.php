@@ -24,11 +24,7 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        if(empty($_POST['id'])){
-            $studentTeacher->insertStudentTeacher($_POST['user_id'], $_POST['teacher_course_id'], $_POST['period_id']);
-        } else {
-            $studentTeacher->updateStudentTeacher($_POST['id'], $_POST['user_id'], $_POST['teacher_course_id'], $_POST['period_id']);
-        }
+        $studentTeacher->insertOrUpdateStudentTeacher($_POST['id'], $_POST['user_id'], $_POST['teacher_course_id'], $_POST['period_id']);
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
@@ -41,17 +37,17 @@ switch($_GET['op'])
             $studentData           = $user->getUserById($row['user_id']);
             $teacherCourseData     = $teacherCourse->getTeacherCourseById($row['teacher_course_id']);
             $periodData            = $period->getPeriodsById($row['period_id']);
-            $classroomData         = $classroom->getClassroomById($teacherCourseData[0]['classroom_id']);
-            $courseData            = $course->getCourseById($teacherCourseData[0]['course_id']);
-            $teacherData           = $user->getUserById($teacherCourseData[0]['user_id']);
+            $classroomData         = $classroom->getClassroomById($teacherCourseData['classroom_id']);
+            $courseData            = $course->getCourseById($teacherCourseData['course_id']);
+            $teacherData           = $user->getUserById($teacherCourseData['user_id']);
             
             
             $sub_array      = [];
             $sub_array[]    = $studentData[0]['name'].' '.$studentData[0]['lastname'];
             $sub_array[]    = $teacherData[0]['name'].' '.$teacherData[0]['lastname'];
-            $sub_array[]    = $courseData[0]['name'];
-            $sub_array[]    = $classroomData[0]['name'];
-            $sub_array[]    = $periodData[0]['name'];
+            $sub_array[]    = $courseData['name'];
+            $sub_array[]    = $classroomData['name'];
+            $sub_array[]    = $periodData['name'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }

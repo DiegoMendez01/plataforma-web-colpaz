@@ -1,9 +1,9 @@
 <?php
 // Importa la clase del modelo
 require_once("../config/connection.php");
-require_once("../models/Classrooms.php");
+require_once("../models/Campuses.php");
 
-$classroom = new Classrooms();
+$campuse = new Campuses();
 
 switch($_GET['op'])
 {
@@ -12,14 +12,14 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $classroom->InsertOrupdateClassroom($_POST['id'], $_POST['name']);
+        $campuse->insertOrUpdateCampuse($_POST['idr'], $_POST['name'], $_POST['description']);
         break;
     /*
      * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
-    case 'listClassroom':
-        $datos = $classroom->getClassrooms();
+    case 'listCampuse':
+        $datos = $campuse->getCampuses();
         $data  = [];
         foreach ($datos as $row) {
             $sub_array      = [];
@@ -29,9 +29,9 @@ switch($_GET['op'])
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }
             
-            $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
-            $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
-            $sub_array[] = '<button type="button" onClick="ver('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
+            $sub_array[] = '<button type="button" onClick="editar('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
+            $sub_array[] = '<button type="button" onClick="eliminar('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
+            $sub_array[] = '<button type="button" onClick="ver('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
             
             $data[] = $sub_array;
         }
@@ -46,29 +46,23 @@ switch($_GET['op'])
     /*
      * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
      */
-    case 'deleteClassroomById':
-        if(isset($_POST['id'])){
-            $classroom->deleteClassroomById($_POST['id']);
+    case 'deleteCampuseByIdr':
+        if(isset($_POST['idr'])){
+            $campuse->deleteCampuseById($_POST['idr']);
         }
         break;
     /*
      * Es para listar/obtener los usuarios que existen registrados en el sistema.
      * Pero debe mostrar el usuario por medio de su identificador unico
      */
-    case 'listClassroomById':
-        $data = $classroom->getClassroomById($_POST['id']);
+    case 'listCampuseByIdr':
+        $data = $campuse->getCampuseById($_POST['idr']);
         
-        $output["id"]           = $data['id'];
+        $output["idr"]          = $data['idr'];
         $output["name"]         = $data['name'];
+        $output["description"]  = $data['description'];
         
         echo json_encode($output);
-        break;
-    /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     */
-    case 'listClassrooms':
-        $datos = $classroom->getClassrooms();
-        echo json_encode($datos);
         break;
 }
 ?>

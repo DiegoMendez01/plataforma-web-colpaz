@@ -34,21 +34,19 @@ function insertOrUpdate(e)
 			contentType: false,
 			processData: false,
 			success: function(data){
-				if(data == ''){
+				data = JSON.parse(data);
+				if(data.status){
 					$('#teachercourse_form')[0].reset();
 					$('#modalGestionTeacherCourse').modal('hide');
 					$('#teachercourse_data').DataTable().ajax.reload();
 		        	swal({
 						title: "ColPaz Quipama",
-						text: "Registro completado.",
+						text: data.msg,
 						type: "success",
 						confirmButtonClass: "btn-success"
 					});
 				}else{
-					var data = JSON.parse(data);
-					if(data.status == false){
-						swal('Atencion', data.msg, 'error');
-					}
+					swal("Atencion", data.msg, "error");
 				}
 			}
 		});
@@ -193,7 +191,7 @@ function editar(id){
 function eliminar(id){
 	swal({
     	title: "ColPaz Quipama",
-    	text: "¿Esta seguro de eliminar el curso?",
+    	text: "¿Esta seguro de eliminar el curso profesor?",
     	type: "error",
     	showCancelButton: true,
     	confirmButtonClass: "btn-danger",
@@ -207,7 +205,7 @@ function eliminar(id){
 			$.post("../../controllers/TeacherCourseController.php?op=deleteTeacherCourseById", { id : id}, function(data) {
         	});
         	
-        	$('#usercourse_data').DataTable().ajax.reload();
+        	$('#teachercourse_data').DataTable().ajax.reload();
         	
 			swal({
 				title: "ColPaz Quipama",

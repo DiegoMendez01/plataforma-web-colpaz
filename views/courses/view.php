@@ -2,11 +2,14 @@
 
 require_once("../../config/connection.php");
 require_once("../../models/Courses.php");
+require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
-        $course     = new Courses();
-        $courseData = $course->getCourseById($_GET['id']);
+        $course      = new Courses();
+        $campuse     = new Campuses();
+        $courseData  = $course->getCourseById($_GET['id']);
+        $campuseData = $campuse->getCampuseById($courseData['idr']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,7 +62,7 @@ if(isset($_SESSION['id'])){
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
-                            <td><?= (($courseData['is_active']) ?  'Activo' : 'Inactivo') ?></td>
+                            <td><?= (($courseData['is_active']) ?  '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Inactivo</span>') ?></td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
@@ -71,7 +74,7 @@ if(isset($_SESSION['id'])){
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Sede</th>
-                            <td><?= $courseData['idr'] ?></td>
+                            <td><span class="label label-primary"><?= $campuseData['name'] ?></span></td>
                         </tr>
                     </tbody>
                 </table>

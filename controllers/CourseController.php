@@ -11,7 +11,7 @@ switch($_GET['op']){
      * se tomara un flujo
      */
     case 'insertOrUpdate':
-        $course->InsertOrupdateCourse((!empty($_POST['id']) ? $_POST['id'] : null), $_POST['name'], $_POST['description'], $_POST['is_active']);
+        $course->InsertOrupdateCourse($_POST['id'], $_POST['name'], $_POST['description']);
         break;
     /*
      * Es para listar/obtener los cursos que existen registrados en el sistema con una condicion que este activo.
@@ -58,7 +58,6 @@ switch($_GET['op']){
         $output["id"]           = $data['id'];
         $output["name"]         = $data['name'];
         $output["description"]  = $data['description'];
-        $output["is_active"]    = $data['is_active'];
         
         echo json_encode($output);
         break;

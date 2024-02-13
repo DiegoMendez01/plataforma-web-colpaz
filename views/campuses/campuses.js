@@ -2,7 +2,7 @@ var tabla;
 
 function init()
 {
-	$('#degree_form').on("submit", function(e){
+	$('#campuse_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
 }
@@ -10,13 +10,13 @@ function init()
 function insertOrUpdate(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#degree_form')[0]);
+	var formData = new FormData($('#campuse_form')[0]);
 	
 	var camposVacios = false;
 	
-    formData.forEach(function(value, key) {
+    formData.forEach(function(value, key){
 	    // Excluir id del chequeo de campos vacios
-	    if (key !== 'id') {
+	    if (key !== 'idr') {
 	        if (value === "") {
 	            camposVacios = true;
 	            return false;  // Para salir del bucle si se encuentra un campo vacio
@@ -24,13 +24,12 @@ function insertOrUpdate(e)
 	    }
 	});
     
-    if (camposVacios) {
-        swal("Error!", "Campos vacios", "error");
+    if(camposVacios){
+        swal("Error!", "Todos los campos son necesarios", "error");
         return false;
     }
-    
 	$.ajax({
-		url: "../../controllers/DegreeController.php?op=insertOrUpdate",
+		url: "../../controllers/CampuseController.php?op=insertOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -38,9 +37,9 @@ function insertOrUpdate(e)
 		success: function(data){
 			data = JSON.parse(data);
 			if(data.status){
-				$('#degree_form')[0].reset();
-				$('#modalGestionDegree').modal('hide');
-				$('#degree_data').DataTable().ajax.reload();
+				$('#campuse_form')[0].reset();
+				$('#modalGestionCampuse').modal('hide');
+				$('#campuse_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
 					text: data.msg,
@@ -55,7 +54,7 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
-	tabla = $('#degree_data').dataTable({
+	tabla = $('#campuse_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
@@ -69,7 +68,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/DegreeController.php?op=listDegree',
+			url: '../../controllers/CampuseController.php?op=listCampuse',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -79,7 +78,7 @@ $(document).ready(function(){
 		"bDestroy": true,
         "responsive": true,
         "bInfo":true,
-        "iDisplayLength": 10,
+        "iDisplayLength": 5,
         "autoWidth": false,
         "language": {
             "sProcessing":     "Procesando...",
@@ -108,22 +107,23 @@ $(document).ready(function(){
 	}).DataTable();
 });
 
-function editar(id){
+function editar(idr){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/DegreeController.php?op=listDegreeById", { id : id}, function(data) {
+	$.post("../../controllers/CampuseController.php?op=listCampuseByIdr", { idr : idr}, function(data) {
     	data = JSON.parse(data);
-    	$('#id').val(data.id);
+    	$('#idr').val(data.idr);
     	$('#name').val(data.name);
+    	$('#description').val(data.description);
     });
 	
-	$('#modalGestionDegree').modal('show');
+	$('#modalGestionCampuse').modal('show');
 }
 
-function eliminar(id){
+function eliminar(idr){
 	swal({
     	title: "ColPaz Quipama",
-    	text: "¿Esta seguro de eliminar el grado academico?",
+    	text: "¿Esta seguro de eliminar la sede?",
     	type: "error",
     	showCancelButton: true,
     	confirmButtonClass: "btn-danger",
@@ -134,10 +134,10 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/DegreeController.php?op=deleteDegreeById", { id : id}, function(data) {
+			$.post("../../controllers/CampuseController.php?op=deleteCampuseByIdr", { idr : idr}, function(data) {
         	});
         	
-        	$('#degree_data').DataTable().ajax.reload();
+        	$('#campuse_data').DataTable().ajax.reload();
         	
 			swal({
 				title: "ColPaz Quipama",
@@ -150,10 +150,10 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
-	document.querySelector('#id').value = '';
+	document.querySelector('#idr').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
-	$('#degree_form')[0].reset();
-	$('#modalGestionDegree').modal('show');
+	$('#campuse_form')[0].reset();
+	$('#modalGestionCampuse').modal('show');
 });
 
 init();

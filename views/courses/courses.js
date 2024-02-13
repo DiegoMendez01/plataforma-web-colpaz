@@ -115,7 +115,6 @@ function editar(id){
     	$('#id').val(data.id);
     	$('#name').val(data.name);
     	$('#description').val(data.description);
-    	$('#is_active').val(data.is_active).trigger('change');
     });
 	
 	$('#modalGestionCurso').modal('show');
@@ -156,6 +155,7 @@ function ver(id)
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#course_form')[0].reset();
 	$('#modalGestionCurso').modal('show');

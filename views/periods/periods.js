@@ -114,7 +114,6 @@ function editar(id){
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
-    	$('#description').val(data.description);
     });
 	
 	$('#modalGestionPeriods').modal('show');
@@ -150,6 +149,7 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#periods_form')[0].reset();
 	$('#modalGestionPeriods').modal('show');

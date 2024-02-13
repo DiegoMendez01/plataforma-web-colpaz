@@ -1,13 +1,13 @@
 <?php
 
-class Degrees extends Connect
+class Campuses extends Connect
 {
     /*
-     * Funcion para insertar/registrar grados por medio de un formulario
+     * Funcion para insertar un nuevo campus.
      */
-    public function updateOrInsertDegree($id = null, $name)
+    public function insertOrUpdateCampuse($idr = null, $name, $description)
     {
-        if(empty($name)){
+        if(empty($name) OR empty($description)){
             $answer = [
                 'status' => false,
                 'msg'    => 'Todos los campos son necesarios'
@@ -20,48 +20,51 @@ class Degrees extends Connect
                 SELECT
                     *
                 FROM
-                    degrees
+                    campuses
                 WHERE
-                    name = ? AND id != ? AND is_active != 0
+                    name = ? AND idr != ? AND is_active != 0
             ';
             
             $query  = $conectar->prepare($sql);
             $query->bindValue(1, $name);
-            $query->bindValue(2, $id);
+            $query->bindValue(2, $idr);
             $query->execute();
             $result = $query->fetch(PDO::FETCH_ASSOC);
             
             if($result){
                 $answer = [
                     'status' => false,
-                    'msg'    => 'El grado academico ya existe'
+                    'msg'    => 'La sede ya existe'
                 ];
             }else{
-                if(empty($id)){
+                if(empty($idr)){
                     $sqlInsert = "
                         INSERT INTO
-                            degrees (name, created)
+                            campuses (name, description, created)
                         VALUES
-                            (?, now())
+                            (?, ?, now())
                     ";
                     
                     $stmtInsert = $conectar->prepare($sqlInsert);
                     $stmtInsert->bindValue(1, $name);
+                    $stmtInsert->bindValue(2, $description);
                     $request    = $stmtInsert->execute();
                     $action     = 1;
                 }else{
                     $sqlUpdate = "
                         UPDATE
-                            degrees
+                            campuses
                         SET
-                            name      = ?
+                            name        = ?,
+                            description = ?
                         WHERE
-                            id = ?
+                            idr = ?
                     ";
                     
                     $stmtUpdate = $conectar->prepare($sqlUpdate);
                     $stmtUpdate->bindValue(1, $name);
-                    $stmtUpdate->bindValue(2, $id);
+                    $stmtUpdate->bindValue(2, $description);
+                    $stmtUpdate->bindValue(3, $idr);
                     $request    = $stmtUpdate->execute();
                     $action     = 2;
                 }
@@ -70,18 +73,18 @@ class Degrees extends Connect
                     if($action == 1){
                         $answer = [
                             'status' => true,
-                            'msg'    => 'Grado academico creado correctamente'
+                            'msg'    => 'Sede creada correctamente'
                         ];
                     }else{
                         $answer = [
                             'status' => true,
-                            'msg'    => 'Grado academico actualizado correctamente'
+                            'msg'    => 'Sede actualizada correctamente'
                         ];
                     }
                 }else{
                     $answer = [
                         'status' => false,
-                        'msg'    => 'Error al crear el grado academico'
+                        'msg'    => 'Error al crear la sede'
                     ];
                 }
             }
@@ -89,54 +92,52 @@ class Degrees extends Connect
         echo json_encode($answer, JSON_UNESCAPED_UNICODE);
     }
     /*
-     * Funcion para traer todos los grados registrados hasta el momento
+     * Funcion para obtener todos los campus activos.
      */
-    public function getDegrees()
+    public function getCampuses()
     {
         $conectar = parent::connection();
         parent::set_names();
         
         $sql = "
             SELECT
-                *
-            FROM
-                degrees
+                * 
+            FROM 
+                campuses
             WHERE
                 is_active = 1
         ";
-        
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
         
         return $result = $stmt->fetchAll();
     }
     /*
-     * Funcion para eliminar totalmente registros de grados existentes por su ID
+     * Funcion para eliminar un campus (eliminado logico).
      */
-    public function deleteDegreeById($id)
+    public function deleteCampuseById($idr)
     {
         $conectar = parent::connection();
         parent::set_names();
         
         $sql = "
             UPDATE
-                degrees
+                campuses
             SET
                 is_active = 0
             WHERE
-                id = ?
+                idr = ?
         ";
-        
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $id);
+        $stmt->bindValue(1, $idr);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return true;
     }
     /*
-     * Funcion para traer los grados mediante el ID del grado
+     * Funcion para obtener informacion de un campus mediante su ID.
      */
-    public function getDegreeById($id)
+    public function getCampuseById($idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -145,16 +146,16 @@ class Degrees extends Connect
             SELECT
                 *
             FROM
-                degrees
+                campuses
             WHERE
-                id = ?
+                idr = ?
         ";
-        
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $id);
+        $stmt->bindValue(1, $idr);
         $stmt->execute();
         
         return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
+
 ?>

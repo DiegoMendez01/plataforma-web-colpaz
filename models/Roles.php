@@ -5,47 +5,91 @@ class Roles extends Connect
     /*
      * Funcion para insertar/registrar un nuevo rol
      */
-    public function insertRole($name, $functions)
+    public function updateOrInsertRole($id = null, $name, $functions)
     {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            INSERT INTO
-                roles (name, functions, created) 
-            VALUES (?, ?, now())
-        ";
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $functions);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-    /*
-     * Funcion para actualizar registros de cursos existentes por su ID
-     */
-    public function updateRoleById($id, $name, $functions)
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            UPDATE
-                roles
-            SET
-                name = ?, functions = ?
-            WHERE
-                id = ?
-        ";
-        
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $functions);
-        $stmt->bindValue(3, $id);
-        $stmt->execute();
-        
-        return $result = $stmt->fetchAll();
+        if(empty($name) OR empty($functions)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            $conectar = parent::connection();
+            parent::set_names();
+            
+            $sql = '
+                SELECT
+                    *
+                FROM
+                    roles
+                WHERE
+                    name = ? AND id != ? AND is_active != 0
+            ';
+            
+            $query  = $conectar->prepare($sql);
+            $query->bindValue(1, $name);
+            $query->bindValue(2, $id);
+            $query->execute();
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            
+            if($result){
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'El rol ya existe'
+                ];
+            }else{
+                if(empty($id)){
+                    $sqlInsert = "
+                        INSERT INTO
+                            roles (name, functions, created)
+                        VALUES
+                            (?, ?, now())
+                    ";
+                    
+                    $stmtInsert = $conectar->prepare($sqlInsert);
+                    $stmtInsert->bindValue(1, $name);
+                    $stmtInsert->bindValue(2, $functions);
+                    $request    = $stmtInsert->execute();
+                    $action     = 1;
+                }else{
+                    $sqlUpdate = "
+                        UPDATE
+                            roles
+                        SET
+                            name      = ?,
+                            functions = ?
+                        WHERE
+                            id = ?
+                    ";
+                    
+                    $stmtUpdate = $conectar->prepare($sqlUpdate);
+                    $stmtUpdate->bindValue(1, $name);
+                    $stmtUpdate->bindValue(2, $functions);
+                    $stmtUpdate->bindValue(3, $id);
+                    $request    = $stmtUpdate->execute();
+                    $action     = 2;
+                }
+                
+                if($request){
+                    if($action == 1){
+                        $answer = [
+                            'status' => true,
+                            'msg'    => 'Rol creado correctamente'
+                        ];
+                    }else{
+                        $answer = [
+                            'status' => true,
+                            'msg'    => 'Rol actualizado correctamente'
+                        ];
+                    }
+                }else{
+                    $answer = [
+                        'status' => false,
+                        'msg'    => 'Error al crear el rol'
+                    ];
+                }
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
     }
     /*
      * Funcion para obtener todos los roles
