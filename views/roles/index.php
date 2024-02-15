@@ -48,9 +48,10 @@ if(isset($_SESSION['id'])){
 					<thead>
 						<tr>
 							<th style="width: 15%;">Nombre</th> 
-							<th style="width: 20%;">Funciones</th> 
+							<th style="width: 15%;">Funciones</th> 
 							<th class="d-none d-sm-table-cell" style="width: 15%;">Creado</th>
 							<th class="d-none d-sm-table-cell" style="width: 15%;">Estado</th>
+							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
 						</tr>
