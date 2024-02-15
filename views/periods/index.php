@@ -32,7 +32,7 @@ if(isset($_SESSION['id'])){
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Gestion Curso</h3>
+							<h3>Gestion Periodo</h3>
 							<ol class="breadcrumb breadcrumb-simple">
 								<li><a href="../home/">Inicio</a></li>
 								<li class="active">Gestion Periodo</li>

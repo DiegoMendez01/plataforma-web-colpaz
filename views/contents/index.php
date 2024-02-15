@@ -74,7 +74,7 @@ if(!empty($_SESSION['id'])){
                         <div class="d-flex justify-content-between align-items-center">
                             <span style="font-size: 2rem;" data-toggle="collapse" data-target="#infoCollapse<?= $data['id'] ?>" aria-expanded="false" aria-controls="infoCollapse<?= $data['id'] ?>"><?= $data['title'] ?> </span>
                             <?php
-                            if($data['is_active'] == 1){
+                            if($data['status'] == 1){
                             ?>
                                 <span class="label label-primary">Disponible</span>
                             <?php
@@ -87,7 +87,7 @@ if(!empty($_SESSION['id'])){
                         </div>
                         <div class="collapse" id="infoCollapse<?= $data['id'] ?>">
                             <?php 
-                            if($data['is_active'] == 1){
+                            if($data['status'] == 1){
                             ?>
                             <div class="row align-items-center" style="margin-top: 2rem;">
                                 <!-- Columna para el título -->
