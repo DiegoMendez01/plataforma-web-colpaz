@@ -5,7 +5,7 @@ class Contents extends Connect
     /*
      * Funcion para insertar un nuevo contenido.
      */
-    public function insertOrUpdateContent($id = null, $title, $description, $type, $teacher_course_id, $file)
+    public function insertOrUpdateContent($id = null, $title, $description, $type, $teacher_course_id, $file, $video)
     {
         if(empty($title) OR empty($description) OR empty($type) OR empty($teacher_course_id) OR empty($file)){
             $answer = [
@@ -50,9 +50,9 @@ class Contents extends Connect
                 if(empty($id)){
                     $sqlInsert = '
                         INSERT INTO
-                            contents (title, description, file, type, teacher_course_id, created)
+                            contents (title, description, file, type, teacher_course_id, video, created)
                         VALUES
-                            (?, ?, ?, ?, ?, now())
+                            (?, ?, ?, ?, ?, ?, now())
                     ';
                     
                     $queryInsert = $conectar->prepare($sqlInsert);
@@ -61,6 +61,7 @@ class Contents extends Connect
                     $queryInsert->bindValue(3, $destiny);
                     $queryInsert->bindValue(4, $type);
                     $queryInsert->bindValue(5, $teacher_course_id);
+                    $queryInsert->bindValue(6, $video);
                     $request     = $queryInsert->execute();
                     move_uploaded_file($url_temp, $destiny);
                     $action = 1;
@@ -73,7 +74,8 @@ class Contents extends Connect
                                 title = ?,
                                 description = ?,
                                 type = ?,
-                                teacher_course_id = ?
+                                teacher_course_id = ?,
+                                video = ?
                             WHERE
                                 id = ?
                         ';
@@ -83,7 +85,8 @@ class Contents extends Connect
                         $queryUpdate->bindValue(2, $description);
                         $queryUpdate->bindValue(3, $type);
                         $queryUpdate->bindValue(4, $teacher_course_id);
-                        $queryUpdate->bindValue(5, $id);
+                        $queryUpdate->bindValue(5, $video);
+                        $queryUpdate->bindValue(6, $id);
                         $request     = $queryUpdate->execute();
                         $action = 2;
                     }else{
@@ -95,7 +98,8 @@ class Contents extends Connect
                                 description = ?,
                                 type = ?,
                                 file = ?,
-                                teacher_course_id = ?
+                                teacher_course_id = ?,
+                                video = ?
                             WHERE
                                 id = ?
                         ';
@@ -106,7 +110,8 @@ class Contents extends Connect
                         $queryUpdate->bindValue(3, $type);
                         $queryUpdate->bindValue(4, $destiny);
                         $queryUpdate->bindValue(5, $teacher_course_id);
-                        $queryUpdate->bindValue(6, $id);
+                        $queryUpdate->bindValue(6, $video);
+                        $queryUpdate->bindValue(7, $id);
                         $request     = $queryUpdate->execute();
                         if($data['file'] != ''){
                             unlink($data['file']);
@@ -211,6 +216,7 @@ class Contents extends Connect
                 c.title,
                 c.file,
                 c.description,
+                c.video,
                 tc.id as idTeacherCourse
             FROM
                 contents as c

@@ -76,12 +76,51 @@ if(!empty($_SESSION['id'])){
                             <span class="label label-primary">Disponible</span>
                         </div>
                         <div class="collapse" id="infoCollapse<?= $data['id'] ?>">
+                            <div class="row align-items-center" style="margin-top: 2rem;">
+                                <!-- Columna para el título -->
+                                <div class="col-md-10">
+                                    <h4>
+                                        <?= $data['description'] ?>
+                                    </h4>
+                                </div>
+                                <!-- Columna para los botones -->
+                                <div class="col-md-2" style="padding-left: 90px;">
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-info icon-btn widget-header-btn mr-2" onclick="editContent(<?= $data['id']; ?>)">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger icon-btn widget-header-btn" onclick="deleteContent(<?= $data['id']; ?>)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card card-body">
                                 <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../public/img/banner_recursos1.jpg" alt="Logo Recurso">
                                 <div class="d-flex flex-column flex-md-row w-100 align-items-start">
                                     <img src="../../public/img/icon_file.png" alt="resource icon">
                                     <a class="btn" href="#" target="_blank">
                                         <i class="fa fa-download"></i> Material de Descarga
+                                    </a>
+                                    <?php
+                                    if(!empty($data['video'])){
+                                    ?>
+                                    <!-- Video de YouTube incrustado -->
+                                   <div style="margin-top: 2rem;">
+                                        <img style="width: 4rem; height: 4rem;" src="../../public/img/miniaturaVideo.png" alt="miniatura del video">
+                                        <a style="width: 200px;" class="btn" href="<?= $data['video'] ?>" target="_blank">
+                                        	<i class="fa fa-youtube-play"></i> Ver video
+                                        </a>
+                                    </div>
+                                    <?php
+			                         }
+                                    ?>
+                                </div>
+                                <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../public/img/banner_actividades1.png" alt="Logo Recurso">
+                                <div class="d-flex flex-column flex-md-row w-100 align-items-start">
+                                    <img src="../../public/img/icon_submitted.png" alt="resource icon">
+                                    <a class="btn" href="#" target="_blank">
+                                        <i class="fa fa-paper-plane"></i> Asignar Evaluacion
                                     </a>
                                 </div>
                             </div>

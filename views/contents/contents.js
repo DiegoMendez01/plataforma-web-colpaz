@@ -14,7 +14,7 @@ function insertOrUpdate(e)
 	
     formData.forEach(function(value, key) {
 	    // Excluir id del chequeo de campos vacios
-	    if (key !== 'id') {
+	    if (key !== 'id' && key !== 'video') {
 	        if (value === "") {
 	            camposVacios = true;
 	            return false;  // Para salir del bucle si se encuentra un campo vacio

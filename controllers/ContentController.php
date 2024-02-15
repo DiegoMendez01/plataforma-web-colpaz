@@ -12,7 +12,7 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $content->InsertOrupdateContent($_POST['id'], $_POST['title'], $_POST['description'], $_POST['type'], $_POST['teacher_course_id'], $_FILES['file']);
+        $content->InsertOrupdateContent($_POST['id'], $_POST['title'], $_POST['description'], $_POST['type'], $_POST['teacher_course_id'], $_FILES['file'], $_POST['video']);
         break;
     /*
      * Eliminar totalmente registros de contenidos existentes por su ID (eliminado logico).
