@@ -148,7 +148,11 @@ function eliminar(id){
 		}
 	});
 }
-
+function ver(id)
+{
+	window.open("http://localhost/plataforma-web-colpaz/views/degree/view?id="+id);
+}
+	
 $(document).on("click", "#btnnuevo", function(){
 	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
