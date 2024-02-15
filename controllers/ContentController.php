@@ -22,5 +22,20 @@ switch($_GET['op'])
             $content->deleteContentById($_POST['id']);
         }
         break;
+    /*
+     * Es para listar/obtener los contenidos de cursos que existen registrados en el sistema.
+     */
+    case 'listContentById':
+        $data = $content->getContentById($_POST['id']);
+        
+        $output["id"]                = $data['id'];
+        $output["title"]             = $data['title'];
+        $output["description"]       = $data['description'];
+        $output["type"]              = $data['type'];
+        $output["video"]             = $data['video'];
+        $output["teacher_course_id"] = $data['teacher_course_id'];
+        
+        echo json_encode($output);
+        break;
 }
 ?>

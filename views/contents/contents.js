@@ -58,6 +58,22 @@ function insertOrUpdate(e)
     }
 }
 
+function editar(id){
+	$('#mdltitulo').html('Editar Registro');
+	
+	$.post("../../controllers/ContentController.php?op=listContentById", { id : id}, function(data) {
+    	data = JSON.parse(data);
+    	$('#id').val(data.id);
+    	$('#title').val(data.title);
+    	$('#description').val(data.description);
+    	$('#type').val(data.type).trigger('change');
+    	$('#video').val(data.video);
+    	$('#teacher_course_id').val(data.teacher_course_id);
+    });
+	
+	$('#modalGestionContenido').modal('show');
+}
+
 $(document).on("click", "#btnnuevo", function(){
 	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');

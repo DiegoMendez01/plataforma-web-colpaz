@@ -217,12 +217,13 @@ class Contents extends Connect
                 c.file,
                 c.description,
                 c.video,
+                c.is_active,
                 tc.id as idTeacherCourse
             FROM
                 contents as c
             INNER JOIN teacher_courses tc ON c.teacher_course_id = tc.id
             WHERE
-                tc.id = ? AND c.is_active = 1
+                tc.id = ?
         ';
         
         $stmt = $conectar->prepare($sql);

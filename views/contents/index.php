@@ -73,9 +73,22 @@ if(!empty($_SESSION['id'])){
                     <section style="margin-top: 2rem;">
                         <div class="d-flex justify-content-between align-items-center">
                             <span style="font-size: 2rem;" data-toggle="collapse" data-target="#infoCollapse<?= $data['id'] ?>" aria-expanded="false" aria-controls="infoCollapse<?= $data['id'] ?>"><?= $data['title'] ?> </span>
-                            <span class="label label-primary">Disponible</span>
+                            <?php
+                            if($data['is_active'] == 1){
+                            ?>
+                                <span class="label label-primary">Disponible</span>
+                            <?php
+                            }else{
+                            ?>
+                                <span class="label label-danger">No Disponible</span>
+                            <?php
+                            }
+                            ?>
                         </div>
                         <div class="collapse" id="infoCollapse<?= $data['id'] ?>">
+                            <?php 
+                            if($data['is_active'] == 1){
+                            ?>
                             <div class="row align-items-center" style="margin-top: 2rem;">
                                 <!-- Columna para el título -->
                                 <div class="col-md-10">
@@ -86,10 +99,10 @@ if(!empty($_SESSION['id'])){
                                 <!-- Columna para los botones -->
                                 <div class="col-md-2" style="padding-left: 90px;">
                                     <div class="d-flex justify-content-end">
-                                        <button class="btn btn-info icon-btn widget-header-btn mr-2" onclick="editContent(<?= $data['id']; ?>)">
+                                        <button class="btn btn-info icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-danger icon-btn widget-header-btn" onclick="deleteContent(<?= $data['id']; ?>)">
+                                        <button class="btn btn-danger icon-btn widget-header-btn" onclick="eliminar(<?= $data['id']; ?>)">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </div>
@@ -124,6 +137,31 @@ if(!empty($_SESSION['id'])){
                                     </a>
                                 </div>
                             </div>
+                            <?php
+                            }else{
+                            ?>
+                            <div class="row align-items-center" style="margin-top: 2rem;">
+                                <!-- Columna para el título -->
+                                <div class="col-md-10">
+                                </div>
+                                <!-- Columna para los botones -->
+                                <div class="col-md-2" style="padding-left: 90px;">
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-info icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger icon-btn widget-header-btn" onclick="eliminar(<?= $data['id']; ?>)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-body text-center">
+                            	<h2 style="margin-top: 2rem;">El docente ha cerrado la actividad</h2>
+                            </div>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </section>
                     <?php
