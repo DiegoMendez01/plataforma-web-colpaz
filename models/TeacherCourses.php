@@ -145,7 +145,6 @@ class TeacherCourses extends Connect
 
         return true;
     }
-
     /*
      * Funcion para obtener informacion de la inscripcion de un usuario en un curso mediante el ID de inscripcion
      */

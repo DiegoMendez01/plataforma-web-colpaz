@@ -1,15 +1,24 @@
 <?php
+
 require_once("../../config/connection.php");
 require_once("../../models/Contents.php");
 require_once("../../models/Courses.php");
+require_once("../../models/TeacherCourses.php");
+require_once("../../models/Classrooms.php");
 
 if(!empty($_SESSION['id'])){
     if(!empty($_GET['course']) AND isset($_SESSION['id'])){
         $courseId          = $_GET['course'];
+        
         $content           = new Contents();
+        $teacherCourse     = new TeacherCourses();
         $course            = new Courses();
-        $dataCourse        = $course->getCourseById($courseId);
-        $dataAllContent    = $content->getContentByTeacherCourseId($courseId)
+        $classroom         = new Classrooms();
+        
+        $dataTeacherC      = $teacherCourse->getTeacherCourseById($courseId);
+        $dataCourse        = $course->getCourseById($dataTeacherC['course_id']);
+        $dataClassroom     = $classroom->getClassroomById($dataTeacherC['classroom_id']);
+        $dataAllContent    = $content->getContentByTeacherCourseId($dataTeacherC['course_id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -55,7 +64,7 @@ if(!empty($_SESSION['id'])){
     			<div class="text-center" style="margin-bottom: 1rem;">
     				<img src="../../public/img/bienvenidaf.png" alt="Logo bienvenida">
     			</div>
-    			<p>En este espacio académico se van a tratar los temas relacionados con <?= $dataCourse['name'] ?></p>
+    			<p>En este espacio académico se van a tratar los temas relacionados con <?= $dataCourse['name'] ?> del grado <?= $dataClassroom['name'] ?></p>
     			<img style="width: 17rem; height: 3rem;" src="../../public/img/acerca_asignatura.png" alt="Logo acerca de">
 			<?php
 			if ($dataAllContent['rowContent'] > 0) {
