@@ -120,6 +120,11 @@ function editar(idr){
 	$('#modalGestionCampuse').modal('show');
 }
 
+function ver(id)
+{
+	window.open("http://localhost/plataforma-web-colpaz/views/campuses/view?id="+id);
+}
+
 function eliminar(idr){
 	swal({
     	title: "ColPaz Quipama",

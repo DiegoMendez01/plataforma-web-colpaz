@@ -2,14 +2,11 @@
 
 require_once("../../config/connection.php");
 require_once("../../models/Campuses.php");
-require_once("../../models/Users.php"); // Asegúrate de tener la clase Users definida en el archivo correspondiente
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
         $campus       = new Campuses(); // Asegúrate de que la clase Campuses tenga un método getCampusById() definido
-        $user         = new Users();
-        $campusData   = $campus->getCampusById($_GET['id']);
-        $userData     = $user->getUserById($campusData['idr']);
+        $campusData   = $campus->getCampuseById($_GET['id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -39,10 +36,10 @@ if(isset($_SESSION['id'])){
                 <div class="tbl">
                     <div class="tbl-row">
                         <div class="tbl-cell">
-                            <h3>Sede <?= $campusData['name'] ?> [ID: <?= $campusData['id'] ?>]</h3>
+                            <h3>Sede <?= $campusData['name'] ?> [ID: <?= $campusData['idr'] ?>]</h3>
                             <ol class="breadcrumb breadcrumb-simple">
                                 <li><a href="../campuses/">Inicio</a></li>
-                                <li class="active">Sede <?= $campusData['name'] ?> [ID: <?= $campusData['id'] ?>]</li>
+                                <li class="active">Sede <?= $campusData['name'] ?> [ID: <?= $campusData['idr'] ?>]</li>
                             </ol>
                         </div>
                     </div>
@@ -57,10 +54,9 @@ if(isset($_SESSION['id'])){
                             <td><?= $campusData['name'] ?></td>
                         </tr>
                         <tr>
-                            <th style="width: 30%;">Ubicación</th>
-                            <td><?= $campusData['location'] ?></td>
+                            <th style="width: 30%;">Descripcion</th>
+                            <td><?= $campusData['description'] ?></td>
                         </tr>
-                        <!-- Agrega más campos según la estructura de tu modelo de sede -->
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
                             <td><?= (($campusData['is_active']) ? '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Inactivo</span>') ?></td>
@@ -73,19 +69,11 @@ if(isset($_SESSION['id'])){
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Modificado</th>
                             <td><?= $campusData['modified'] ?></td>
                         </tr>
-                        <tr>
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Usuario</th>
-                            <td><span class="label label-primary"><?= $userData['name'] ?></span></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    
-    <?php
-    require_once("modalGestionCampus.php"); // Ajusta según tu implementación específica
-    ?>
     
     <?php
     require_once ("../mainJs/js.php");

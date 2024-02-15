@@ -148,9 +148,10 @@ function eliminar(id){
 		}
 	});
 }
+
 function ver(id)
 {
-	window.open("http://localhost/plataforma-web-colpaz/views/degree/view?id="+id);
+	window.open("http://localhost/plataforma-web-colpaz/views/degrees/view?id="+id);
 }
 	
 $(document).on("click", "#btnnuevo", function(){
