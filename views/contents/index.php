@@ -59,10 +59,15 @@ if(!empty($_SESSION['id'])){
 					</div>
 				</div>
 			</header>
-			
+			<?php
+			if(empty($dataHeaderC) OR $dataHeaderC['is_active'] == 0){
+			?>
 			<div class="box-typical box-typical-padding">
 				<button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
 			</div>
+			<?php
+			}
+			?>
 			<div class="box-typical box-typical-padding">
     			<div class="text-center" style="margin-bottom: 1rem;">
     				<img src="../../public/img/bienvenidaf.png" alt="Logo bienvenida">
