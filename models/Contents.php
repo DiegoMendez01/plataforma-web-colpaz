@@ -178,7 +178,51 @@ class Contents extends Connect
         $stmt->bindValue(1, $id);
         $stmt->execute();
         
-        return true;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    /*
+     * Funcion para cambiar el estado de un contenido (eliminado visual).
+     */
+    public function statusBloqContentById($id)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            UPDATE
+                contents
+            SET
+                status = 0
+            WHERE
+                id = ?
+        ";
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    /*
+     * Funcion para cambiar el estado de un contenido (mostrar visual).
+     */
+    public function statusDesbloqContentById($id)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            UPDATE
+                contents
+            SET
+                status = 1
+            WHERE
+                id = ?
+        ";
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para obtener informacion de un contenido mediante su ID.

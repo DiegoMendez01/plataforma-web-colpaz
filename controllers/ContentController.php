@@ -23,6 +23,22 @@ switch($_GET['op'])
         }
         break;
     /*
+     * Bloquear totalmente registros de contenidos existentes por su ID (eliminado visual).
+     */
+    case 'statusBloqContentById':
+        if(isset($_POST['id'])){
+            $content->statusBloqContentById($_POST['id']);
+        }
+        break;
+    /*
+     * Desbloquear totalmente registros de contenidos existentes por su ID (mostrar visual).
+     */
+    case 'statusDesbloqContentById':
+        if(isset($_POST['id'])){
+            $content->statusDesbloqContentById($_POST['id']);
+        }
+        break;
+    /*
      * Es para listar/obtener los contenidos de cursos que existen registrados en el sistema.
      */
     case 'listContentById':

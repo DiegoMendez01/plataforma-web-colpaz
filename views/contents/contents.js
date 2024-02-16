@@ -74,6 +74,108 @@ function editar(id){
 	$('#modalGestionContenido').modal('show');
 }
 
+function eliminar(id){
+	swal({
+    	title: "ColPaz Quipama",
+    	text: "¿Esta seguro de eliminar el contenido?",
+    	type: "error",
+    	showCancelButton: true,
+    	confirmButtonClass: "btn-danger",
+    	confirmButtonText: "Si",
+    	cancelButtonText: "No",
+    	closeOnConfirm: false
+	},
+	function(isConfirm)
+	{
+		if(isConfirm){
+			$.post("../../controllers/ContentController.php?op=deleteContentById", { id : id}, function(data) {
+        		swal({
+			    	title: "ColPaz Quipama",
+			    	text: "Registro eliminado",
+			    	type: "success",
+			    	confirmButtonClass: "btn-success",
+			    	confirmButtonText: "Aceptar",
+			    	closeOnConfirm: false
+				},
+				function(isConfirm)
+				{
+					if(isConfirm){
+						location.reload();
+					}
+				});
+        	});
+		}
+	});
+}
+
+function bloquear(id){
+	swal({
+    	title: "ColPaz Quipama",
+    	text: "¿Esta seguro de bloquear el contenido?",
+    	type: "error",
+    	showCancelButton: true,
+    	confirmButtonClass: "btn-danger",
+    	confirmButtonText: "Si",
+    	cancelButtonText: "No",
+    	closeOnConfirm: false
+	},
+	function(isConfirm)
+	{
+		if(isConfirm){
+			$.post("../../controllers/ContentController.php?op=statusBloqContentById", { id : id}, function(data) {
+        		swal({
+			    	title: "ColPaz Quipama",
+			    	text: "Contenido bloqueado",
+			    	type: "success",
+			    	confirmButtonClass: "btn-success",
+			    	confirmButtonText: "Aceptar",
+			    	closeOnConfirm: false
+				},
+				function(isConfirm)
+				{
+					if(isConfirm){
+						location.reload();
+					}
+				});
+        	});
+		}
+	});
+}
+
+function desbloquear(id){
+	swal({
+    	title: "ColPaz Quipama",
+    	text: "¿Esta seguro de desbloquear el contenido?",
+    	type: "success",
+    	showCancelButton: true,
+    	confirmButtonClass: "btn-success",
+    	confirmButtonText: "Si",
+    	cancelButtonText: "No",
+    	closeOnConfirm: false
+	},
+	function(isConfirm)
+	{
+		if(isConfirm){
+			$.post("../../controllers/ContentController.php?op=statusDesbloqContentById", { id : id}, function(data) {
+        		swal({
+			    	title: "ColPaz Quipama",
+			    	text: "Contenido desbloqueado",
+			    	type: "success",
+			    	confirmButtonClass: "btn-success",
+			    	confirmButtonText: "Aceptar",
+			    	closeOnConfirm: false
+				},
+				function(isConfirm)
+				{
+					if(isConfirm){
+						location.reload();
+					}
+				});
+        	});
+		}
+	});
+}
+
 $(document).on("click", "#btnnuevo", function(){
 	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');

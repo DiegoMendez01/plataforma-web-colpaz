@@ -97,13 +97,16 @@ if(!empty($_SESSION['id'])){
                                     </h4>
                                 </div>
                                 <!-- Columna para los botones -->
-                                <div class="col-md-2" style="padding-left: 90px;">
+                                <div class="col-md-2">
                                     <div class="d-flex justify-content-end">
-                                        <button class="btn btn-info icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
+                                        <button class="btn btn-warning icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
                                             <i class="fa fa-edit"></i>
                                         </button>
                                         <button class="btn btn-danger icon-btn widget-header-btn" onclick="eliminar(<?= $data['id']; ?>)">
                                             <i class="fa fa-trash"></i>
+                                        </button>
+                                        <button class="btn btn-danger icon-btn widget-header-btn" onclick="bloquear(<?= $data['id']; ?>)">
+                                            <i class="fa fa-times"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -145,19 +148,22 @@ if(!empty($_SESSION['id'])){
                                 <div class="col-md-10">
                                 </div>
                                 <!-- Columna para los botones -->
-                                <div class="col-md-2" style="padding-left: 90px;">
+                                <div class="col-md-2">
                                     <div class="d-flex justify-content-end">
-                                        <button class="btn btn-info icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
+                                        <button class="btn btn-warning icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
                                             <i class="fa fa-edit"></i>
                                         </button>
                                         <button class="btn btn-danger icon-btn widget-header-btn" onclick="eliminar(<?= $data['id']; ?>)">
                                             <i class="fa fa-trash"></i>
                                         </button>
+                                        <button class="btn btn-success icon-btn widget-header-btn" onclick="desbloquear(<?= $data['id']; ?>)">
+                                            <i class="fa fa-check"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="card card-body text-center">
-                            	<h2 style="margin-top: 2rem;">El docente ha cerrado la actividad</h2>
+                            	<h2 style="margin-top: 2rem;">El docente ha cerrado la actividad para su visualización.</h2>
                             </div>
                             <?php
                             }
