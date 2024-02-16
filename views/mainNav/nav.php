@@ -57,6 +57,15 @@
                     <li><a href="..\periods\"><span class="lbl">Periodo Academico</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
+            <li class="blue-dirty with-sub">
+                <span>
+                    <i class="font-icon font-icon-doc"></i>
+                    <span class="lbl">Gestion Cabecera Contenidos</span>
+                </span>
+                <ul>
+                    <li><a href="..\headerContents\"><span class="lbl">Cabecera Contenidos</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                </ul>
+            </li>
             <?php if($_SESSION['role_id'] == 1){ ?>
             <li class="blue-dirty with-sub">
                 <span>

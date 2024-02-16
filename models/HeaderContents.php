@@ -252,6 +252,28 @@ class HeaderContents extends Connect
         return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
+     * Funcion para traer todos las cabeceras de contenidos registrados hasta el momento
+     */
+    public function getHeaderContents()
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                *
+            FROM
+                header_contents
+            WHERE
+                is_active = 1
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /*
      * Funcion para obtener informacion de un encabezado de contenido mediante el docente.
      */
     public function getHeaderContentByTeacher($teacher_course_id)
