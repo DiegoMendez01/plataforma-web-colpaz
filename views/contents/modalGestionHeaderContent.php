@@ -9,7 +9,7 @@
 			</div>
 			<form method="post" id="header_content_form">
     			<div class="modal-body">
-    				<input type="hidden" id="id" name="id" />
+    				<input type="hidden" id="idHeader" name="idHeader" />
     				<input type="hidden" id="teacher_course_id" name="teacher_course_id" value="<?= $courseId ?>" />
     				<div class="form-group row">
                         <label for="supplementary_file" class="col-sm-2 form-control-label">Plan de Estudios <b>*</b></label>

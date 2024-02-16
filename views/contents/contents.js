@@ -18,7 +18,7 @@ function insertOrUpdateHeader(e)
 	
     formData.forEach(function(value, key) {
 	    // Excluir id del chequeo de campos vacios
-	    if (key !== 'id' && key !== 'header_video') {
+	    if (key !== 'idHeader' && key !== 'header_video') {
 	        if (value === "") {
 	            camposVacios = true;
 	            return false;  // Para salir del bucle si se encuentra un campo vacio
@@ -127,6 +127,19 @@ function editar(id){
     });
 	
 	$('#modalGestionContenido').modal('show');
+}
+
+function editarHeader(id){
+	$('#mdltitulo').html('Editar Registro');
+	
+	$.post("../../controllers/HeaderContentController.php?op=listHeaderContentById", { idHeader : id}, function(data) {
+    	data = JSON.parse(data);
+    	$('#idHeader').val(data.id);
+    	$('#header_content_id').val(data.header_content_id);
+    	$('#header_video').val(data.header_video);
+    });
+	
+	$('#modalGestionHeaderContent').modal('show');
 }
 
 function eliminar(id){
@@ -239,7 +252,7 @@ $(document).on("click", "#btnnuevo", function(){
 });
 
 $(document).on("click", "#btnnuevocontenido", function(){
-	document.querySelector('#id').value = '';
+	document.querySelector('#idHeader').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#content_form')[0].reset();
 	$('#modalGestionContenido').modal('show');

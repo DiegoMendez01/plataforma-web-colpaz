@@ -66,6 +66,24 @@ if(!empty($_SESSION['id'])){
 				<button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
 			</div>
 			<?php
+			}else{
+			?>
+			<div class="box-typical box-typical-padding">
+				<div class="row align-items-center" style="margin-top: 2rem;">
+                    <!-- Columna para el título -->
+                    <div class="col-md-9">
+        				<legend>Encabezado</legend>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-warning icon-btn widget-header-btn mr-2" onclick="editarHeader(<?= $dataHeaderC['id']; ?>)">
+                                <i class="fa fa-edit"></i>Editar
+                            </button>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+			<?php
 			}
 			?>
 			<div class="box-typical box-typical-padding">
@@ -78,25 +96,41 @@ if(!empty($_SESSION['id'])){
     			if(!empty($dataHeaderC['id']) AND $dataHeaderC['is_active'] == 1){
         			if(!empty($dataHeaderC['curriculum_file'])){
         			?>
-        			<div class="col-md-12" style="margin-top: 2rem;">
-        				<img src="../../public/img/icon_file.png" alt="resource icon">
-                        <a href="#" target="_blank">
-                            <i class="fa fa-download"></i> Plan de Estudios
-                        </a>
-        			</div>
+            			<div class="col-md-12" style="margin-top: 2rem;">
+            				<img src="../../public/img/icon_file.png" alt="resource icon">
+                            <a href="#" target="_blank">
+                                <i class="fa fa-download"></i> Plan de Estudios
+                            </a>
+            			</div>
         			<?php
         			}
         			if(!empty($dataHeaderC['supplementary_file'])){
-        			    ?>
-        			<div class="col-md-12" style="margin-top: 1rem; margin-bottom: 3rem;">
-        				<img src="../../public/img/icon_file.png" alt="resource icon">
-                        <a href="#" target="_blank">
-                            <i class="fa fa-download"></i> Informacion Adicional del Curso
-                        </a>
-        			</div>
+        			    if(empty($dataHeaderC['header_video'])){
+        			        $style = 'margin-bottom: 3rem;';
+        			    }else{
+        			        $style = '';
+        			    }
+        			?>
+            			<div class="col-md-12" style="margin-top: 1rem; <?= $style ?>">
+            				<img src="../../public/img/icon_file.png" alt="resource icon">
+                            <a href="#" target="_blank">
+                                <i class="fa fa-download"></i> Informacion Adicional del Curso
+                            </a>
+            			</div>
         			<?php
         			}
+        			if(!empty($dataHeaderC['header_video'])){
         			?>
+                        <!-- Video de YouTube incrustado -->
+                       <div class="col-md-12" style="margin-top: 1rem; margin-bottom: 3rem;">
+                            <img style="width: 4rem; height: 4rem;" src="../../public/img/miniaturaVideo.png" alt="miniatura del video">
+                            <a style="width: 200px;" href="<?= $dataHeaderC['header_video'] ?>" target="_blank">
+                            	<i class="fa fa-youtube-play"></i> Video de Presentacion
+                            </a>
+                       </div>
+                    <?php
+                     }
+                    ?>
         			<div class="box-typical box-typical-padding">
         				<button type="button" id="btnnuevocontenido" class="btn btn-inline btn-primary">Agregar Contenido</button>
         			</div>
