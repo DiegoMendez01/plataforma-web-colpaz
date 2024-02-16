@@ -12,7 +12,7 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $content->InsertOrupdateContent($_POST['id'], $_POST['title'], $_POST['description'], $_POST['type'], $_POST['teacher_course_id'], $_FILES['file'], $_POST['video']);
+        $content->InsertOrupdateContent($_POST['id'], $_POST['title'], $_POST['description'], $_POST['header_content_id'], $_FILES['file'], $_POST['video']);
         break;
     /*
      * Eliminar totalmente registros de contenidos existentes por su ID (eliminado logico).
@@ -47,9 +47,7 @@ switch($_GET['op'])
         $output["id"]                = $data['id'];
         $output["title"]             = $data['title'];
         $output["description"]       = $data['description'];
-        $output["type"]              = $data['type'];
         $output["video"]             = $data['video'];
-        $output["teacher_course_id"] = $data['teacher_course_id'];
         
         echo json_encode($output);
         break;

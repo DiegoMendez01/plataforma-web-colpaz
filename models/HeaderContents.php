@@ -1,13 +1,13 @@
 <?php
 
-class Contents extends Connect
+class HeaderContents extends Connect
 {
     /*
      * Funcion para insertar un nuevo contenido.
      */
-    public function insertOrUpdateContent($id = null, $title, $description, $header_content_id, $file, $video)
+    public function insertOrUpdateHeaderContent($id = null, $teacher_course_id, $supplementary_file, $curriculum_file, $header_video = null)
     {
-        if(empty($title) OR empty($description) OR empty($file) OR empty($header_content_id)){
+        if(empty($supplementary_file) OR empty($teacher_course_id) OR empty($curriculum_file)){
             $answer = [
                 'status' => false,
                 'msg'    => 'Todos los campos son necesarios'
@@ -17,8 +17,8 @@ class Contents extends Connect
             parent::set_names();
             
             // Files
-            $material      = $_FILES['file']['name'];
-            $url_temp      = $_FILES['file']['tmp_name'];
+            $material      = $_FILES['supplementary_file']['name'];
+            $url_temp      = $_FILES['supplementary_file']['tmp_name'];
             
             $dir         = '../uploads/'.rand(1000, 10000);
             if(!file_exists($dir)){
@@ -27,11 +27,22 @@ class Contents extends Connect
             
             $destiny     = $dir.'/'.$material;
             
+            // Files
+            $material2      = $_FILES['curriculum_file']['name'];
+            $url_temp2      = $_FILES['curriculum_file']['tmp_name'];
+            
+            $dir2         = '../uploads/'.rand(1000, 10000);
+            if(!file_exists($dir2)){
+                mkdir($dir2, 0777, true);
+            }
+            
+            $destiny2     = $dir2.'/'.$material2;
+            
             $sql = '
                 SELECT
                     *
                 FROM
-                    contents
+                    header_contents
                 WHERE
                     id = ?
             ';
@@ -41,7 +52,7 @@ class Contents extends Connect
             $query->execute();
             $data   = $query->fetch(PDO::FETCH_ASSOC);
             
-            if($_FILES['file']['size'] > 15000000){
+            if($_FILES['curriculum_file']['size'] > 15000000 OR $_FILES['supplementary_file']['size'] > 15000000){
                 $answer = [
                     'status' => false,
                     'msg'    => 'Solo se permiten archivos hasta 15MB'
@@ -50,41 +61,37 @@ class Contents extends Connect
                 if(empty($id)){
                     $sqlInsert = '
                         INSERT INTO
-                            contents (title, description, file, header_content_id, video, created)
+                            header_contents (teacher_course_id, header_video, supplementary_file, curriculum_file, created)
                         VALUES
-                            (?, ?, ?, ?, ?, now())
+                            (?, ?, ?, ?, now())
                     ';
                     
                     $queryInsert = $conectar->prepare($sqlInsert);
-                    $queryInsert->bindValue(1, $title);
-                    $queryInsert->bindValue(2, $description);
+                    $queryInsert->bindValue(1, $teacher_course_id);
+                    $queryInsert->bindValue(2, $header_video);
                     $queryInsert->bindValue(3, $destiny);
-                    $queryInsert->bindValue(4, $header_content_id);
-                    $queryInsert->bindValue(5, $video);
+                    $queryInsert->bindValue(4, $destiny2);
                     $request     = $queryInsert->execute();
                     move_uploaded_file($url_temp, $destiny);
+                    move_uploaded_file($url_temp2, $destiny2);
                     $action = 1;
                 }else{
-                    if(empty($_FILES['file']['name'])){
+                    if(empty($_FILES['curriculum_file']['name']) AND empty($_FILES['supplementary_file']['name'])){
                         $sqlUpdate = '
                             UPDATE
-                                contents
+                                header_contents
                             SET
-                                title = ?,
-                                description = ?,
-                                header_content_id = ?,
-                                video = ?
+                                header_video = ?,
+                                teacher_course_id = ?
                             WHERE
                                 id = ?
                         ';
                         
-                        $queryUpdate = $conectar->prepare($sqlUpdate);
-                        $queryUpdate->bindValue(1, $title);
-                        $queryUpdate->bindValue(2, $description);
-                        $queryUpdate->bindValue(3, $header_content_id);
-                        $queryUpdate->bindValue(4, $video);
-                        $queryUpdate->bindValue(5, $id);
-                        $request     = $queryUpdate->execute();
+                        $sqlUpdate = $conectar->prepare($sqlUpdate);
+                        $sqlUpdate->bindValue(1, $header_video);
+                        $sqlUpdate->bindValue(2, $teacher_course_id);
+                        $sqlUpdate->bindValue(3, $id);
+                        $request     = $sqlUpdate->execute();
                         $action = 2;
                         
                         $files = scandir('../uploads/');
@@ -104,28 +111,47 @@ class Contents extends Connect
                             UPDATE
                                 contents
                             SET
-                                title = ?,
-                                description = ?,
-                                file = ?,
-                                header_content_id = ?,
-                                video = ?
+                                teacher_course_id = ?,
+                                header_video = ?';
+                        
+                        $params = [$teacher_course_id, $header_video];
+                        
+                        // Verifica y actualiza el archivo principal
+                        if(!empty($_FILES['supplementary_file']['name'])) {
+                            $sqlUpdate .= ',
+                                supplementary_file = ?';
+                            $params[] = $destiny;
+                        }
+                        
+                        // Verifica y actualiza el file_2
+                        if(!empty($_FILES['curriculum_file']['name'])) {
+                            $sqlUpdate .= ',
+                                curriculum_file = ?';
+                            $params[] = $destiny2;
+                        }
+                        
+                        $sqlUpdate .= '
                             WHERE
-                                id = ?
-                        ';
+                                id = ?';
+                        
+                        $params[] = $id;
                         
                         $queryUpdate = $conectar->prepare($sqlUpdate);
-                        $queryUpdate->bindValue(1, $title);
-                        $queryUpdate->bindValue(2, $description);
-                        $queryUpdate->bindValue(3, $destiny);
-                        $queryUpdate->bindValue(4, $header_content_id);
-                        $queryUpdate->bindValue(5, $video);
-                        $queryUpdate->bindValue(6, $id);
-                        $request     = $queryUpdate->execute();
-                        if($data['file'] != ''){
-                            unlink($data['file']);
+                        $request     = $queryUpdate->execute($params);
+                        
+                        if(!empty($_FILES['supplementary_file']['name'])){
+                            if($data['supplementary_file'] != ''){
+                                unlink($data['supplementary_file']);
+                            }
+                            move_uploaded_file($url_temp, $destiny);
                         }
-                        move_uploaded_file($url_temp, $destiny);
-                        $action = 3;
+                        
+                        if(!empty($_FILES['curriculum_file']['name'])){
+                            if($data['curriculum_file'] != ''){
+                                unlink($data['curriculum_file']);
+                            }
+                            move_uploaded_file($url_temp2, $destiny2);
+                        }
                         
                         $files = scandir('../uploads/');
                         foreach ($files as $file) {
@@ -139,18 +165,20 @@ class Contents extends Connect
                                 }
                             }
                         }
+                        
+                        $action = 3;
                     }
                 }
                 if($request > 0){
                     if($action == 1){
                         $answer = [
                             'status' => true,
-                            'msg'    => 'Contenido creado correctamente'
+                            'msg'    => 'Encabezado de Contenido creado correctamente'
                         ];
                     }else{
                         $answer = [
                             'status' => true,
-                            'msg'    => 'Contenido actualizado correctamente'
+                            'msg'    => 'Encabezado de Contenido actualizado correctamente'
                         ];
                     }
                 }
@@ -180,16 +208,16 @@ class Contents extends Connect
         return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     /*
-     * Funcion para eliminar un contenido (eliminado logico).
+     * Funcion para eliminar un encabezado de contenido (eliminado logico).
      */
-    public function deleteContentById($id)
+    public function deleteHeaderContentById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
         
         $sql = "
             UPDATE
-                contents
+                header_contents
             SET
                 is_active = 0
             WHERE
@@ -202,53 +230,9 @@ class Contents extends Connect
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
-     * Funcion para cambiar el estado de un contenido (eliminado visual).
+     * Funcion para obtener informacion de un encabezado de contenido mediante su ID.
      */
-    public function statusBloqContentById($id)
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            UPDATE
-                contents
-            SET
-                status = 0
-            WHERE
-                id = ?
-        ";
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $id);
-        $stmt->execute();
-        
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    /*
-     * Funcion para cambiar el estado de un contenido (mostrar visual).
-     */
-    public function statusDesbloqContentById($id)
-    {
-        $conectar = parent::connection();
-        parent::set_names();
-        
-        $sql = "
-            UPDATE
-                contents
-            SET
-                status = 1
-            WHERE
-                id = ?
-        ";
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $id);
-        $stmt->execute();
-        
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    /*
-     * Funcion para obtener informacion de un contenido mediante su ID.
-     */
-    public function getContentById($id)
+    public function getHeaderContentById($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -257,7 +241,7 @@ class Contents extends Connect
             SELECT
                 *
             FROM
-                contents
+                header_contents
             WHERE
                 id = ?
         ";
@@ -268,37 +252,26 @@ class Contents extends Connect
         return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
-     * Funcion para obtener informacion de un contenido mediante el curso docente.
+     * Funcion para obtener informacion de un encabezado de contenido mediante el docente.
      */
-    public function getContentByTeacherCourseId($teacher_course_id)
+    public function getHeaderContentByTeacher($teacher_course_id)
     {
         $conectar = parent::connection();
         parent::set_names();
         
-        $sql = '
+        $sql = "
             SELECT
-                c.id,
-                c.title,
-                c.file,
-                c.description,
-                c.video,
-                c.status,
-                tc.id as idTeacherCourse
+                *
             FROM
-                contents as c
-            INNER JOIN header_contents hc ON c.header_content_id = hc.id
-            INNER JOIN teacher_courses tc ON hc.teacher_course_id = tc.id
+                header_contents
             WHERE
-                tc.id = ? AND c.is_active = 1
-        ';
-        
+                teacher_course_id = ?
+        ";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $teacher_course_id);
         $stmt->execute();
-        return [
-            'rowContent'   => $stmt->rowCount(),
-            'queryContent' => $stmt
-        ];
+        
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 

@@ -10,7 +10,7 @@
 			<form method="post" id="content_form">
     			<div class="modal-body">
     				<input type="hidden" id="id" name="id" />
-    				<input type="hidden" id="teacher_course_id" name="teacher_course_id" value="<?= $courseId ?>" />
+    				<input type="hidden" id="header_content_id" name="header_content_id" value="<?= $dataHeaderC['id'] ?>" />
     				<div class="form-group row">
                         <label for="title" class="col-sm-2 form-control-label">Titulo <b>*</b></label>
                         <div class="col-sm-10">
@@ -23,19 +23,6 @@
                             <textarea id="description" class="form-control" name="description" rows="4"></textarea>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="type" class="col-sm-2 form-control-label">Tipo <b>*</b></label>
-                        <div class="col-sm-10">
-        					<select class="select2" id="type" name="type" data-placeholder="Seleccionar" required>
-                                <option value="">Seleccione</option>
-        						<option value="PDF">PDF</option>
-        						<option value="TEXT">TEXT</option>
-        						<option value="CSV">CSV</option>
-        						<option value="WORD">WORD</option>
-        						<option value="WORD">OTRO</option>
-        					</select>
-    					</div>
-    				</div>
                     <div class="form-group row">
                         <label for="type" class="col-sm-2 form-control-label">Carga Archivo <b>*</b></label>
                         <div class="col-sm-10">
