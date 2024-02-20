@@ -287,7 +287,7 @@ class HeaderContents extends Connect
             FROM
                 header_contents
             WHERE
-                teacher_course_id = ?
+                teacher_course_id = ? AND is_active = 1
         ";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $teacher_course_id);

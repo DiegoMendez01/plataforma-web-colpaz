@@ -270,7 +270,7 @@ class Contents extends Connect
     /*
      * Funcion para obtener informacion de un contenido mediante el curso docente.
      */
-    public function getContentByTeacherCourseId($teacher_course_id)
+    public function getContentByTeacherCourseId($teacher_course_id, $header_content_id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -289,11 +289,12 @@ class Contents extends Connect
             INNER JOIN header_contents hc ON c.header_content_id = hc.id
             INNER JOIN teacher_courses tc ON hc.teacher_course_id = tc.id
             WHERE
-                tc.id = ? AND c.is_active = 1
+                tc.id = ? AND c.is_active = 1 AND hc.id = ?
         ';
         
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $teacher_course_id);
+        $stmt->bindValue(2, $header_content_id);
         $stmt->execute();
         return [
             'rowContent'   => $stmt->rowCount(),
