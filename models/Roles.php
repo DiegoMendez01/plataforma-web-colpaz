@@ -133,7 +133,7 @@ class Roles extends Connect
         $stmt->bindValue(1, $rol_id);
         $stmt->execute();
 
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     

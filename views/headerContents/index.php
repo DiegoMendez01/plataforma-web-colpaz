@@ -10,7 +10,7 @@ if(isset($_SESSION['id'])){
 	<?php
     require_once ("../mainHead/head.php");
     ?>
-    <title>Aula Virtual::roles</title>
+    <title>Aula Virtual::Gestion de Encabezado Contenidos</title>
 </head>
 <body class="with-side-menu">
 	
@@ -32,10 +32,10 @@ if(isset($_SESSION['id'])){
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Gestion Roles</h3>
+							<h3>Gestion Encabezado Contenido</h3>
 							<ol class="breadcrumb breadcrumb-simple">
 								<li><a href="../home/">Inicio</a></li>
-								<li class="active">Gestion Roles</li>
+								<li class="active">Gestion Encabezado Contenido</li>
 							</ol>
 						</div>
 					</div>
@@ -43,14 +43,12 @@ if(isset($_SESSION['id'])){
 			</header>
 			
 			<div class="box-typical box-typical-padding">
-				<button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo registro</button>
-				<table id="role_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+				<table id="header_content_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 					<thead>
 						<tr>
-							<th style="width: 15%;">Nombre</th> 
-							<th style="width: 15%;">Funciones</th> 
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Creado</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Estado</th>
+							<th style="width: 30%;">´Profesor</th> 
+							<th style="width: 30%;">Creado</th> 
+							<th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
 							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
@@ -64,13 +62,13 @@ if(isset($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modalGestionRoles.php");
+    require_once("../contents/modalGestionHeaderContent.php");
     ?>
     
     <?php
     require_once ("../mainJs/js.php");
     ?>
-    <script src="roles.js" type="text/javascript"></script>
+    <script src="headerContents.js" type="text/javascript"></script>
 </body>
 </html>
 <?php 

@@ -2,7 +2,7 @@ var tabla;
 
 function init()
 {
-	$('#roles_form').on("submit", function(e){
+	$('#header_content_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
 }
@@ -10,13 +10,13 @@ function init()
 function insertOrUpdate(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#roles_form')[0]);
+	var formData = new FormData($('#header_content_form')[0]);
 	
 	var camposVacios = false;
 	
     formData.forEach(function(value, key) {
 	    // Excluir id del chequeo de campos vacios
-	    if (key !== 'id') {
+	    if (key !== 'idHeader' && key !== 'header_video') {
 	        if (value === "") {
 	            camposVacios = true;
 	            return false;  // Para salir del bucle si se encuentra un campo vacio
@@ -28,8 +28,9 @@ function insertOrUpdate(e)
         swal("Error!", "Campos vacios", "error");
         return false;
     }
+    
 	$.ajax({
-		url: "../../controllers/RoleController.php?op=insertOrUpdate",
+		url: "../../controllers/HeaderContentController.php?op=insertOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -37,9 +38,9 @@ function insertOrUpdate(e)
 		success: function(data){
 			data = JSON.parse(data);
 			if(data.status){
-				$('#roles_form')[0].reset();
-				$('#modalGestionRoles').modal('hide');
-				$('#role_data').DataTable().ajax.reload();
+				$('#header_content_form')[0].reset();
+				$('#modalGestionHeaderContent').modal('hide');
+				$('#header_content_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
 					text: data.msg,
@@ -54,7 +55,7 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
-	tabla = $('#role_data').dataTable({
+	tabla = $('#header_content_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
         dom: 'Bfrtip',
@@ -68,7 +69,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/RoleController.php?op=listRole',
+			url: '../../controllers/HeaderContentController.php?op=listHeaderContent',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -78,7 +79,7 @@ $(document).ready(function(){
 		"bDestroy": true,
         "responsive": true,
         "bInfo":true,
-        "iDisplayLength": 5,
+        "iDisplayLength": 10,
         "autoWidth": false,
         "language": {
             "sProcessing":     "Procesando...",
@@ -107,23 +108,10 @@ $(document).ready(function(){
 	}).DataTable();
 });
 
-function editar(id){
-	$('#mdltitulo').html('Editar Registro');
-	
-	$.post("../../controllers/RoleController.php?op=listRoleById", { id : id}, function(data) {
-    	data = JSON.parse(data);
-    	$('#id').val(data.id);
-    	$('#name').val(data.name);
-    	$('#functions').val(data.functions);
-    });
-	
-	$('#modalGestionRoles').modal('show');
-}
-
 function eliminar(id){
 	swal({
     	title: "ColPaz Quipama",
-    	text: "¿Esta seguro de eliminar el curso?",
+    	text: "¿Esta seguro de eliminar el encabezado de contenido?",
     	type: "error",
     	showCancelButton: true,
     	confirmButtonClass: "btn-danger",
@@ -134,10 +122,10 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/RoleController.php?op=deleteRoleById", { id : id}, function(data) {
+			$.post("../../controllers/HeaderContentController.php?op=deleteHeaderContentById", { idHeader : id}, function(data) {
         	});
         	
-        	$('#role_data').DataTable().ajax.reload();
+        	$('#header_content_data').DataTable().ajax.reload();
         	
 			swal({
 				title: "ColPaz Quipama",
@@ -149,16 +137,23 @@ function eliminar(id){
 	});
 }
 
-function ver(id)
-{
-	window.open("http://localhost/plataforma-web-colpaz/views/roles/view?id="+id);
+function editar(id){
+	$('#mdltitulo').html('Editar Registro');
+	
+	$.post("../../controllers/HeaderContentController.php?op=listHeaderContentById", { idHeader : id}, function(data) {
+    	data = JSON.parse(data);
+    	$('#idHeader').val(data.id);
+    	$('#header_content_id').val(data.header_content_id);
+    	$('#teacher_course_id').val(data.teacher_course_id);
+    	$('#header_video').val(data.header_video);
+    });
+	
+	$('#modalGestionHeaderContent').modal('show');
 }
 
-$(document).on("click", "#btnnuevo", function(){
-	document.querySelector('#id').value = '';
-	$('#mdltitulo').html('Nuevo Registro');
-	$('#roles_form')[0].reset();
-	$('#modalGestionRoles').modal('show');
-});
+function ver(id)
+{
+	window.open("http://localhost/plataforma-web-colpaz/views/headerContents/view?id="+id);
+}
 
 init();

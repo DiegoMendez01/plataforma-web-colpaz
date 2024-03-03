@@ -10,29 +10,29 @@
 			<form method="post" id="content_form">
     			<div class="modal-body">
     				<input type="hidden" id="id" name="id" />
-    				<input type="hidden" id="teacher_course_id" name="teacher_course_id" value="<?= $courseId ?>" />
+    				<input type="hidden" id="header_content_id" name="header_content_id" value="<?= $dataHeaderC['id'] ?>" />
     				<div class="form-group row">
-                        <label for="title" class="col-sm-2 form-control-label">Titulo<b>*</b></label>
+                        <label for="title" class="col-sm-2 form-control-label">Titulo <b>*</b></label>
                         <div class="col-sm-10">
                             <p class="form-control-static"><input type="text" class="form-control" id="title" name="title" placeholder="Ingrese el nombre del curso"></p>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="description" class="col-sm-2 form-control-label">Descripcion<b>*</b></label>
+                        <label for="description" class="col-sm-2 form-control-label">Descripcion <b>*</b></label>
                         <div class="col-sm-10">
                             <textarea id="description" class="form-control" name="description" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="type" class="col-sm-2 form-control-label">Tipo Archivo<b>*</b></label>
+                        <label for="type" class="col-sm-2 form-control-label">Carga Archivo <b>*</b></label>
                         <div class="col-sm-10">
-                            <p class="form-control-static"><input type="text" class="form-control" id="type" name="type" placeholder="Ingrese el nombre del curso"></p>
+                            <input type="file" class="form-control" id="file" name="file" />
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="type" class="col-sm-2 form-control-label">Carga Archivo<b>*</b></label>
+                        <label for="video" class="col-sm-2 form-control-label">Link del video YT</label>
                         <div class="col-sm-10">
-                            <input type="file" class="form-control" id="file" name="file" />
+                            <input type="text" class="form-control" id="video" name="video" />
                         </div>
                     </div>
     			</div>
