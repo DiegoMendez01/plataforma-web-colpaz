@@ -13,7 +13,7 @@ class usersController
             $userDetails = [
                 "name"                      => $value['name'],
                 "lastname"                  => $value['lastname'],
-                "username"                  => $value['lastname'],
+                "username"                  => $value['username'],
                 "identification_type_id"    => $value['identification_type_id'],
                 "identification"            => $value['identification'],
                 "password_hash"             => $value['password_hash'],
