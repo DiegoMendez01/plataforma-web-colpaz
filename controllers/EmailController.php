@@ -15,6 +15,10 @@ switch($_GET['op'])
             $email->confirmedEmail($_POST['id'], null);
         }
         break;
+    // Caso cuando se cambia el rol del usuario
+    case 'change_role':
+        $email->changeRole($_POST['user_id'], $_POST['role_name']);
+        break;
 }
 
 ?>

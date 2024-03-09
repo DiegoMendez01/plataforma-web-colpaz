@@ -485,7 +485,7 @@ class Users extends Connect
         $stmt->bindValue(1, $email);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
      *  Funcion para actualizar la asignacion del Ticket
@@ -495,6 +495,21 @@ class Users extends Connect
         $conectar = parent::connection();
         parent::set_names();
         
+        // Obtener el rol antiguo
+        $sqlOldRole = "
+            SELECT
+                r.name
+            FROM
+                users u
+            INNER JOIN roles as r ON u.role_id = r.id
+            WHERE
+                u.id = ?
+        ";
+        $stmtOldRole = $conectar->prepare($sqlOldRole);
+        $stmtOldRole->bindValue(1, $id);
+        $stmtOldRole->execute();
+        $old_role = $stmtOldRole->fetch(PDO::FETCH_ASSOC);
+        
         $sql = "
             UPDATE
                 users
@@ -503,12 +518,27 @@ class Users extends Connect
             WHERE
                 id = ?
         ";
-        $sql = $conectar->prepare($sql);
+        $sql    = $conectar->prepare($sql);
         $sql->bindValue(1, $role_id);
         $sql->bindValue(2, $id);
-        $sql->execute();
+        $result = $sql->execute();
         
-        return $result = $sql->fetchAll();
+        if($result){
+            $answer = [
+                'status'      => true,
+                'user_id'     => $id,
+                'role_name'   => $old_role['name'],
+                'msg'         => 'Registro actualizado correctamente'
+            ];
+        }else{
+            $answer = [
+                'status'  => false,
+                'msg'     => 'Fallo con la actualizacion del rol',
+            ];
+        }
+        
+        // Devolver el rol antiguo y el nuevo
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
     }
     /*
      *  Funcion para actualizar el token del usuario

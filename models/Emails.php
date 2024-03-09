@@ -9,6 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 // Llamada de las clases necesarias que se usaran en el envio del Email
 require_once("../config/connection.php");
 require_once("../models/Users.php");
+require_once("../models/Roles.php");
 
 Class Emails extends PHPMailer
 {
@@ -123,6 +124,66 @@ Class Emails extends PHPMailer
         }
         if(!empty($answer)){
             echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+        }
+    }
+    
+    public function changeRole($id, $role_name)
+    {
+        $tbody     = '';
+        
+        $userModel = new Users();
+        $roleModel = new Roles();
+        $userData  = $userModel->getUserById($id);
+        $roleData  = $roleModel->getRolesById($userData[0]['role_id']);
+        
+        
+        $tbody .=
+        '
+            <tr style="border-collapse:collapse">
+              <td style="padding:0;Margin:0">
+                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, "helvetica neue", helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">Estimado '.$userData[0]['name'].' '.$userData[0]['lastname'].'</p>
+                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, "helvetica neue", helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">Te informamos que tu rol ha sido cambiado por el administrador de la plataforma. A continuación, se detallan los cambios:</p>
+                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, "helvetica neue", helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"><b>Rol anterior: </b>'.$role_name.'</p>
+                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, "helvetica neue", helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"><b>Nuevo rol: </b>'.$roleData['name'].'</p>
+                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, "helvetica neue", helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"><b>Cambio realizado por: </b>'.$_SESSION['name'].'</p>
+                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, "helvetica neue", helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">Si tienes preguntas o inquietudes, no dudes en ponerte en contacto con nosotros.</p></td>
+            </tr>
+        ';
+        
+        // Armar correo a enviar
+        $this->isSMTP();
+        $this->Host         = 'smtp.gmail.com';
+        $this->Port         = 587;
+        $this->SMTPAuth     = true;
+        $this->SMTPSecure   = 'tls';
+        
+        $this->Username     = $this->gestorCorreo;
+        $this->Password     = $this->gestorPass;
+        $this->setFrom($this->gestorCorreo, "Cambio de Rol - ".$userData[0]['id']);
+        
+        $this->CharSet      = 'UTF8';
+        $this->addAddress($userData[0]['email']);
+        $this->IsHTML(true);
+        $this->Subject      = 'Cambio de Rol';
+        
+        // Armar cuerpo del correo
+        $body           = file_get_contents('../public/RoleChange.html'); /* Ruta del template */
+        /* Parametros del template a reemplazar */
+        $body = str_replace('$tbldetalle', $tbody, $body);
+        
+        $this->Body     = $body;
+        $this->AltBody  = strip_tags('Cambio de Rol');
+        
+        try{
+            $this->Send();
+            echo json_encode([
+                'status' => true
+            ]);
+        }catch(Exception $e){
+            echo json_encode([
+                'status' => false,
+                'msg'    => $e
+            ]);
         }
     }
 }
