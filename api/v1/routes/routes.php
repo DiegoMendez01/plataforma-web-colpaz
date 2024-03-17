@@ -16,16 +16,25 @@ if(count(array_filter($routesArray)) == 3){
     /*====================================================
      Cuando pasamos solo un indice en el array $routesArray
      ======================================================*/
-    if(count(array_filter($routesArray)) === 5 AND !is_numeric(array_filter($routesArray)[5])){
+    if(count(array_filter($routesArray)) === 5){
         /*====================================================
          Cuando se hacen peticiones según el nombre del indice
          ======================================================*/
-        if(array_filter($routesArray)[4] == 'users'){
-            if(isset($_SERVER['REQUEST_METHOD']) AND $_SERVER['REQUEST_METHOD'] == 'POST'){
-                
-            }elseif(isset($_SERVER['REQUEST_METHOD']) AND $_SERVER['REQUEST_METHOD'] == 'GET'){
-                $users = new usersController();
-                $users->view();
+        if(!is_numeric(array_filter($routesArray)[5])){
+            if(array_filter($routesArray)[5] == 'index'){
+                if(array_filter($routesArray)[4] == 'users'){
+                    if(isset($_SERVER['REQUEST_METHOD']) AND $_SERVER['REQUEST_METHOD'] == 'GET'){
+                        $users = new usersController();
+                        $users->view();
+                    }
+                }
+            }
+        }else if(is_numeric(array_filter($routesArray)[5])){
+            if(array_filter($routesArray)[4] == 'users'){
+                if(isset($_SERVER['REQUEST_METHOD']) AND $_SERVER['REQUEST_METHOD'] == 'GET'){
+                    $users = new usersController();
+                    $users->view(array_filter($routesArray)[5]);
+                }
             }
         }
     }else{
