@@ -21,7 +21,7 @@ if(!empty($_SESSION['id'])){
         $dataCourse        = $course->getCourseById($dataTeacherC['course_id']);
         $dataHeaderC       = $headerContent->getHeaderContentByTeacher($dataTeacherC['id']);
         $dataClassroom     = $classroom->getClassroomById($dataTeacherC['classroom_id']);
-        $dataAllContent    = $content->getContentByTeacherCourseId($dataTeacherC['course_id'], $dataHeaderC['id']);
+        $dataAllContent    = $content->getContentByTeacherCourseId($courseId, $dataHeaderC['id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -120,13 +120,17 @@ if(!empty($_SESSION['id'])){
         			<?php
         			}
         			if(!empty($dataHeaderC['header_video'])){
+        			    // Obtener el ID del video de la URL
+        			    $urlHeader = $dataHeaderC['header_video'];
+        			    parse_str(parse_url($urlHeader, PHP_URL_QUERY), $paramHeaders);
+        			    $video_id_header = $paramHeaders['v'];
+        			    
+        			    // Construir la URL de incrustación
+        			    $embed_url_header = "https://www.youtube.com/embed/" . $video_id_header;
         			?>
                         <!-- Video de YouTube incrustado -->
-                       <div class="col-md-12" style="margin-top: 1rem; margin-bottom: 3rem;">
-                            <img style="width: 4rem; height: 4rem;" src="../../public/img/miniaturaVideo.png" alt="miniatura del video">
-                            <a style="width: 200px;" href="<?= $dataHeaderC['header_video'] ?>" target="_blank">
-                            	<i class="fa fa-youtube-play"></i> Video de Presentacion
-                            </a>
+                       <div style="margin-top: 2rem;" class="text-center">
+                           <iframe width="560" height="315" src="<?= $embed_url_header ?>" frameborder="0" allowfullscreen></iframe>
                        </div>
                     <?php
                      }
@@ -188,13 +192,17 @@ if(!empty($_SESSION['id'])){
                                             </a>
                                             <?php
                                             if(!empty($data['video'])){
+                                            // Obtener el ID del video de la URL
+                                            $url = $data['video'];
+                                            parse_str(parse_url($url, PHP_URL_QUERY), $params);
+                                            $video_id = $params['v'];
+                                            
+                                            // Construir la URL de incrustación
+                                            $embed_url = "https://www.youtube.com/embed/" . $video_id;
                                             ?>
                                             <!-- Video de YouTube incrustado -->
-                                           <div style="margin-top: 2rem;">
-                                                <img style="width: 4rem; height: 4rem;" src="../../public/img/miniaturaVideo.png" alt="miniatura del video">
-                                                <a style="width: 200px;" class="btn" href="<?= $data['video'] ?>" target="_blank">
-                                                	<i class="fa fa-youtube-play"></i> Ver video
-                                                </a>
+                                           <div style="margin-top: 2rem;" class="text-center">
+                                                <iframe width="560" height="315" src="<?= $embed_url ?>" frameborder="0" allowfullscreen></iframe>
                                             </div>
                                             <?php
         			                         }
