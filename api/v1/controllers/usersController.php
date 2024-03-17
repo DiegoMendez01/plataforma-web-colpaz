@@ -65,5 +65,33 @@ class usersController
         echo json_encode($arrayData, true);
         return;
     }
+    /*
+     * Crear un usuario
+     */
+    public function create($data)
+    {
+        header("Content-Type: application/json");
+        
+        $user = userModel::create("users", $data);
+        
+        if($user == 'create'){
+            $json = [
+                "status" => 200,
+                "message" => 'Se ha creado correctamente el usuario'
+            ];
+        }else if($user == 'verifyFalse'){
+            $json = [
+                "status" => 400,
+                "message" => 'Hay información duplicada que existe en la base de datos de un usuario'
+            ];
+        }else{
+            $json = [
+                "status" => 400,
+                "message" => 'No se creo correctamente el usuario'
+            ];
+        }
+        echo json_encode($json, true);
+        return;
+    }
 }
 ?>
