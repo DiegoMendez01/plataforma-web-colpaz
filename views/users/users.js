@@ -269,7 +269,7 @@ function eliminar(id){
 
 function editarRol(id)
 {
-	$.post("../../controllers/userController.php?op=mostrar", { id : id }, function(data){
+	$.post("../../controllers/UserController.php?op=mostrar", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#user_id').val(data.id);
 		$('#mdltitulo').html('Asignar rol de Usuario');

@@ -126,7 +126,7 @@ Class Emails extends PHPMailer
         $userModel = new Users();
         $roleModel = new Roles();
         $userData  = $userModel->getUserById($id);
-        $roleData  = $roleModel->getRolesById($userData[0]['role_id']);
+        $roleData  = $roleModel->getRolesById($userData['role_id']);
         
         
         $tbody .=
@@ -151,10 +151,10 @@ Class Emails extends PHPMailer
         
         $this->Username     = $this->gestorCorreo;
         $this->Password     = $this->gestorPass;
-        $this->setFrom($this->gestorCorreo, "Cambio de Rol - ".$userData[0]['id']);
+        $this->setFrom($this->gestorCorreo, "Cambio de Rol - ".$userData['id']);
         
         $this->CharSet      = 'UTF8';
-        $this->addAddress($userData[0]['email']);
+        $this->addAddress($userData['email']);
         $this->IsHTML(true);
         $this->Subject      = 'Cambio de Rol';
         

@@ -45,7 +45,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                 								<span aria-hidden="true">X</span>
                 							</button>
                 							<i class="font-icon font-icon-warning"></i>
-                							Documento y/o contraseña incorrectos
+                							Credenciales incorrectas
                 						</div>
                 					<?php
                                         break;
@@ -68,6 +68,17 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                 							</button>
                 							<i class="font-icon font-icon-warning"></i>
                 							Cuenta no verificada. Por favor debe ingresar a <a href="submitted-email">Validar Cuenta</a>.
+                						</div>
+                                    <?php
+                                        break;
+                                    case "4":
+                                        ?>
+                                    	<div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
+                							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                								<span aria-hidden="true">X</span>
+                							</button>
+                							<i class="font-icon font-icon-warning"></i>
+                							La clave de seguridad no coincide con la registrada
                 						</div>
                                     <?php
                                         break;

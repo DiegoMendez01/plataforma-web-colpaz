@@ -619,7 +619,7 @@ CALL sp_InsertCampuses ("Sede General", "Sede General, para el administrador gen
 CALL sp_InsertCampuses ("Colegio Centro Quipama", "Colegio ubicado en el casco urbano de Quipama", "2023-12-09 00:00:00");
 CALL sp_InsertCampuses ("Colegio Floresta Quipama", "Colegio ubicado en la zona minera de Quipama", "2023-12-09 00:00:00");
 CALL sp_InsertCampuses ("Colegio Cormal Quipama", "Colegio ubicado en la zona rural para Otanche de Quipama", "2023-12-09 00:00:00");
-CALL sp_InsertUser ("Admin", "Superior", "admin", "admin@gmail.com", "123456", "0WREIsw8xwhwpm2Qvmd3RWFvsevQhmgM", "M", 1, "admin", "mWPaI4bf8EGpiqqgbgJfoSWSxXGWDhbSBzst6zzlBrQcboSFYb0w4ZpvWIkk", "1111", "2002-09-01", "2023-10-21", "nodisponible.jpg", "1234567890", 1, "85e672dc-db55-4ce9-ba3a-c604eea478aa", 1, 1);
+CALL sp_InsertUser ("Admin", "Superior", "admin", "admin@gmail.com", "$2y$10$0kFnZhqxkDdLl93Jb60cfuusVJ8X8w5H7cSV2eohrn55HsVFt1KTm", "0WREIsw8xwhwpm2Qvmd3RWFvsevQhmgM", "M", 1, "admin", "mWPaI4bf8EGpiqqgbgJfoSWSxXGWDhbSBzst6zzlBrQcboSFYb0w4ZpvWIkk", "1111", "2002-09-01", "2023-10-21", "nodisponible.jpg", "1234567890", 1, "85e672dc-db55-4ce9-ba3a-c604eea478aa", 1, 1);
 CALL sp_InsertAuth(1, 1, "2023-12-08", "SYNC");
 CALL sp_InsertDegree("Sexto","2023-10-21", 1);
 CALL sp_InsertDegree("Septimo","2023-10-21", 1);

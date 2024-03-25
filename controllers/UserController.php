@@ -86,13 +86,7 @@ switch($_GET['op']){
      */
     case "mostrar":
         $datos = $user->getUserById($_POST['id']);
-        
-        if(is_array($datos) == true AND count($datos) <> 0){
-            foreach($datos as $row){
-                $output["id"]                       = $row['id'];
-            }
-            echo json_encode($output);
-        }
+        echo json_encode($datos);
         break;
     /*
      * El caso que sirve para actualizar el rol del usuario
