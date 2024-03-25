@@ -39,7 +39,7 @@ switch($_GET['op'])
             $dataUser          = $user->getUserById($dataTeacherCourse['user_id']);
             
             $sub_array      = [];
-            $sub_array[]    = $dataUser[0]['name'].' '.$dataUser[0]['lastname'];
+            $sub_array[]    = $dataUser['name'].' '.$dataUser['lastname'];
             $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
