@@ -8,7 +8,7 @@ $content = new Contents();
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
+     * Insertar o actualizar el registro de un contenido de curso. Dependiendo si existe o no el contenido,
      * se tomara un flujo.
      */
     case 'insertOrUpdate':

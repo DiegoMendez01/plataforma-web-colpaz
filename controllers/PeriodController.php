@@ -8,14 +8,14 @@ $period = new Periods();
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
+     * Insertar o actualizar el registro de un periodo academico. Dependiendo si existe o no el periodo,
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
         $period->insertOrUpdatePeriod($_POST['id'], $_POST['name']);
         break;
     /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+     * Es para listar/obtener los periodos academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listPeriod':
@@ -44,7 +44,7 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     /*
-     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+     * Eliminar totalmente registros de periodos academicos existentes por su ID (eliminado logico).
      */
     case 'deletePeriodById':
         if(isset($_POST['id'])){
@@ -52,8 +52,8 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
+     * Es para listar/obtener los periodos que existen registrados en el sistema.
+     * Pero debe mostrar el periodo por medio de su identificador unico
      */
     case 'listPeriodById':
         $data = $period->getPeriodsById($_POST['id']);
@@ -65,7 +65,7 @@ switch($_GET['op'])
         echo json_encode($output);
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Es para listar/obtener los periodos que existen registrados en el sistema.
      */
     case 'listPeriods':
         $datos = $period->getPeriods();

@@ -8,14 +8,14 @@ $roles = new Roles();
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
+     * Insertar o actualizar el registro de un rol. Dependiendo si existe o no el rol,
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
         $roles->updateOrInsertRole($_POST['id'], $_POST['name'], $_POST['functions']);
         break;
     /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+     * Es para listar/obtener los roles que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listRole':
@@ -45,7 +45,7 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     /*
-     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+     * Eliminar totalmente registros de roles existentes por su ID (eliminado logico).
      */
     case 'deleteRoleById':
         if(isset($_POST['id'])){
@@ -53,8 +53,8 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
+     * Es para listar/obtener los roles que existen registrados en el sistema.
+     * Pero debe mostrar el rol por medio de su identificador unico
      */
     case 'listRoleById':
         $datos = $roles->getRolesById($_POST['id']);

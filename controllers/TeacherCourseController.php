@@ -18,14 +18,14 @@ $degree        = new Degrees();
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
+     * Insertar o actualizar el registro de un curso por profesor. Dependiendo si existe o no el curso por profesor,
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
         $teacherCourse->insertOrUpdateTeacherCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
         break;
     /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+     * Es para listar/obtener los cursos por profesor que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listTeacherCourses':
@@ -63,7 +63,7 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     /*
-     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+     * Eliminar totalmente registros de cursos por profesor existentes por su ID (eliminado logico).
      */
     case 'deleteTeacherCourseById':
         if(isset($_POST['id'])){
@@ -71,8 +71,8 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
+     * Es para listar/obtener los cursos por profesor que existen registrados en el sistema.
+     * Pero debe mostrar el curso por profesor por medio de su identificador unico
      */
     case 'listTeacherCourseById':
         $datos = $teacherCourse->getTeacherCourseById($_POST['id']);

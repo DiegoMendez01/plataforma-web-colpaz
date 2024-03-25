@@ -52,8 +52,8 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
+     * Es para listar/obtener los grados academicos que existen registrados en el sistema.
+     * Pero debe mostrar el grado por medio de su identificador unico
      */
     case 'listDegreeById':
         $datos = $degree->getDegreeById($_POST['id']);
@@ -67,7 +67,7 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Es para listar/obtener los grados academicos que existen registrados en el sistema.
      */
     case 'listDegrees':
         $datos = $degree->getDegrees();
