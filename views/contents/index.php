@@ -8,7 +8,7 @@ require_once("../../models/Classrooms.php");
 require_once("../../models/HeaderContents.php");
 
 if(!empty($_SESSION['id'])){
-    if(!empty($_GET['course']) AND isset($_SESSION['id'])){
+    if(!empty($_GET['course'])){
         $courseId          = $_GET['course'];
         
         $content           = new Contents();
@@ -211,7 +211,7 @@ if(!empty($_SESSION['id'])){
                                         <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_actividades1.png" alt="Logo Recurso">
                                         <div class="d-flex flex-column flex-md-row w-100 align-items-start">
                                             <img src="../../assets/img/icon_submitted.png" alt="resource icon">
-                                            <a class="btn" href="#" target="_blank">
+                                            <a class="btn" href="../assessments/index?course=<?= $data['idTeacherCourse']; ?>&content=<?= $data['id']; ?>" target="_blank">
                                                 <i class="fa fa-paper-plane"></i> Asignar Evaluacion
                                             </a>
                                         </div>
@@ -270,6 +270,9 @@ if(!empty($_SESSION['id'])){
 </body>
 </html>
 <?php
+    }else{
+        header("Location:" . Connect::route() . "views/home/");
+        exit;
     }
 }else{
     header("Location:" . Connect::route() . "views/404/");
