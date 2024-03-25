@@ -16,7 +16,12 @@ CREATE TABLE roles
 CREATE TABLE assessments
 (
   `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único autoincremental',
-  `name` VARCHAR(255) NOT NULL COMMENT 'Nombre de la evaluacion',
+  `title` VARCHAR(255) NOT NULL COMMENT 'Titulo de la evaluacion',
+  `comment` VARCHAR(255) NOT NULL COMMENT 'Comentarios de la evaluacion',
+  `date_limit` DATE NOT NULL COMMENT 'Fecha limite de la evaluacion',
+  `percentage` DATE NOT NULL COMMENT 'Valor de porcentaje de la evaluacion',
+  `status` DATE NOT NULL COMMENT 'Estado de la evaluacion',
+  `file` LONGTEXT COMMENT 'Archivo relacionado con la actividad',
   `created` DATETIME NOT NULL COMMENT 'Fecha y hora de creación del registro',
   `modified` TIMESTAMP NOT NULL COMMENT 'Marca de tiempo que se actualiza al modificar el registro',
   `is_active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Indicador de activación (1 para activo, 0 para inactivo)',
@@ -125,7 +130,7 @@ CREATE TABLE course_forums
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `header_id` INT(11) NOT NULL COMMENT 'Identificador del encabezado asociado al foro del curso',
     `comment` LONGTEXT COMMENT 'Comentario del foro del curso',
-    `file` LONGTEXT COMMENT 'Archivo relacionado con el foro del curso',
+    `file` LONGTEXT COMMENT 'Archivo de ayuda relacionado con el curso',
     `created` DATETIME NOT NULL COMMENT 'Fecha y hora de creacion del registro',
     `modified` TIMESTAMP NOT NULL COMMENT 'Marca de tiempo que se actualiza al modificar el registro',
     `is_active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Indicador de activacion (1 para activo, 0 para inactivo)',
