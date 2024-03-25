@@ -439,7 +439,7 @@ class Users extends Connect
         $stmt->bindValue(1, $id);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para traer los usuarios mediante el token del usuario

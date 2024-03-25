@@ -64,7 +64,7 @@ require_once("../../config/connection.php");
                 }
                  ?>
                 <div class="col-md-12 text-center">
-                    <img class="hidden-md-down" src="../../public/img/LogoCOLPAZ.png" alt="Logo" style="height: 20vh;">
+                    <img class="hidden-md-down" src="../../assets/img/LogoCOLPAZ.png" alt="Logo" style="height: 20vh;">
                 </div>
                 <h2>Formulario de Reenvío de Correo Electrónico</h2>
                 <form method="post" id="submitted_email">

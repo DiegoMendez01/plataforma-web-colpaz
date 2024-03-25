@@ -37,7 +37,7 @@ if(!empty($_GET['token'])){
                 </div>
             </header>
             <div class="box-typical box-typical-padding text-center">
-                    <img class="hidden-md-down" src="../../public/img/LogoCOLPAZ.png" alt="Logo" style="height: 20vh;">
+                    <img class="hidden-md-down" src="../../assets/img/LogoCOLPAZ.png" alt="Logo" style="height: 20vh;">
                 </div>
             <div class="box-typical box-typical-padding">
                 <div class="alert alert-success text-center">

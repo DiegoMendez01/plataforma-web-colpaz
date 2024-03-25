@@ -88,16 +88,16 @@ if(!empty($_SESSION['id'])){
 			?>
 			<div class="box-typical box-typical-padding">
     			<div class="text-center" style="margin-bottom: 1rem;">
-    				<img src="../../public/img/bienvenidaf.png" alt="Logo bienvenida">
+    				<img src="../../assets/img/bienvenidaf.png" alt="Logo bienvenida">
     			</div>
     			<p>En este espacio académico se van a tratar los temas relacionados con <?= $dataCourse['name'] ?> del grado <?= $dataClassroom['name'] ?></p>
-    			<img style="width: 17rem; height: 3rem;" src="../../public/img/acerca_asignatura.png" alt="Logo acerca de">
+    			<img style="width: 17rem; height: 3rem;" src="../../assets/img/acerca_asignatura.png" alt="Logo acerca de">
     			<?php
     			if(!empty($dataHeaderC['id']) AND $dataHeaderC['is_active'] == 1){
         			if(!empty($dataHeaderC['curriculum_file'])){
         			?>
             			<div class="col-md-12" style="margin-top: 2rem;">
-            				<img src="../../public/img/icon_file.png" alt="resource icon">
+            				<img src="../../assets/img/icon_file.png" alt="resource icon">
                             <a href="#" target="_blank">
                                 <i class="fa fa-download"></i> Plan de Estudios
                             </a>
@@ -112,7 +112,7 @@ if(!empty($_SESSION['id'])){
         			    }
         			?>
             			<div class="col-md-12" style="margin-top: 1rem; <?= $style ?>">
-            				<img src="../../public/img/icon_file.png" alt="resource icon">
+            				<img src="../../assets/img/icon_file.png" alt="resource icon">
                             <a href="#" target="_blank">
                                 <i class="fa fa-download"></i> Informacion Adicional del Curso
                             </a>
@@ -184,9 +184,9 @@ if(!empty($_SESSION['id'])){
                                         </div>
                                     </div>
                                     <div class="card card-body">
-                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../public/img/banner_recursos1.jpg" alt="Logo Recurso">
+                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_recursos1.jpg" alt="Logo Recurso">
                                         <div class="d-flex flex-column flex-md-row w-100 align-items-start">
-                                            <img src="../../public/img/icon_file.png" alt="resource icon">
+                                            <img src="../../assets/img/icon_file.png" alt="resource icon">
                                             <a class="btn" href="#" target="_blank">
                                                 <i class="fa fa-download"></i> Material de Descarga
                                             </a>
@@ -208,9 +208,9 @@ if(!empty($_SESSION['id'])){
         			                         }
                                             ?>
                                         </div>
-                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../public/img/banner_actividades1.png" alt="Logo Recurso">
+                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_actividades1.png" alt="Logo Recurso">
                                         <div class="d-flex flex-column flex-md-row w-100 align-items-start">
-                                            <img src="../../public/img/icon_submitted.png" alt="resource icon">
+                                            <img src="../../assets/img/icon_submitted.png" alt="resource icon">
                                             <a class="btn" href="#" target="_blank">
                                                 <i class="fa fa-paper-plane"></i> Asignar Evaluacion
                                             </a>
