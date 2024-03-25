@@ -358,7 +358,7 @@ class Users extends Connect
     /*
      * Funcion para traer todos los usuarios registrados hasta el momento menos el de sesion
      */
-    public function getUsers($id)
+    public function getUsersExcludingAdmin($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -382,7 +382,7 @@ class Users extends Connect
     /*
      * Funcion para traer todos los usuarios registrados hasta el momento
      */
-    public function getUserAll()
+    public function getUsers()
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -395,6 +395,29 @@ class Users extends Connect
             INNER JOIN roles ON users.role_id = roles.id
             WHERE
                 users.is_active = 1 AND roles.id <> 1
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll();
+    }
+    /*
+     * Funcion para traer todos los profesores registrados hasta el momento
+     */
+    public function getUsersTeacher()
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                users.*
+            FROM
+                users
+            INNER JOIN roles ON users.role_id = roles.id
+            WHERE
+                users.is_active = 1 AND roles.id <> 1 AND users.role_id = 3
         ";
         
         $stmt = $conectar->prepare($sql);

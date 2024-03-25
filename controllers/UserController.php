@@ -19,7 +19,7 @@ switch($_GET['op']){
      * Ademas, de dibujar una tabla para mostrar los registros
      */
     case 'listUser':
-        $datos = $user->getUsers($_POST['id']);
+        $datos = $user->getUsersExcludingAdmin($_POST['id']);
         $data  = [];
         foreach($datos as $row){
             $sub_array   = [];
@@ -108,8 +108,8 @@ switch($_GET['op']){
     /*
      * Listar para comboBox
      */
-    case 'combo':
-        $datos = $user->getUserAll();
+    case 'comboTeacher':
+        $datos = $user->getUsersTeacher();
         if(is_array($datos) == true AND count($datos) > 0){
             $html = "";
             $html.= "<option selected></option>";

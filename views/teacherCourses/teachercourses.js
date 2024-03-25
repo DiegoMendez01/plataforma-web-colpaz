@@ -206,7 +206,7 @@ function generarCombos() {
         $("#degree_id").html(data);
     });
     
-    $.post("../../controllers/UserController.php?op=combo", function (data) {
+    $.post("../../controllers/UserController.php?op=comboTeacher", function (data) {
         $("#user_id").html(data);
     });
 
