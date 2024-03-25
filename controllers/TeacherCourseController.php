@@ -18,14 +18,14 @@ $degree        = new Degrees();
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
+     * Insertar o actualizar el registro de un curso por profesor. Dependiendo si existe o no el curso por profesor,
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
         $teacherCourse->insertOrUpdateTeacherCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
         break;
     /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+     * Es para listar/obtener los cursos por profesor que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listTeacherCourses':
@@ -43,7 +43,7 @@ switch($_GET['op'])
             $sub_array[]    = $classroomData['name'];
             $sub_array[]    = $degreeData['name'];
             $sub_array[]    = $periodData['name'];
-            $sub_array[]    = $userData[0]['name'].' '.$userData[0]['lastname'];
+            $sub_array[]    = $userData['name'].' '.$userData['lastname'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }
@@ -63,7 +63,7 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     /*
-     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+     * Eliminar totalmente registros de cursos por profesor existentes por su ID (eliminado logico).
      */
     case 'deleteTeacherCourseById':
         if(isset($_POST['id'])){
@@ -71,23 +71,12 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
+     * Es para listar/obtener los cursos por profesor que existen registrados en el sistema.
+     * Pero debe mostrar el curso por profesor por medio de su identificador unico
      */
     case 'listTeacherCourseById':
         $datos = $teacherCourse->getTeacherCourseById($_POST['id']);
-        
-        if(is_array($datos) == true AND count($datos)){
-            foreach($datos as $row){
-                $output["id"]           = $row['id'];
-                $output["user_id"]      = $row['user_id'];
-                $output["course_id"]    = $row['course_id'];
-                $output["classroom_id"] = $row['classroom_id'];
-                $output["period_id"]    = $row['period_id'];
-                $output["degree_id"]    = $row['degree_id'];
-            }
-            echo json_encode($output);
-        }
+        echo json_encode($datos);
         break;
     /*
      * Es para listar/obtener los docentes por cursos con su otra data anexada que existen registrados en el sistema.

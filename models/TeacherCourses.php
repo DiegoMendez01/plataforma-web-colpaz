@@ -178,6 +178,7 @@ class TeacherCourses extends Connect
         $sql = '
             SELECT
                 uc.id,
+                uc.course_id,
                 u.name as nameUser,
                 c.name as nameCourse,
                 cs.name as nameClassroom,

@@ -10,15 +10,15 @@ if (isset($_SESSION['id'])) {
 <html lang="es">
 
 <head>
-    <?php require_once("../mainHead/head.php"); ?>
+    <?php require_once("../html/mainHead/head.php"); ?>
     <title>Aula Virtual:Zonas</title>
 </head>
 
 <body class="with-side-menu">
 
-    <?php require_once("../mainHeader/header.php"); ?>
+    <?php require_once("../html/mainHeader/header.php"); ?>
     <div class="mobile-menu-left-overlay"></div>
-    <?php require_once("../mainNav/nav.php"); ?>
+    <?php require_once("../html/mainNav/nav.php"); ?>
 
     <!-- Contenido  -->
     <div class="page-content">
@@ -57,7 +57,7 @@ if (isset($_SESSION['id'])) {
     
     <?php require_once("modalGestionZones.php"); ?>
     
-    <?php require_once ("../mainJs/js.php"); ?>
+    <?php require_once ("../html/mainJs/js.php"); ?>
     
     <script src="zones.js" type="text/javascript"></script>
 </body>

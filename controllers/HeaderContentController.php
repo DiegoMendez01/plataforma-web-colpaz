@@ -12,14 +12,14 @@ $user          = new Users();
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
+     * Insertar o actualizar el registro de una cabecera de contenido de un curso. Dependiendo si existe o no la cabecera,
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
         $headerContent->insertOrUpdateHeaderContent($_POST['idHeader'], $_POST['teacher_course_id'], $_FILES['supplementary_file'], $_FILES['curriculum_file'], $_POST['header_video']);
         break;
     /*
-     * Eliminar totalmente registros de contenidos existentes por su ID (eliminado logico).
+     * Eliminar totalmente registros de cabeceras de contenidos existentes por su ID (eliminado logico).
      */
     case 'deleteHeaderContentById':
         if(isset($_POST['idHeader'])){
@@ -27,7 +27,7 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+     * Es para listar/obtener las cabeceras de contenidos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listHeaderContent':

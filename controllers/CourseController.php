@@ -50,7 +50,7 @@ switch($_GET['op']){
         break;
     /*
      * Es para listar/obtener los cursos que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
+     * Pero debe mostrar el curso por medio de su identificador unico
      */
     case 'listCourseById':
         $data = $course->getCourseById($_POST['id']);
@@ -62,11 +62,18 @@ switch($_GET['op']){
         echo json_encode($output);
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Listar para comboBox
      */
-    case 'listCourses':
+    case 'combo':
         $datos = $course->getCourses();
-        echo json_encode($datos);
+        if(is_array($datos) == true AND count($datos) > 0){
+            $html = "";
+            $html.= "<option selected></option>";
+            foreach($datos as $row){
+                $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
+            }
+            echo $html;
+        }
         break;
 }
 ?>

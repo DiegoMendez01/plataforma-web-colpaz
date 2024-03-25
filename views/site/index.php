@@ -15,13 +15,13 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
 
 <head lang="es">
     <?php
-    require_once("../mainHead/head.php");
+    require_once("../html/mainHead/head.php");
     ?>
     <title>Aula Virtual::Acceso</title>
 </head>
 
 <body>
-    <div class="page-center" style="height: 100vh; display: flex; justify-content: center; align-items: center; background-image: url('../../public/img/fondoLogin.png'); background-size: cover; background-repeat: no-repeat;">
+    <div class="page-center" style="height: 100vh; display: flex; justify-content: center; align-items: center; background-image: url('../../assets/img/fondoLogin.png'); background-size: cover; background-repeat: no-repeat;">
         <div class="page-center-in" style="width: 130vh;">
             <div class="container-fluid" style="background-color: white; padding: 25px; border-radius: 5px;">
             	<div class="row">
@@ -29,7 +29,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                         <form class="sign-box" action="" method="post" id="login_form">
                             <input type="hidden" id="rol_id" name="rol_id" value="1">
                             <div class="sign-avatar">
-                                <img src="../../public/img/avatar-1-128.png" alt="" id="imgtipo">
+                                <img src="../../assets/img/avatar-1-128.png" alt="" id="imgtipo">
                             </div>
                             <header class="sign-title" id="lbltitulo">Acceso Usuario</header>
                             <!-- Nos sirve para validar si la clave/documento es incorrecta o los campos vacios
@@ -45,7 +45,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                 								<span aria-hidden="true">X</span>
                 							</button>
                 							<i class="font-icon font-icon-warning"></i>
-                							Documento y/o contraseña incorrectos
+                							Credenciales incorrectas
                 						</div>
                 					<?php
                                         break;
@@ -68,6 +68,17 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                 							</button>
                 							<i class="font-icon font-icon-warning"></i>
                 							Cuenta no verificada. Por favor debe ingresar a <a href="submitted-email">Validar Cuenta</a>.
+                						</div>
+                                    <?php
+                                        break;
+                                    case "4":
+                                        ?>
+                                    	<div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
+                							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                								<span aria-hidden="true">X</span>
+                							</button>
+                							<i class="font-icon font-icon-warning"></i>
+                							La clave de seguridad no coincide con la registrada
                 						</div>
                                     <?php
                                         break;
@@ -96,7 +107,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                   	</div>
                   	<div class="col-lg-5 col-md-12 right-column">
                   	    <div class="d-flex mt-2 text-center">
-                  		     <img src="../../public/img/LogoCOLPAZ.png" alt="Logo">
+                  		     <img src="../../assets/img/LogoCOLPAZ.png" alt="Logo">
                   		</div>
                         <div class="column-content" style="background-color: white; padding: 20px;">
                             <p style="text-align: center; font-size: 1.5rem;">Docente COLPAZ, solicite sus cursos&nbsp;
@@ -123,7 +134,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
     </div>
     <!--.page-center-->
     <?php
-	require_once("../mainJs/js.php");
+	require_once("../html/mainJs/js.php");
 	?>
 </body>
 

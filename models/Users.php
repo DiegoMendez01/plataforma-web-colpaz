@@ -34,32 +34,36 @@ class Users extends Connect
                     INNER JOIN roles r ON u.role_id = r.id
                     INNER JOIN campuses c ON u.idr = c.idr
                     WHERE
-                        u.identification = ? AND u.password_hash = ? AND u.is_active = 1
+                        u.identification = ? AND u.is_active = 1
                 ";
                 
                 $stmt = $conectar->prepare($sql);
                 $stmt->bindValue(1, $identification);
-                $stmt->bindValue(2, $password_hash);
                 $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 if(is_array($result) AND count($result) > 0){
-                    if($result[0]['validate'] == 1){
-                        $_SESSION['id']             = $result[0]['id'];
-                        $_SESSION['name']           = $result[0]['name'];
-                        $_SESSION['lastname']       = $result[0]['lastname'];
-                        $_SESSION['email']          = $result[0]['email'];
-                        $_SESSION['identification'] = $result[0]['identification'];
-                        $_SESSION['password_hash']  = $result[0]['password_hash'];
-                        $_SESSION['is_active']      = $result[0]['is_active'];
-                        $_SESSION['created']        = $result[0]['created'];
-                        $_SESSION['role_id']        = $result[0]['role_id'];
-                        $_SESSION['role_name']      = $result[0]['role_name'];
-                        $_SESSION['campuse']        = $result[0]['campuse'];
-                        header("Location:".Connect::route()."views/home/");
-                        exit;
+                    if(password_verify($password_hash, $result['password_hash'])){
+                        if($result['validate'] == 1){
+                            $_SESSION['id']             = $result['id'];
+                            $_SESSION['name']           = $result['name'];
+                            $_SESSION['lastname']       = $result['lastname'];
+                            $_SESSION['email']          = $result['email'];
+                            $_SESSION['identification'] = $result['identification'];
+                            $_SESSION['password_hash']  = $result['password_hash'];
+                            $_SESSION['is_active']      = $result['is_active'];
+                            $_SESSION['created']        = $result['created'];
+                            $_SESSION['role_id']        = $result['role_id'];
+                            $_SESSION['role_name']      = $result['role_name'];
+                            $_SESSION['campuse']        = $result['campuse'];
+                            header("Location:".Connect::route()."views/home/");
+                            exit;
+                        }else{
+                            header("Location:".Connect::route()."views/site/index?msg=3");
+                            exit;
+                        }
                     }else{
-                        header("Location:".Connect::route()."views/site/index?msg=3");
+                        header("Location:".Connect::route()."views/site/index?msg=4");
                         exit;
                     }
                 }else{
@@ -134,6 +138,7 @@ class Users extends Connect
                 $resetPassword  = str_replace("$", "a", crypt($email.$lastname.$phone, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
                 $emailToken     = str_replace("$", "a", crypt($email.$username.$name, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
                 $smsCode        = rand(1000, 9999);;
+                $password       = password_hash($password_hash, PASSWORD_DEFAULT);
                 
                 // Concatenar y formatear las credenciales para generar el API key
                 $apiKey = sprintf("%s-%s-%s-%s-%s", substr(md5($email), 0, 8), substr(md5($lastname), 0, 4), substr(md5($name), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 8));
@@ -151,7 +156,7 @@ class Users extends Connect
                 $stmt->bindValue(3, $username);
                 $stmt->bindValue(4, $identification_type_id);
                 $stmt->bindValue(5, $identification);
-                $stmt->bindValue(6, $password_hash);
+                $stmt->bindValue(6, $password);
                 $stmt->bindValue(7, $email);
                 $stmt->bindValue(8, $phone);
                 $stmt->bindValue(9, $phone2);
@@ -214,6 +219,8 @@ class Users extends Connect
                     $request = $stmtUpdate->execute();
                     $action  = 2;
                 }else{
+                    $password       = password_hash($password_hash, PASSWORD_DEFAULT);
+                    
                     $sqlU = "
                         UPDATE
                             users
@@ -239,7 +246,7 @@ class Users extends Connect
                     $stmtUpdate->bindValue(3, $username);
                     $stmtUpdate->bindValue(4, $identification_type_id);
                     $stmtUpdate->bindValue(5, $identification);
-                    $stmtUpdate->bindValue(6, $password_hash);
+                    $stmtUpdate->bindValue(6, $password);
                     $stmtUpdate->bindValue(7, $email);
                     $stmtUpdate->bindValue(8, $phone);
                     $stmtUpdate->bindValue(9, $phone2);
@@ -351,7 +358,7 @@ class Users extends Connect
     /*
      * Funcion para traer todos los usuarios registrados hasta el momento menos el de sesion
      */
-    public function getUsers($id)
+    public function getUsersExcludingAdmin($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -375,7 +382,7 @@ class Users extends Connect
     /*
      * Funcion para traer todos los usuarios registrados hasta el momento
      */
-    public function getUserAll()
+    public function getUsers()
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -388,6 +395,29 @@ class Users extends Connect
             INNER JOIN roles ON users.role_id = roles.id
             WHERE
                 users.is_active = 1 AND roles.id <> 1
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll();
+    }
+    /*
+     * Funcion para traer todos los profesores registrados hasta el momento
+     */
+    public function getUsersTeacher()
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                users.*
+            FROM
+                users
+            INNER JOIN roles ON users.role_id = roles.id
+            WHERE
+                users.is_active = 1 AND roles.id <> 1 AND users.role_id = 3
         ";
         
         $stmt = $conectar->prepare($sql);
@@ -439,7 +469,7 @@ class Users extends Connect
         $stmt->bindValue(1, $id);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para traer los usuarios mediante el token del usuario
@@ -485,7 +515,7 @@ class Users extends Connect
         $stmt->bindValue(1, $email);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
      *  Funcion para actualizar la asignacion del Ticket
@@ -495,6 +525,21 @@ class Users extends Connect
         $conectar = parent::connection();
         parent::set_names();
         
+        // Obtener el rol antiguo
+        $sqlOldRole = "
+            SELECT
+                r.name
+            FROM
+                users u
+            INNER JOIN roles as r ON u.role_id = r.id
+            WHERE
+                u.id = ?
+        ";
+        $stmtOldRole = $conectar->prepare($sqlOldRole);
+        $stmtOldRole->bindValue(1, $id);
+        $stmtOldRole->execute();
+        $old_role = $stmtOldRole->fetch(PDO::FETCH_ASSOC);
+        
         $sql = "
             UPDATE
                 users
@@ -503,12 +548,27 @@ class Users extends Connect
             WHERE
                 id = ?
         ";
-        $sql = $conectar->prepare($sql);
+        $sql    = $conectar->prepare($sql);
         $sql->bindValue(1, $role_id);
         $sql->bindValue(2, $id);
-        $sql->execute();
+        $result = $sql->execute();
         
-        return $result = $sql->fetchAll();
+        if($result){
+            $answer = [
+                'status'      => true,
+                'user_id'     => $id,
+                'role_name'   => $old_role['name'],
+                'msg'         => 'Registro actualizado correctamente'
+            ];
+        }else{
+            $answer = [
+                'status'  => false,
+                'msg'     => 'Fallo con la actualizacion del rol',
+            ];
+        }
+        
+        // Devolver el rol antiguo y el nuevo
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
     }
     /*
      *  Funcion para actualizar el token del usuario

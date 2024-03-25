@@ -24,15 +24,23 @@ function updateAsignRole(e)
 		contentType: false,
 		processData: false,
 		success: function(data){
-			$('#userRol_form')[0].reset();
-			$('#modalAsignRole').modal('hide');
-			$('#user_data').DataTable().ajax.reload();
-			swal({
-				title: "ColPaz Quipama",
-				text: "Registro actualizado correctamente.",
-				type: "success",
-				confirmButtonClass: "btn-success"
-			});
+			data = JSON.parse(data);
+			if(data.status){
+				$.post("../../controllers/emailController.php?op=change_role", { user_id : data.user_id, role_name : data.role_name}, function(data) {
+	        	});
+	        	
+	        	$('#userRol_form')[0].reset();
+				$('#modalAsignRole').modal('hide');
+				$('#user_data').DataTable().ajax.reload();
+				swal({
+					title: "ColPaz Quipama",
+					text: data.msg,
+					type: "success",
+					confirmButtonClass: "btn-success"
+				});
+			}else{
+				swal("Advertencia", data.msg, "error");
+			}
 		}
 	});
 }
@@ -261,7 +269,7 @@ function eliminar(id){
 
 function editarRol(id)
 {
-	$.post("../../controllers/userController.php?op=mostrar", { id : id }, function(data){
+	$.post("../../controllers/UserController.php?op=mostrar", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#user_id').val(data.id);
 		$('#mdltitulo').html('Asignar rol de Usuario');

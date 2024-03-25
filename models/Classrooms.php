@@ -5,7 +5,7 @@ class Classrooms extends Connect
     /*
      * Funcion para insertar/registrar aulas academicas por medio de un formulario
      */
-    public function InsertOrupdateClassroom($id = null, $name)
+    public function InsertOrupdateClassroom($id = null, $name, $degree_id)
     {
         if(empty($name)){
             $answer = [
@@ -22,31 +22,33 @@ class Classrooms extends Connect
                 FROM
                     classrooms
                 WHERE
-                    name = ? AND id != ? AND is_active != 0
+                    name = ? AND degree_id = ? AND id != ? AND is_active != 0
             ';
             
             $query  = $conectar->prepare($sql);
             $query->bindValue(1, $name);
-            $query->bindValue(2, $id);
+            $query->bindValue(2, $degree_id);
+            $query->bindValue(3, $id);
             $query->execute();
             $result = $query->fetch(PDO::FETCH_ASSOC);
             
             if($result){
                 $answer = [
                     'status' => false,
-                    'msg'    => 'El aula ya existe'
+                    'msg'    => 'El aula con el grado ya existe'
                 ];
             }else{
                 if(empty($id)){
                     $sqlInsert = "
                         INSERT INTO
-                            classrooms (name, created)
+                            classrooms (name, degree_id, created)
                         VALUES
-                            (?, now())
+                            (?, ?, now())
                     ";
                     
                     $stmtInsert = $conectar->prepare($sqlInsert);
                     $stmtInsert->bindValue(1, $name);
+                    $stmtInsert->bindValue(2, $degree_id);
                     $request    = $stmtInsert->execute();
                     $action     = 1;
                 }else{
@@ -54,14 +56,16 @@ class Classrooms extends Connect
                         UPDATE
                             classrooms
                         SET
-                            name      = ?
+                            name      = ?,
+                            degree_id = ?
                         WHERE
                             id = ?
                     ";
                     
                     $stmtUpdate = $conectar->prepare($sqlUpdate);
                     $stmtUpdate->bindValue(1, $name);
-                    $stmtUpdate->bindValue(2, $id);
+                    $stmtUpdate->bindValue(2, $degree_id);
+                    $stmtUpdate->bindValue(3, $id);
                     $request    = $stmtUpdate->execute();
                     $action     = 2;
                 }
@@ -107,29 +111,30 @@ class Classrooms extends Connect
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     /*
-     * Funcion para actualizar registros de aulas academicas
+     * Función para traer todas las aulas academicas asociadas a un grado específico
      */
-    public function updateClassroom($id, $name)
+    public function getClassroomsByDegree($degree_id)
     {
         $conectar = parent::connection();
         parent::set_names();
-    
+        
         $sql = "
-            UPDATE
-                classrooms
-            SET
-                name = ?
+            SELECT
+                c.*
+            FROM
+                classrooms AS c
+            INNER JOIN degrees AS d ON c.degree_id = d.id
             WHERE
-                id = ?";
+                c.is_active = 1 AND c.degree_id = ?
+        ";
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $id);
+        $stmt->bindValue(1, $degree_id, PDO::PARAM_INT);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para eliminar totalmente registros de aulas academicas existentes (eliminado logico)

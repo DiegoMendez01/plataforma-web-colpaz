@@ -1,4 +1,7 @@
 var tabla;
+// Variable de bandera para controlar si se ha adjuntado el manejador de eventos change para cada combobox
+var degreeChangeAttached    = false;
+var classroomChangeAttached = false;
 
 function init()
 {
@@ -108,84 +111,26 @@ $(document).ready(function(){
 });
 
 function editar(id){
-	$('#mdltitulo').html('Editar Registro');
-	
-	$.post("../../controllers/TeacherCourseController.php?op=listTeacherCourseById", { id : id}, function(data) {
-    	data = JSON.parse(data);
-    	$('#id').val('');
-    	$('#degree_id').empty();
-    	$('#user_id').empty();
-    	$('#course_id').empty();
-    	$('#classroom_id').empty();
-    	$('#period_id').empty();
-    	$('#id').val(data.id);
-    	$.post("../../controllers/DegreeController.php?op=listDegrees", function (degrees) {
-			jsonData = JSON.parse(degrees);
-	        $('#degree_id').empty();
-		
-		    // Puedes iterar sobre los usuarios si hay mas de uno
-		    jsonData.forEach(function(degree) {
-		        // Crear una opcion para cada usuario y agregarla al desplegable
-		        $('#degree_id').append('<option value="' + degree.id + '">' + degree.name + '</option>');
-		    });
-		    $('#degree_id').val(data.user_id);
-	    });
-    	
-    	$.post("../../controllers/UserController.php?op=listUsers", function (users) {
-			jsonData = JSON.parse(users);
-	        $('#user_id').empty();
-		
-		    // Puedes iterar sobre los usuarios si hay mas de uno
-		    jsonData.forEach(function(user) {
-				if(user.role_id == 3){
-			        // Crear una opcion para cada usuario y agregarla al desplegable
-			        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
-		    	}
-		    });
-		    $('#user_id').val(data.user_id);
-	    });
-	
-	    // Fetch courses and populate the course dropdown
-	    $.post("../../controllers/CourseController.php?op=listCourses", function (courses) {
-			jsonData = JSON.parse(courses);
-	        $('#course_id').empty();
-		
-		    // Puedes iterar sobre los cursos si hay mas de uno
-		    jsonData.forEach(function(course) {
-		        // Crear una opcion para cada curso y agregarla al desplegable
-		        $('#course_id').append('<option value="' + course.id + '">' + course.name + '</option>');
-		    });
-		    $('#course_id').val(data.course_id);
-	    });
-	    
-	    // Fetch courses and populate the course dropdown
-	    $.post("../../controllers/PeriodController.php?op=listPeriods", function (periods) {
-			jsonData = JSON.parse(periods);
-	        $('#period_id').empty();
-		
-		    // Puedes iterar sobre los cursos si hay mas de uno
-		    jsonData.forEach(function(period) {
-		        // Crear una opcion para cada curso y agregarla al desplegable
-		        $('#period_id').append('<option value="' + period.id + '">' + period.name + '</option>');
-		    });
-		    $('#period_id').val(data.period_id);
-	    });
-	    
-	    // Fetch courses and populate the course dropdown
-	    $.post("../../controllers/ClassroomController.php?op=listClassrooms", function (classrooms) {
-			jsonData = JSON.parse(classrooms);
-	        $('#classroom_id').empty();
-		
-		    // Puedes iterar sobre los cursos si hay mas de uno
-		    jsonData.forEach(function(classroom) {
-		        // Crear una opcion para cada curso y agregarla al desplegable
-		        $('#classroom_id').append('<option value="' + classroom.id + '">' + classroom.name + '</option>');
-		    });
-		    $('#classroom_id').val(data.classroom_id);
-	    });
+    $('#mdltitulo').html('Editar Registro');
+    $("#teachercourse_form")[0].reset();
+    
+    // Restablecer las variables de control de eventos de cambio
+    degreeChangeAttached = false;
+    classroomChangeAttached = false;
+    
+    generarCombos()
+    
+    $.post("../../controllers/TeacherCourseController.php?op=listTeacherCourseById", { id : id}, function(data) {
+        data = JSON.parse(data);
+        $('#id').val(data.id);
+        $('#degree_id').val(data.degree_id);
+        $('#user_id').val(data.user_id).trigger('change');
+        $('#period_id').val(data.period_id).trigger('change');
+        $('#course_id').val(data.course_id).trigger('change');
+        $('#classroom_id').val(data.classroom_id);
     });
-	
-	$('#modalGestionTeacherCourse').modal('show');
+    
+    $('#modalGestionTeacherCourse').modal('show');
 }
 
 function eliminar(id){
@@ -218,73 +163,64 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+    
 	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#teachercourse_form')[0].reset();
-	$.post("../../controllers/DegreeController.php?op=listDegrees", function (degrees) {
-			jsonData = JSON.parse(degrees);
-	        $('#degree_id').empty();
-		
-		    // Puedes iterar sobre los usuarios si hay mas de uno
-		    jsonData.forEach(function(degree) {
-		        // Crear una opcion para cada usuario y agregarla al desplegable
-		        $('#degree_id').append('<option value="' + degree.id + '">' + degree.name + '</option>');
-		    });
-		    $('#degree_id').val(data.user_id);
-	    });
-	// Fetch users and populate the user dropdown
-    $.post("../../controllers/UserController.php?op=listUsers", function (data) {
-		jsonData = JSON.parse(data);
-        $('#user_id').empty();
-	
-	    // Puedes iterar sobre los usuarios si hay mas de uno
-	    jsonData.forEach(function(user) {
-			if(user.role_id == 3){
-		        // Crear una opcion para cada usuario y agregarla al desplegable
-		        $('#user_id').append('<option value="' + user.id + '">' + user.name + ' ' + user.lastname + '</option>');
-	        }
-	    });
-    });
-
-    // Fetch courses and populate the course dropdown
-    $.post("../../controllers/CourseController.php?op=listCourses", function (data) {
-		jsonData = JSON.parse(data);
-        $('#course_id').empty();
-	
-	    // Puedes iterar sobre los cursos si hay mas de uno
-	    jsonData.forEach(function(course) {
-	        // Crear una opcion para cada curso y agregarla al desplegable
-	        $('#course_id').append('<option value="' + course.id + '">' + course.name + '</option>');
-	    });
-    });
+		// Restablecer las variables de control de eventos de cambio
+    degreeChangeAttached = false;
+    classroomChangeAttached = false;
     
-    // Fetch courses and populate the course dropdown
-    $.post("../../controllers/PeriodController.php?op=listPeriods", function (periods) {
-		jsonData = JSON.parse(periods);
-        $('#period_id').empty();
-	
-	    // Puedes iterar sobre los cursos si hay mas de uno
-	    jsonData.forEach(function(period) {
-	        // Crear una opcion para cada curso y agregarla al desplegable
-	        $('#period_id').append('<option value="' + period.id + '">' + period.name + '</option>');
-	    });
-	    $('#period_id').val(data.period_id);
-    });
-    
-    // Fetch courses and populate the course dropdown
-    $.post("../../controllers/ClassroomController.php?op=listClassrooms", function (classrooms) {
-		jsonData = JSON.parse(classrooms);
-        $('#classroom_id').empty();
-	
-	    // Puedes iterar sobre los cursos si hay mas de uno
-	    jsonData.forEach(function(classroom) {
-	        // Crear una opcion para cada curso y agregarla al desplegable
-	        $('#classroom_id').append('<option value="' + classroom.id + '">' + classroom.name + '</option>');
-	    });
-	    $('#classroom_id').val(data.classroom_id);
-    });
-	
+	generarCombos()
 	$('#modalGestionTeacherCourse').modal('show');
 });
+
+// Cuando cambia el valor del combobox de grado
+$("#degree_id").change(function() {
+    if (!classroomChangeAttached) {
+        var selectedDegree = $(this).val(); // Obtener el valor seleccionado
+        // Realizar una solicitud para obtener los salones de clase filtrados
+        $.post("../../controllers/ClassroomController.php?op=combo", { degree_id: selectedDegree }, function(data) {
+            $("#classroom_id").html(data); // Actualizar el combobox de salones de clase con los datos filtrados
+        });
+        degreeChangeAttached = true; // Establecer la bandera a verdadero para indicar que se ha adjuntado el manejador de eventos change
+    }
+});
+
+// Cuando cambia el valor del combobox de aula
+$("#classroom_id").change(function() {
+    if (!degreeChangeAttached) {
+        var selectedClassroom = $(this).val(); // Obtener el valor seleccionado
+        // Realizar una solicitud para obtener los grados filtrados
+        $.post("../../controllers/DegreeController.php?op=combo", { classroom_id : selectedClassroom }, function(data) {
+            $("#degree_id").html(data); // Actualizar el combobox de grados con los datos filtrados
+        });
+        
+        classroomChangeAttached = true; // Establecer la bandera a verdadero para indicar que se ha adjuntado el manejador de eventos change
+    }
+});
+
+// Funcion para generar combos
+function generarCombos() {
+    $.post("../../controllers/DegreeController.php?op=combo", function (data) {
+        $("#degree_id").html(data);
+    });
+    
+    $.post("../../controllers/UserController.php?op=comboTeacher", function (data) {
+        $("#user_id").html(data);
+    });
+
+    $.post("../../controllers/CourseController.php?op=combo", function (data) {
+        $("#course_id").html(data);
+    });
+    
+    $.post("../../controllers/PeriodController.php?op=combo", function (data) {
+        $("#period_id").html(data);
+    });
+    
+    $.post("../../controllers/ClassroomController.php?op=combo", function (data) {
+        $("#classroom_id").html(data);
+    });
+}
 
 init();

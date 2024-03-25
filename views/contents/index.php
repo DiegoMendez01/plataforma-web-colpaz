@@ -21,26 +21,26 @@ if(!empty($_SESSION['id'])){
         $dataCourse        = $course->getCourseById($dataTeacherC['course_id']);
         $dataHeaderC       = $headerContent->getHeaderContentByTeacher($dataTeacherC['id']);
         $dataClassroom     = $classroom->getClassroomById($dataTeacherC['classroom_id']);
-        $dataAllContent    = $content->getContentByTeacherCourseId($dataTeacherC['course_id'], $dataHeaderC['id']);
+        $dataAllContent    = $content->getContentByTeacherCourseId($courseId, $dataHeaderC['id']);
 ?>
 <!DOCTYPE html>
 <html>
 <head lang="es">
 	<?php
-    require_once ("../mainHead/head.php");
+    require_once ("../html/mainHead/head.php");
     ?>
     <title>Aula Virtual::Contenido Curso <?= $courseId ?></title>
 </head>
 <body class="with-side-menu">
 	<?php
-    require_once ("../mainHeader/header.php");
+    require_once ("../html/mainHeader/header.php");
     ?>
 	<!--.site-header-->
 
 	<div class="mobile-menu-left-overlay"></div>
 	
 	<?php
-    require_once ("../mainNav/nav.php");
+    require_once ("../html/mainNav/nav.php");
     ?>
     
     <!-- Contenido  -->
@@ -88,16 +88,16 @@ if(!empty($_SESSION['id'])){
 			?>
 			<div class="box-typical box-typical-padding">
     			<div class="text-center" style="margin-bottom: 1rem;">
-    				<img src="../../public/img/bienvenidaf.png" alt="Logo bienvenida">
+    				<img src="../../assets/img/bienvenidaf.png" alt="Logo bienvenida">
     			</div>
     			<p>En este espacio académico se van a tratar los temas relacionados con <?= $dataCourse['name'] ?> del grado <?= $dataClassroom['name'] ?></p>
-    			<img style="width: 17rem; height: 3rem;" src="../../public/img/acerca_asignatura.png" alt="Logo acerca de">
+    			<img style="width: 17rem; height: 3rem;" src="../../assets/img/acerca_asignatura.png" alt="Logo acerca de">
     			<?php
     			if(!empty($dataHeaderC['id']) AND $dataHeaderC['is_active'] == 1){
         			if(!empty($dataHeaderC['curriculum_file'])){
         			?>
             			<div class="col-md-12" style="margin-top: 2rem;">
-            				<img src="../../public/img/icon_file.png" alt="resource icon">
+            				<img src="../../assets/img/icon_file.png" alt="resource icon">
                             <a href="#" target="_blank">
                                 <i class="fa fa-download"></i> Plan de Estudios
                             </a>
@@ -112,7 +112,7 @@ if(!empty($_SESSION['id'])){
         			    }
         			?>
             			<div class="col-md-12" style="margin-top: 1rem; <?= $style ?>">
-            				<img src="../../public/img/icon_file.png" alt="resource icon">
+            				<img src="../../assets/img/icon_file.png" alt="resource icon">
                             <a href="#" target="_blank">
                                 <i class="fa fa-download"></i> Informacion Adicional del Curso
                             </a>
@@ -120,13 +120,17 @@ if(!empty($_SESSION['id'])){
         			<?php
         			}
         			if(!empty($dataHeaderC['header_video'])){
+        			    // Obtener el ID del video de la URL
+        			    $urlHeader = $dataHeaderC['header_video'];
+        			    parse_str(parse_url($urlHeader, PHP_URL_QUERY), $paramHeaders);
+        			    $video_id_header = $paramHeaders['v'];
+        			    
+        			    // Construir la URL de incrustación
+        			    $embed_url_header = "https://www.youtube.com/embed/" . $video_id_header;
         			?>
                         <!-- Video de YouTube incrustado -->
-                       <div class="col-md-12" style="margin-top: 1rem; margin-bottom: 3rem;">
-                            <img style="width: 4rem; height: 4rem;" src="../../public/img/miniaturaVideo.png" alt="miniatura del video">
-                            <a style="width: 200px;" href="<?= $dataHeaderC['header_video'] ?>" target="_blank">
-                            	<i class="fa fa-youtube-play"></i> Video de Presentacion
-                            </a>
+                       <div style="margin-top: 2rem;" class="text-center">
+                           <iframe width="560" height="315" src="<?= $embed_url_header ?>" frameborder="0" allowfullscreen></iframe>
                        </div>
                     <?php
                      }
@@ -180,29 +184,33 @@ if(!empty($_SESSION['id'])){
                                         </div>
                                     </div>
                                     <div class="card card-body">
-                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../public/img/banner_recursos1.jpg" alt="Logo Recurso">
+                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_recursos1.jpg" alt="Logo Recurso">
                                         <div class="d-flex flex-column flex-md-row w-100 align-items-start">
-                                            <img src="../../public/img/icon_file.png" alt="resource icon">
+                                            <img src="../../assets/img/icon_file.png" alt="resource icon">
                                             <a class="btn" href="#" target="_blank">
                                                 <i class="fa fa-download"></i> Material de Descarga
                                             </a>
                                             <?php
                                             if(!empty($data['video'])){
+                                            // Obtener el ID del video de la URL
+                                            $url = $data['video'];
+                                            parse_str(parse_url($url, PHP_URL_QUERY), $params);
+                                            $video_id = $params['v'];
+                                            
+                                            // Construir la URL de incrustación
+                                            $embed_url = "https://www.youtube.com/embed/" . $video_id;
                                             ?>
                                             <!-- Video de YouTube incrustado -->
-                                           <div style="margin-top: 2rem;">
-                                                <img style="width: 4rem; height: 4rem;" src="../../public/img/miniaturaVideo.png" alt="miniatura del video">
-                                                <a style="width: 200px;" class="btn" href="<?= $data['video'] ?>" target="_blank">
-                                                	<i class="fa fa-youtube-play"></i> Ver video
-                                                </a>
+                                           <div style="margin-top: 2rem;" class="text-center">
+                                                <iframe width="560" height="315" src="<?= $embed_url ?>" frameborder="0" allowfullscreen></iframe>
                                             </div>
                                             <?php
         			                         }
                                             ?>
                                         </div>
-                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../public/img/banner_actividades1.png" alt="Logo Recurso">
+                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_actividades1.png" alt="Logo Recurso">
                                         <div class="d-flex flex-column flex-md-row w-100 align-items-start">
-                                            <img src="../../public/img/icon_submitted.png" alt="resource icon">
+                                            <img src="../../assets/img/icon_submitted.png" alt="resource icon">
                                             <a class="btn" href="#" target="_blank">
                                                 <i class="fa fa-paper-plane"></i> Asignar Evaluacion
                                             </a>
@@ -256,7 +264,7 @@ if(!empty($_SESSION['id'])){
     ?>
     
     <?php
-    require_once ("../mainJs/js.php");
+    require_once ("../html/mainJs/js.php");
     ?>
     <script src="contents.js" type="text/javascript"></script>
 </body>

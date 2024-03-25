@@ -108,7 +108,31 @@ class Degrees extends Connect
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /*
+     * Función para traer todas los grados asociados a un aula academica específica
+     */
+    public function getDegreesByClassroom($classroom_id)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+        SELECT
+            d.*
+        FROM
+            degrees AS d
+        INNER JOIN
+            classrooms AS c ON d.id = c.degree_id
+        WHERE
+            c.is_active = 1 AND c.id = ?
+    ";
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $classroom_id, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para eliminar totalmente registros de grados existentes por su ID

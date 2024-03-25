@@ -16,6 +16,14 @@
                             <p class="form-control-static"><input type="text" class="form-control" id="name" name="name" placeholder="Ingrese el nombre del grado"></p>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="user_id" class="col-sm-2 form-control-label">Grado <b>*</b></label>
+                        <div class="col-sm-10">
+                            <select id="degree_id" class="form-control" name="degree_id">
+                            	<option selected>Seleccionar</option>
+							</select>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Cerrar</button>

@@ -6,8 +6,8 @@ require_once("../../config/connection.php");
 	<div class="container-fluid">
 
 		<a href="#" class="site-logo"> 
-			<img class="hidden-md-down" src="../../public/img/LogoCOLPAZ.png" alt=""> 
-			<img class="hidden-lg-up" src="../../public/img/LogoCOLPAZ.png" alt="">
+			<img class="hidden-md-down" src="../../assets/img/LogoCOLPAZ.png" alt=""> 
+			<img class="hidden-lg-up" src="../../assets/img/LogoCOLPAZ.png" alt="">
 		</a>
 
 		<button id="show-hide-sidebar-toggle" class="show-hide-sidebar">
@@ -23,7 +23,7 @@ require_once("../../config/connection.php");
 				<div class="site-header-shown">
 					<div class="dropdown user-menu">
     					<button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true">
-    						<img src="../../public/img/avatar-1-128.png" alt="Logo">
+    						<img src="../../assets/img/avatar-1-128.png" alt="Logo">
     					</button>
     					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
     						<a class="dropdown-item" href="../perfil/"><span class="font-icon glyphicon glyphicon-user"></span>Perfil</a>

@@ -8,14 +8,14 @@ $campuse = new Campuses();
 switch($_GET['op'])
 {
     /*
-     * Insertar o actualizar el registro de un grado academico. Dependiendo si existe o no el grado,
+     * Insertar o actualizar el registro de una sede. Dependiendo si existe o no la sede,
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
         $campuse->insertOrUpdateCampuse($_POST['idr'], $_POST['name'], $_POST['description']);
         break;
     /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema con una condicion que este activo.
+     * Es para listar/obtener las sedes que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listCampuse':
@@ -44,7 +44,7 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     /*
-     * Eliminar totalmente registros de grados academicos existentes por su ID (eliminado logico).
+     * Eliminar totalmente registros de sedes existentes por su ID (eliminado logico).
      */
     case 'deleteCampuseByIdr':
         if(isset($_POST['idr'])){
@@ -52,8 +52,7 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
-     * Pero debe mostrar el usuario por medio de su identificador unico
+     * Es para listar/obtener las sedes que existen registrados en el sistema.
      */
     case 'listCampuseByIdr':
         $data = $campuse->getCampuseById($_POST['idr']);

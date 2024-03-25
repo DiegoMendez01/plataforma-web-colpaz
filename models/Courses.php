@@ -115,7 +115,7 @@ class Courses extends Connect
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para eliminar totalmente registros de cursos existentes por su ID

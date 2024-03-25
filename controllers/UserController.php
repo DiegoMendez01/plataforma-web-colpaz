@@ -19,7 +19,7 @@ switch($_GET['op']){
      * Ademas, de dibujar una tabla para mostrar los registros
      */
     case 'listUser':
-        $datos = $user->getUsers($_POST['id']);
+        $datos = $user->getUsersExcludingAdmin($_POST['id']);
         $data  = [];
         foreach($datos as $row){
             $sub_array   = [];
@@ -86,13 +86,7 @@ switch($_GET['op']){
      */
     case "mostrar":
         $datos = $user->getUserById($_POST['id']);
-        
-        if(is_array($datos) == true AND count($datos) <> 0){
-            foreach($datos as $row){
-                $output["id"]                       = $row['id'];
-            }
-            echo json_encode($output);
-        }
+        echo json_encode($datos);
         break;
     /*
      * El caso que sirve para actualizar el rol del usuario
@@ -112,11 +106,18 @@ switch($_GET['op']){
         $_SESSION['password_hash']  = $_POST['password_hash'];
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Listar para comboBox
      */
-    case 'listUsers':
-        $datos = $user->getUserAll();
-        echo json_encode($datos);
+    case 'comboTeacher':
+        $datos = $user->getUsersTeacher();
+        if(is_array($datos) == true AND count($datos) > 0){
+            $html = "";
+            $html.= "<option selected></option>";
+            foreach($datos as $row){
+                $html.= "<option value='".$row['id']."'>".$row['name']." ".$row['lastname']."</option>";
+            }
+            echo $html;
+        }
         break;
 }
 ?>

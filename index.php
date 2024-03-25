@@ -5,24 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma Web Educativa</title>
-    <link rel="stylesheet" href="public/css/lib/lobipanel/lobipanel.min.css">
-    <link rel="stylesheet" href="public/css/separate/vendor/lobipanel.min.css">
-    <link rel="stylesheet" href="public/css/lib/jqueryui/jquery-ui.min.css">
-    <link rel="stylesheet" href="public/css/separate/pages/widgets.min.css">
-    <link rel="stylesheet" href="public/css/main.css">
+    <link rel="stylesheet" href="assets/css/lib/lobipanel/lobipanel.min.css">
+    <link rel="stylesheet" href="assets/css/separate/vendor/lobipanel.min.css">
+    <link rel="stylesheet" href="assets/css/lib/jqueryui/jquery-ui.min.css">
+    <link rel="stylesheet" href="assets/css/separate/pages/widgets.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
 
-    <link rel="stylesheet" href="public/css/separate/pages/login.min.css">
-    <link rel="stylesheet" href="public/css/lib/font-awesome/font-awesome.min.pcss">
-    <link rel="stylesheet" href="public/css/lib/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="public/css/main.css">
+    <link rel="stylesheet" href="assets/css/separate/pages/login.min.css">
+    <link rel="stylesheet" href="assets/css/lib/font-awesome/font-awesome.min.pcss">
+    <link rel="stylesheet" href="assets/css/lib/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 
 <body>
     <header class="site-header bg-primary" id="home">
         <div class="container-fluid">
             <a href="#" class="site-logo">
-                <img class="hidden-md-down" src="public/img/LogoCOLPAZ.png" alt="">
-                <img class="hidden-lg-up" src="public/img/LogoCOLPAZ.png" alt="">
+                <img class="hidden-md-down" src="assets/img/LogoCOLPAZ.png" alt="">
+                <img class="hidden-lg-up" src="assets/img/LogoCOLPAZ.png" alt="">
             </a>
             <div class="site-header-content">
                 <div class="site-header-content-in">
@@ -89,7 +89,7 @@
                     <div class="col-md-6 text-center">
                         <h2>Nuestra Institución</h2>
                         <p class="lead color-blue-grey-lighter">La Institución Educativa Técnica Nuestra Señora de la Paz apoya los proyectos tecnológicos de la región</p>
-                        <img class="hidden-md-down" src="public/img/LogoCOLPAZ.png" alt="Logo">
+                        <img class="hidden-md-down" src="assets/img/LogoCOLPAZ.png" alt="Logo">
                     </div>
                     <!-- Columna derecha para el video de YouTube -->
                     <div class="col-md-6">
@@ -148,7 +148,7 @@
 
                                     <!-- Imagen relacionada con los eventos -->
                                     <div class="event-image">
-                                        <img src="public/img/fondoLogin.png" alt="Imagen de eventos" width="400">
+                                        <img src="assets/img/fondoLogin.png" alt="Imagen de eventos" width="400">
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +163,7 @@
                     <h2>Noticias</h2>
                     <div class="col-md-4">
                         <div class="card" style="height: 320px;">
-                            <img src="public/img/icon_facebook.svg" class="card-img-top" alt="Imagen 1">
+                            <img src="assets/img/icon_facebook.svg" class="card-img-top" alt="Imagen 1">
                             <div class="card-body" style="overflow-y: auto; max-height: 240px;">
                                 <!-- Publicación simulada de Facebook 1 -->
                                 <p>📚 ¡Nuevas oportunidades educativas en Boyacá! 🌟 Descubre lo que tenemos para ti en nuestra última carta. #EducaciónEnBoyacá</p>
@@ -179,7 +179,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card" style="height: 320px;">
-                            <img src="public/img/icon_twitter.svg" class="card-img-top" alt="Imagen 2">
+                            <img src="assets/img/icon_twitter.svg" class="card-img-top" alt="Imagen 2">
                             <div class="card-body" style="overflow-y: auto; max-height: 240px;">
                                 <!-- Tweet simulado para Twitter de Sedboyacá 1 -->
                                 <p>📣 ¡Atención, Boyacenses! 📢 No te pierdas las novedades en educación que compartimos en nuestra última carta. #EducaciónBoyacá #NuevasOportunidades</p>
@@ -195,7 +195,7 @@
 
                     <div class="col-md-4">
                         <div class="card" style="height: 320px;">
-                            <img src="public/img/icon_twitter.svg" class="card-img-top" alt="Imagen 3">
+                            <img src="assets/img/icon_twitter.svg" class="card-img-top" alt="Imagen 3">
                             <div class="card-body" style="overflow-y: auto; max-height: 240px;">
                                 <!-- Tweet simulado para el Ministerio de Educación de Colombia 1 -->
                                 <p>🇨🇴 El Ministerio de Educación de Colombia se complace en apoyar las iniciativas educativas en Boyacá. ¡Mira lo que tienen para ofrecer en su carta más reciente! #EducaciónColombia #JuntosPorLaEducación</p>
@@ -237,11 +237,11 @@
         </div>
     </footer>
 
-    <script src="public/js/lib/jquery/jquery.min.js"></script>
-    <script src="public/js/lib/tether/tether.min.js"></script>
-    <script src="public/js/lib/bootstrap/bootstrap.min.js"></script>
-    <script src="public/js/plugins.js"></script>
-    <script src="public/js/app.js"></script>
+    <script src="assets/js/lib/jquery/jquery.min.js"></script>
+    <script src="assets/js/lib/tether/tether.min.js"></script>
+    <script src="assets/js/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/app.js"></script>
 </body>
 
 </html>

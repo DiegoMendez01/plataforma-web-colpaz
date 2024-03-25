@@ -54,6 +54,10 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
+	$.post("../../controllers/DegreeController.php?op=combo",function(data){
+        $("#degree_id").html(data);
+    });
+    
 	tabla = $('#classroom_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
