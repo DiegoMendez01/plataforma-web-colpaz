@@ -112,11 +112,18 @@ switch($_GET['op']){
         $_SESSION['password_hash']  = $_POST['password_hash'];
         break;
     /*
-     * Es para listar/obtener los usuarios que existen registrados en el sistema.
+     * Listar para comboBox
      */
-    case 'listUsers':
+    case 'combo':
         $datos = $user->getUserAll();
-        echo json_encode($datos);
+        if(is_array($datos) == true AND count($datos) > 0){
+            $html = "";
+            $html.= "<option selected></option>";
+            foreach($datos as $row){
+                $html.= "<option value='".$row['id']."'>".$row['name']." ".$row['lastname']."</option>";
+            }
+            echo $html;
+        }
         break;
 }
 ?>

@@ -76,18 +76,7 @@ switch($_GET['op'])
      */
     case 'listTeacherCourseById':
         $datos = $teacherCourse->getTeacherCourseById($_POST['id']);
-        
-        if(is_array($datos) == true AND count($datos)){
-            foreach($datos as $row){
-                $output["id"]           = $row['id'];
-                $output["user_id"]      = $row['user_id'];
-                $output["course_id"]    = $row['course_id'];
-                $output["classroom_id"] = $row['classroom_id'];
-                $output["period_id"]    = $row['period_id'];
-                $output["degree_id"]    = $row['degree_id'];
-            }
-            echo json_encode($output);
-        }
+        echo json_encode($datos);
         break;
     /*
      * Es para listar/obtener los docentes por cursos con su otra data anexada que existen registrados en el sistema.

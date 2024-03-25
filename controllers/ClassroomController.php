@@ -2,8 +2,10 @@
 // Importa la clase del modelo
 require_once("../config/connection.php");
 require_once("../models/Classrooms.php");
+require_once("../models/Degrees.php");
 
 $classroom = new Classrooms();
+$degree    = new Degrees();
 
 switch($_GET['op'])
 {
@@ -12,7 +14,7 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $classroom->InsertOrupdateClassroom($_POST['id'], $_POST['name']);
+        $classroom->InsertOrupdateClassroom($_POST['id'], $_POST['name'], $_POST['degree_id']);
         break;
     /*
      * Es para listar/obtener las aulas academicas que existen registrados en el sistema con una condicion que este activo.
@@ -22,8 +24,12 @@ switch($_GET['op'])
         $datos = $classroom->getClassrooms();
         $data  = [];
         foreach ($datos as $row) {
+            
+            $degreeData = $degree->getDegreeById($row['degree_id']);
+            
             $sub_array      = [];
             $sub_array[]    = $row['name'];
+            $sub_array[]    = $degreeData['name'];
             $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
@@ -64,11 +70,30 @@ switch($_GET['op'])
         echo json_encode($output);
         break;
     /*
-     * Es para listar/obtener las aulas que existen registrados en el sistema.
+     * Listar para comboBox
      */
-    case 'listClassrooms':
-        $datos = $classroom->getClassrooms();
-        echo json_encode($datos);
+    case 'combo':
+        if(empty($_POST['degree_id'])){
+            $datos = $classroom->getClassrooms();
+            if(is_array($datos) == true AND count($datos) > 0){
+                $html = "";
+                $html.= "<option selected></option>";
+                foreach($datos as $row){
+                    $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
+                }
+                echo $html;
+            }
+        }else{
+            $datos = $classroom->getClassroomsByDegree($_POST['degree_id']);
+            if(is_array($datos) == true AND count($datos) > 0){
+                $html = "";
+                $html.= "<option selected></option>";
+                foreach($datos as $row){
+                    $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
+                }
+                echo $html;
+            }
+        }
         break;
 }
 ?>

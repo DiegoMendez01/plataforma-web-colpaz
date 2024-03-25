@@ -67,11 +67,30 @@ switch($_GET['op'])
         }
         break;
     /*
-     * Es para listar/obtener los grados academicos que existen registrados en el sistema.
+     * Listar para comboBox
      */
-    case 'listDegrees':
-        $datos = $degree->getDegrees();
-        echo json_encode($datos);
+    case 'combo':
+        if(empty($_POST['classroom_id'])){
+            $datos = $degree->getDegrees();
+            if(is_array($datos) == true AND count($datos) > 0){
+                $html = "";
+                $html.= "<option selected></option>";
+                foreach($datos as $row){
+                    $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
+                }
+                echo $html;
+            }
+        }else{
+            $datos = $degree->getDegreesByClassroom($_POST['classroom_id']);
+            if(is_array($datos) == true AND count($datos) > 0){
+                $html = "";
+                $html.= "<option selected></option>";
+                foreach($datos as $row){
+                    $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
+                }
+                echo $html;
+            }
+        }
         break;
 }
 ?>

@@ -154,19 +154,6 @@ CREATE TABLE courses
     UNIQUE KEY `unique_fields_course1` (`token`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los cursos academicos.';
 
--- colpazdb.classrooms definition
-CREATE TABLE classrooms
-(
-	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
-    `name` VARCHAR(255) NOT NULL COMMENT 'Nombre del aula académica',
-    `created` DATETIME NOT NULL COMMENT 'Fecha y hora de creacion del registro',
-    `modified` TIMESTAMP NOT NULL COMMENT 'Marca de tiempo que se actualiza al modificar el registro',
-    `is_active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Indicador de activacion (1 para activo, 0 para inactivo)',
-    `idr` INT(11) NOT NULL DEFAULT 0 COMMENT 'Campo que almacena el id unico de la sede',
-    `custom_fields` LONGTEXT COMMENT 'Campo personalizado para almacenar informacion adicional' CHECK (json_valid(`custom_fields`)),
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los grados academicos.';
-
 -- colpazdb.degrees definition
 CREATE TABLE degrees
 (
@@ -178,6 +165,22 @@ CREATE TABLE degrees
     `idr` INT(11) NOT NULL DEFAULT 0 COMMENT 'Campo que almacena el id unico de la sede',
     `custom_fields` LONGTEXT COMMENT 'Campo personalizado para almacenar informacion adicional' CHECK (json_valid(`custom_fields`)),
     PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los grados academicos.';
+
+-- colpazdb.classrooms definition
+CREATE TABLE classrooms
+(
+	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
+    `name` VARCHAR(255) NOT NULL COMMENT 'Nombre del aula académica',
+	`degree_id` INT(11) NOT NULL COMMENT 'Identificador del grado asociado al aula',
+    `created` DATETIME NOT NULL COMMENT 'Fecha y hora de creacion del registro',
+    `modified` TIMESTAMP NOT NULL COMMENT 'Marca de tiempo que se actualiza al modificar el registro',
+    `is_active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Indicador de activacion (1 para activo, 0 para inactivo)',
+    `idr` INT(11) NOT NULL DEFAULT 0 COMMENT 'Campo que almacena el id unico de la sede',
+    `custom_fields` LONGTEXT COMMENT 'Campo personalizado para almacenar informacion adicional' CHECK (json_valid(`custom_fields`)),
+    PRIMARY KEY (`id`) USING BTREE,
+	FOREIGN KEY (`degree_id`) REFERENCES degrees (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+	INDEX `idx_course_id` (`degree_id`) USING BTREE COMMENT 'indice para mejorar el rendimiento en búsquedas por degree_id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los grados academicos.';
 
 -- colpazdb.user_courses definition
