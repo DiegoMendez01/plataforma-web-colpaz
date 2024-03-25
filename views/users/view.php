@@ -99,7 +99,7 @@ if(isset($_SESSION['id'])){
         exit;
     }
 }else{
-    header("Location:" . Connect::route() . "views/site/");
+    header("Location:" . Connect::route() . "views/404/");
     exit;
 }
 ?>

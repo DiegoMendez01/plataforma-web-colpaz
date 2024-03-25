@@ -105,7 +105,7 @@ if($_SESSION['id']){
 </html>
 <?php 
 }else{
-    header("Location:".Connect::route()."views/site/");
+    header("Location:".Connect::route()."views/404/");
     exit;
 }
 ?>

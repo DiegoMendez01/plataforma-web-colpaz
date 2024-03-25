@@ -272,7 +272,7 @@ if(!empty($_SESSION['id'])){
 <?php
     }
 }else{
-    header("Location:" . Connect::route() . "views/site/");
+    header("Location:" . Connect::route() . "views/404/");
     exit;
 }
 ?>
