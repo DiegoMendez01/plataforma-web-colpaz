@@ -1,4 +1,7 @@
 var tabla;
+// Variable de bandera para controlar si se ha adjuntado el manejador de eventos change para cada combobox
+var degreeChangeAttached    = false;
+var classroomChangeAttached = false;
 
 function init()
 {
@@ -54,29 +57,6 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
-	$.post("../../controllers/DegreeController.php?op=combo", function (data) {
-		$("#degree_id").html(data);
-    });
-	
-	$.post("../../controllers/UserController.php?op=combo", function (data) {
-		$("#user_id").html(data);
-    });
-
-    // Fetch courses and populate the course dropdown
-    $.post("../../controllers/CourseController.php?op=combo", function (data) {
-		$("#course_id").html(data);
-    });
-    
-    // Fetch courses and populate the course dropdown
-    $.post("../../controllers/PeriodController.php?op=combo", function (data) {
-		$("#period_id").html(data);
-    });
-    
-    // Fetch courses and populate the course dropdown
-    $.post("../../controllers/ClassroomController.php?op=combo", function (data) {
-		$("#classroom_id").html(data);
-    });
-	    
 	tabla = $('#teachercourse_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
@@ -131,15 +111,26 @@ $(document).ready(function(){
 });
 
 function editar(id){
-	$('#mdltitulo').html('Editar Registro');
-	$("#teachercourse_form")[0].reset();
-	
-	$.post("../../controllers/TeacherCourseController.php?op=listTeacherCourseById", { id : id}, function(data) {
-    	data = JSON.parse(data);
-    	$('#id').val(data.id);
+    $('#mdltitulo').html('Editar Registro');
+    $("#teachercourse_form")[0].reset();
+    
+    // Restablecer las variables de control de eventos de cambio
+    degreeChangeAttached = false;
+    classroomChangeAttached = false;
+    
+    generarCombos()
+    
+    $.post("../../controllers/TeacherCourseController.php?op=listTeacherCourseById", { id : id}, function(data) {
+        data = JSON.parse(data);
+        $('#id').val(data.id);
+        $('#degree_id').val(data.degree_id);
+        $('#user_id').val(data.user_id).trigger('change');
+        $('#period_id').val(data.period_id).trigger('change');
+        $('#course_id').val(data.course_id).trigger('change');
+        $('#classroom_id').val(data.classroom_id);
     });
-	
-	$('#modalGestionTeacherCourse').modal('show');
+    
+    $('#modalGestionTeacherCourse').modal('show');
 }
 
 function eliminar(id){
@@ -172,15 +163,17 @@ function eliminar(id){
 }
 
 $(document).on("click", "#btnnuevo", function(){
+    
 	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#teachercourse_form')[0].reset();
+		// Restablecer las variables de control de eventos de cambio
+    degreeChangeAttached = false;
+    classroomChangeAttached = false;
+    
+	generarCombos()
 	$('#modalGestionTeacherCourse').modal('show');
 });
-
-// Variable de bandera para controlar si se ha adjuntado el manejador de eventos change para cada combobox
-var degreeChangeAttached    = false;
-var classroomChangeAttached = false;
 
 // Cuando cambia el valor del combobox de grado
 $("#degree_id").change(function() {
@@ -206,5 +199,28 @@ $("#classroom_id").change(function() {
         classroomChangeAttached = true; // Establecer la bandera a verdadero para indicar que se ha adjuntado el manejador de eventos change
     }
 });
+
+// Funcion para generar combos
+function generarCombos() {
+    $.post("../../controllers/DegreeController.php?op=combo", function (data) {
+        $("#degree_id").html(data);
+    });
+    
+    $.post("../../controllers/UserController.php?op=combo", function (data) {
+        $("#user_id").html(data);
+    });
+
+    $.post("../../controllers/CourseController.php?op=combo", function (data) {
+        $("#course_id").html(data);
+    });
+    
+    $.post("../../controllers/PeriodController.php?op=combo", function (data) {
+        $("#period_id").html(data);
+    });
+    
+    $.post("../../controllers/ClassroomController.php?op=combo", function (data) {
+        $("#classroom_id").html(data);
+    });
+}
 
 init();

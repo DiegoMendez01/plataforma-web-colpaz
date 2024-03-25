@@ -43,7 +43,7 @@ switch($_GET['op'])
             $sub_array[]    = $classroomData['name'];
             $sub_array[]    = $degreeData['name'];
             $sub_array[]    = $periodData['name'];
-            $sub_array[]    = $userData[0]['name'].' '.$userData[0]['lastname'];
+            $sub_array[]    = $userData['name'].' '.$userData['lastname'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }
