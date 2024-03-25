@@ -15,7 +15,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
 
 <head lang="es">
     <?php
-    require_once("../mainHead/head.php");
+    require_once("../html/mainHead/head.php");
     ?>
     <title>Aula Virtual::Acceso</title>
 </head>
@@ -123,7 +123,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
     </div>
     <!--.page-center-->
     <?php
-	require_once("../mainJs/js.php");
+	require_once("../html/mainJs/js.php");
 	?>
 </body>
 

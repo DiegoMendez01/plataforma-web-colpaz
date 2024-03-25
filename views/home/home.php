@@ -8,7 +8,7 @@ if($_SESSION['id']){
 <html>
 <head lang="es">
 	<?php 
-	require_once("../mainHead/head.php");
+	require_once("../html/mainHead/head.php");
 	?>
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" >
     <title>Aula Virtual::Inicio</title>
@@ -16,14 +16,14 @@ if($_SESSION['id']){
 <body class="with-side-menu">
 	
 	<?php 
-	require_once("../mainHeader/header.php");
+	require_once("../html/mainHeader/header.php");
 	?>
 	<!--.site-header-->
 
 	<div class="mobile-menu-left-overlay"></div>
 	
 	<?php 
-	require_once("../mainNav/nav.php");
+	require_once("../html/mainNav/nav.php");
 	?>
 	
 	<!-- Contenido  -->
@@ -96,7 +96,7 @@ if($_SESSION['id']){
 	</div>
 	
 	<?php
-	require_once("../mainJs/js.php");
+	require_once("../html/mainJs/js.php");
 	?>
 	<!-- Contenido  -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
