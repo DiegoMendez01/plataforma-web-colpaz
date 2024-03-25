@@ -102,7 +102,7 @@ Class Emails extends PHPMailer
                 $this->Subject      = 'Confirmar Correo Electronico';
                 
                 // Armar cuerpo del correo
-                $body           = file_get_contents('../public/ConfirmedEmail.html'); /* Ruta del template */
+                $body           = file_get_contents('../assets/ConfirmedEmail.html'); /* Ruta del template */
                 /* Parametros del template a reemplazar */
                 $body = str_replace('$tbldetalle', $tbody, $body);
                 
@@ -167,7 +167,7 @@ Class Emails extends PHPMailer
         $this->Subject      = 'Cambio de Rol';
         
         // Armar cuerpo del correo
-        $body           = file_get_contents('../public/RoleChange.html'); /* Ruta del template */
+        $body           = file_get_contents('../assets/RoleChange.html'); /* Ruta del template */
         /* Parametros del template a reemplazar */
         $body = str_replace('$tbldetalle', $tbody, $body);
         

@@ -33,7 +33,7 @@ if($_SESSION['id']){
     			<?php 
                 if($_SESSION['role_id'] == 1 OR $_SESSION['role_id'] == 2){
                 ?>
-                <img src="../../public/img/school.svg" alt="Imagen Colegio" />
+                <img src="../../assets/img/school.svg" alt="Imagen Colegio" />
                 <?php 
                 }elseif($_SESSION['role_id'] == 3){
                     require_once("../../models/TeacherCourses.php");
@@ -46,7 +46,7 @@ if($_SESSION['id']){
                             ?>
                             <div class="col-md-4 text-center border mt-3 p-4 bg-light">
                                 <div class="card m-3 shadow" style="height: 350px;">
-                                    <img src="../../public/img/LogoCOLPAZ.png" alt="Logo curso">
+                                    <img src="../../assets/img/LogoCOLPAZ.png" alt="Logo curso">
                                     <div class="card-body">
                                         <h4 class="card-title text-center"><?php echo $data['nameCourse'] ?></h4>
                                         <h5 class="card-title">Grado <kbd class="bg-info"><?php echo $data['nameDegree'] ?></kbd> - Aula <kbd class="bg-info"><?php echo $data['nameClassroom'] ?></kbd></h5>

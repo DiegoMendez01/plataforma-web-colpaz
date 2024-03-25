@@ -15,7 +15,7 @@ if(isset($_SESSION['id'])){
 <body class="with-side-menu">
 	
 	<?php
-    require_once ("../mainHeader/header.php");
+    require_once ("../html/mainHeader/header.php");
     ?>
 	<!--.site-header-->
 
