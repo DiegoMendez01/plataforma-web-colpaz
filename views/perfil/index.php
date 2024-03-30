@@ -101,11 +101,46 @@ if (isset($_SESSION['id'])) {
                                     	<form method="post" id="user_perfil">
                                             <section class="box-typical-section">
                                             	<input type="hidden" id="id" name="id" />
+                                            	<?php
+                                            	if($_SESSION['is_google'] === 1){
+                                            	?>
+                                            	<div class="form-group row">
+                                            		<div class="col-xl-2">
+                                                    	<label for="identification_type_id" class="form-label">Tipo Identificacion <b>*</b></label>
+                                                    </div>
+                                                    <div class="col-xl-7">
+                                                        <select id="identification_type_id" class="form-control" name="identification_type_id">
+                            							</select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-xl-2">
+                                                        <label class="form-label" for="identification">Identificacion <b>*</b></label>
+                                                    </div>
+                                                    <div class="col-xl-7">
+                                                        <input class="form-control" id="identification" name="identification" type="text" placeholder="Ingrese su numero de identificacion">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                            		<div class="col-xl-2">
+                                                    	<label for="sex" class="form-label">Sexo <b>*</b></label>
+                                                    </div>
+                                                    <div class="col-xl-7">
+                                                        <select id="sex" class="form-control" name="sex">
+                                                        	<option value=""></option>
+                                                        	<option value="M">Masculino</option>
+                                                        	<option value="F">Femenino</option>
+                            							</select>
+                                                    </div>
+                                                </div>
+                                            	<?php
+                                            	}
+                                            	?>
                                                 <div class="form-group row">
                                                     <div class="col-xl-2">
                                                         <label class="form-label" for="name">Nombre <b>*</b></label>
                                                     </div>
-                                                    <div class="col-xl-6">
+                                                    <div class="col-xl-7">
                                                         <input class="form-control" id="name" name="name" type="text" placeholder="Ingrese su nombre">
                                                     </div>
                                                 </div>
@@ -113,7 +148,7 @@ if (isset($_SESSION['id'])) {
                                                     <div class="col-xl-2">
                                                         <label class="form-label" for="lastname">Apellido <b>*</b></label>
                                                     </div>
-                                                    <div class="col-xl-6">
+                                                    <div class="col-xl-7">
                                                         <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Ingrese su apellido">
                                                     </div>
                                                 </div>
@@ -121,7 +156,7 @@ if (isset($_SESSION['id'])) {
                                                     <div class="col-xl-2">
                                                         <label class="form-label" for="email">Correo Electronico <b>*</b></label>
                                                     </div>
-                                                    <div class="col-xl-6">
+                                                    <div class="col-xl-7">
                                                         <input class="form-control" id="email" name="email" type="email" placeholder="Ingrese su correo electronico">
                                                     </div>
                                                 </div>
@@ -129,7 +164,7 @@ if (isset($_SESSION['id'])) {
                                                     <div class="col-xl-2">
                                                         <label class="form-label" for="phone">Celular <b>*</b></label>
                                                     </div>
-                                                    <div class="col-xl-6">
+                                                    <div class="col-xl-7">
                                                         <input class="form-control" id="phone" name="phone" type="text" placeholder="Ingrese su celular">
                                                     </div>
                                                 </div>
@@ -137,19 +172,19 @@ if (isset($_SESSION['id'])) {
                                                     <div class="col-xl-2">
                                                         <label class="form-label" for="phone2">Celular 2</label>
                                                     </div>
-                                                    <div class="col-xl-6">
+                                                    <div class="col-xl-7">
                                                         <input class="form-control" id="phone2" name="phone2" type="text" placeholder="Ingrese su celular opcional">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <div class="col-xl-12">
-                                                        <label class="form-label semibold" for="repeatPass"><i class="font-icon font-icon-pin-2"></i>Nueva clave <b>*</b></label>
+                                                    <div class="col-xl-9">
+                                                        <label class="form-label semibold" for="repeatPass"><i class="font-icon font-icon-pin-2"></i>Nueva clave</label>
         												<input type="text" name="repeatPass" id="repeatPass" class="form-control" />
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <div class="col-xl-12">
-                                                        <label class="form-label semibold" for="password_hash"><i class="font-icon font-icon-pin-2"></i>Confirmar clave <b>*</b></label>
+                                                    <div class="col-xl-9">
+                                                        <label class="form-label semibold" for="password_hash"><i class="font-icon font-icon-pin-2"></i>Confirmar clave</label>
         												<input type="text" name="password_hash" id="password_hash" class="form-control" />
                                                     </div>
                                                 </div>

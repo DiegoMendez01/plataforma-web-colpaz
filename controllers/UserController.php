@@ -66,24 +66,7 @@ switch($_GET['op']){
      */
     case 'listUserById':
         $datos = $user->getUserById($_POST['id']);
-        
-        if(is_array($datos) == true AND count($datos)){
-            foreach($datos as $row){
-                $output["id"]                       = $row['id'];
-                $output["name"]                     = $row['name'];
-                $output["lastname"]                 = $row['lastname'];
-                $output["username"]                 = $row['username'];
-                $output["email"]                    = $row['email'];
-                $output["identification_type_id"]   = $row['identification_type_id'];
-                $output["identification"]           = $row['identification'];
-                $output["password_hash"]            = $row['password_hash'];
-                $output["phone"]                    = $row['phone'];
-                $output["phone2"]                   = $row['phone2'];
-                $output["birthdate"]                = $row['birthdate'];
-                $output["sex"]                      = $row['sex'];
-            }
-            echo json_encode($output);
-        }
+        echo json_encode($datos);
     break;
     /*
      * El caso que sirve para enviar el ID para el formulario de asignacion de roles
@@ -102,9 +85,14 @@ switch($_GET['op']){
      * Actualizar el registro de un usuario utilizando su perfil de usuario
      */
     case 'updateUserPerfilById':
-        $user->updatePerfilById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2']);
+        if(empty($_POST['identification']) AND empty($_POST['identification_type_id']) AND empty($_POST['sex'])){
+            $user->updatePerfilById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2']);
+        }else{
+            $user->updatePerfilById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2'], $_POST['identification'], $_POST['identification_type_id'], $_POST['sex']);
+        }
         $_SESSION['name']           = $_POST['name'];
         $_SESSION['lastname']       = $_POST['lastname'];
+        $_SESSION['is_google']      = 0;
         $_SESSION['email']          = $_POST['email'];
         $_SESSION['phone']          = $_POST['phone'];
         $_SESSION['password_hash']  = $_POST['password_hash'];
@@ -170,6 +158,7 @@ switch($_GET['op']){
                         $_SESSION['is_active']      = $user['is_active'];
                         $_SESSION['created']        = $user['created'];
                         $_SESSION['role_id']        = $user['role_id'];
+                        $_SESSION['is_google']      = $user['is_update_google'];
                         $_SESSION['role_name']      = $roleData['name'];
                         $_SESSION['campuse']        = $campuseData['name'];
                         
@@ -201,6 +190,7 @@ switch($_GET['op']){
                     $_SESSION['is_active']      = $user['is_active'];
                     $_SESSION['created']        = $user['created'];
                     $_SESSION['role_id']        = $user['role_id'];
+                    $_SESSION['is_google']      = $user['is_update_google'];
                     $_SESSION['role_name']      = $roleData['name'];
                     $_SESSION['campuse']        = $campuseData['name'];
                     

@@ -35,10 +35,4 @@ function handleCredentialResponse(response)
 			}
 		}
 	})
-	
-	if(response && response.credential){
-		const credentialToken = response.credential;
-		
-		const decodedToken = JSON.parse(atob(credentialToken.split('.')[1]));
-	}
 }

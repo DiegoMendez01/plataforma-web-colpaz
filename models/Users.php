@@ -55,6 +55,7 @@ class Users extends Connect
                             $_SESSION['created']        = $result['created'];
                             $_SESSION['role_id']        = $result['role_id'];
                             $_SESSION['role_name']      = $result['role_name'];
+                            $_SESSION['is_google']      = $result['is_update_google'];
                             $_SESSION['campuse']        = $result['campuse'];
                             header("Location:".Connect::route()."views/home/");
                             exit;
@@ -285,72 +286,129 @@ class Users extends Connect
     /*
      * Funcion para actualizar usuario por medio de perfil
      */
-    public function updatePerfilById($id, $name, $lastname, $password_hash, $email, $phone, $phone2 = null)
+    public function updatePerfilById($id, $name, $lastname, $password_hash = null, $email, $phone, $phone2 = null, $identification = null, $identification_type_id = null, $sex = null)
     {
         $conectar = parent::connection();
         parent::set_names();
         
         $validateData = "
             SELECT
-                email, phone
+                identification, username, email, phone
             FROM
                 users
             WHERE
-                (email = ? OR phone = ?) AND id <> ?
+                (identification = ? OR email = ? OR phone = ?) AND id <> ?
         ";
         
-        $stmtDNI = $conectar->prepare($validateData);
-        $stmtDNI->bindValue(1, $email);
-        $stmtDNI->bindValue(2, $phone);
-        $stmtDNI->bindValue(3, $id);
-        $stmtDNI->execute();
+        $stmtDuplicate = $conectar->prepare($validateData);
+        $stmtDuplicate->bindValue(1, $identification);
+        $stmtDuplicate->bindValue(2, $email);
+        $stmtDuplicate->bindValue(3, $phone);
+        $stmtDuplicate->bindValue(4, $id);
+        $stmtDuplicate->execute();
         
-        $duplicatedUsers = $stmtDNI->fetchAll(PDO::FETCH_ASSOC);
+        $duplicatedUser = $stmtDuplicate->fetch(PDO::FETCH_ASSOC);
         
-        if(is_array($duplicatedUsers) && count($duplicatedUsers) > 0) {
-            $duplicates = [];
+        if(is_array($duplicatedUser) && count($duplicatedUser) > 0) {
+            $duplicates    = [];
+            $duplicateInfo = [];
             
-            foreach ($duplicatedUsers as $dataDuplicate) {
-                $duplicateInfo = [];
-                
-                if ($dataDuplicate['email'] == $email && !empty($dataDuplicate['email'])) {
-                    $duplicateInfo[] = ['type' => 'Correo', 'value' => $dataDuplicate['email']];
-                }
-                
-                if ($dataDuplicate['phone'] == $phone && !empty($dataDuplicate['phone'])) {
-                    $duplicateInfo[] = ['type' => 'Telefono', 'value' => $dataDuplicate['phone']];
-                }
-                
-                if (!empty($duplicateInfo)) {
-                    $duplicates = array_merge($duplicates, $duplicateInfo);
-                }
+            if ($duplicatedUser['identification'] == $identification) {
+                $duplicateInfo[] = ['type' => 'Identificación', 'value' => $duplicatedUser['identification']];
+            }
+            if ($duplicatedUser['email'] == $email) {
+                $duplicateInfo[] = ['type' => 'Correo', 'value' => $duplicatedUser['email']];
+            }
+            if ($duplicatedUser['phone'] == $phone) {
+                $duplicateInfo[] = ['type' => 'Telefono', 'value' => $duplicatedUser['phone']];
+            }
+            
+            if (!empty($duplicateInfo)) {
+                $duplicates = array_merge($duplicates, $duplicateInfo);
             }
             
             echo json_encode(["error" => true, "message" => $duplicates]);
         }else{
-            $sql = "
-                UPDATE
-                    users
-                SET
-                    name                    = ?,
-                    lastname                = ?,
-                    password_hash           = ?,
-                    email                   = ?,
-                    phone                   = ?,
-                    phone2                  = ?
-                WHERE
-                    id = ? AND is_active = 1
-            ";
-            
-            $stmt = $conectar->prepare($sql);
-            $stmt->bindValue(1, $name);
-            $stmt->bindValue(2, $lastname);
-            $stmt->bindValue(3, $password_hash);
-            $stmt->bindValue(4, $email);
-            $stmt->bindValue(5, $phone);
-            $stmt->bindValue(6, $phone2);
-            $stmt->bindValue(7, $id);
-            $stmt->execute();
+            if(!empty($password_hash)){
+                $password       = password_hash($password_hash, PASSWORD_DEFAULT);
+                $sql = "
+                    UPDATE
+                        users
+                    SET
+                        name                    = ?,
+                        lastname                = ?,
+                        password_hash           = ?,
+                        email                   = ?,
+                        phone                   = ?,
+                        phone2                  = ?";
+                if(isset($identification) && isset($identification_type_id)){
+                    $sql .= ",
+                        identification          = ?,
+                        identification_type_id  = ?,
+                        sex = ?
+                    ";
+                }
+                $sql .= ",
+                        is_update_google        = 0
+                    WHERE
+                        id = ? AND is_active = 1
+                ";
+                
+                $stmt = $conectar->prepare($sql);
+                $stmt->bindValue(1, $name);
+                $stmt->bindValue(2, $lastname);
+                $stmt->bindValue(3, $password);
+                $stmt->bindValue(4, $email);
+                $stmt->bindValue(5, $phone);
+                $stmt->bindValue(6, $phone2);
+                if(isset($identification) AND isset($identification_type_id) AND isset($sex)){
+                    $stmt->bindValue(7, $identification);
+                    $stmt->bindValue(8, $identification_type_id);
+                    $stmt->bindValue(9, $sex);
+                    $stmt->bindValue(10, $id);
+                } else {
+                    $stmt->bindValue(7, $id);
+                }
+                $stmt->execute();
+            }else{
+                $sql = "
+                    UPDATE
+                        users
+                    SET
+                        name                    = ?,
+                        lastname                = ?,
+                        email                   = ?,
+                        phone                   = ?,
+                        phone2                  = ?";
+                if(isset($identification) AND isset($identification_type_id) AND isset($sex)){
+                    $sql .= ",
+                        identification          = ?,
+                        identification_type_id  = ?,
+                        sex = ?
+                    ";
+                }
+                $sql .= ",
+                        is_update_google        = 0
+                    WHERE
+                        id = ? AND is_active = 1
+                ";
+                
+                $stmt = $conectar->prepare($sql);
+                $stmt->bindValue(1, $name);
+                $stmt->bindValue(2, $lastname);
+                $stmt->bindValue(3, $email);
+                $stmt->bindValue(4, $phone);
+                $stmt->bindValue(5, $phone2);
+                if(isset($identification) AND isset($identification_type_id) AND isset($sex)){
+                    $stmt->bindValue(6, $identification);
+                    $stmt->bindValue(7, $identification_type_id);
+                    $stmt->bindValue(8, $sex);
+                    $stmt->bindValue(9, $id);
+                } else {
+                    $stmt->bindValue(6, $id);
+                }
+                $stmt->execute();
+            }
             
             return $result = $stmt->fetchAll();
         }
@@ -615,9 +673,9 @@ class Users extends Connect
         
         $sql = "
             INSERT INTO
-                users (name, lastname, username, identification_type_id, identification, password_hash, email, phone, phone2, birthdate, sex, created, role_id, api_key, password_reset_token, email_confirmed_token, sms_code, profile_image, validate, idr)
+                users (name, lastname, username, identification_type_id, identification, password_hash, email, phone, birthdate, sex, created, role_id, api_key, password_reset_token, email_confirmed_token, sms_code, profile_image, validate, is_update_google, idr)
             VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), 5, ?, ?, ?, ?, ?, ?, 1)
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), 5, ?, ?, ?, ?, ?, ?, 1, 1)
         ";
         
         $stmt = $conectar->prepare($sql);
@@ -631,13 +689,12 @@ class Users extends Connect
         $stmt->bindValue(8, 'NULL');
         $stmt->bindValue(9, 'NULL');
         $stmt->bindValue(10, 'NULL');
-        $stmt->bindValue(11, 'NULL');
-        $stmt->bindValue(12, $apiKey);
-        $stmt->bindValue(13, $resetPassword);
-        $stmt->bindValue(14, $emailToken);
-        $stmt->bindValue(15, $smsCode);
-        $stmt->bindValue(16, $picture);
-        $stmt->bindValue(17, $validate);
+        $stmt->bindValue(11, $apiKey);
+        $stmt->bindValue(12, $resetPassword);
+        $stmt->bindValue(13, $emailToken);
+        $stmt->bindValue(14, $smsCode);
+        $stmt->bindValue(15, $picture);
+        $stmt->bindValue(16, $validate);
         
         if($stmt->execute()){
             
