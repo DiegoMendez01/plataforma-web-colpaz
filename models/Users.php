@@ -594,6 +594,69 @@ class Users extends Connect
         
         return $result = $sql->fetchAll();
     }
+    /*
+     *  Funcion para insertar un usuario por Google
+     */
+    public function insertUserGoogle($name, $email, $picture, $validate)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        // Separar el nombre en dos partes (nombre y apellido)
+        $name_parts = explode(' ', $name);
+        
+        $resetPassword  = str_replace("$", "a", crypt($email.$name, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
+        $emailToken     = str_replace("$", "a", crypt($name.$email, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
+        $smsCode        = rand(1000, 9999);;
+        $password       = password_hash($name, PASSWORD_DEFAULT);
+        
+        // Concatenar y formatear las credenciales para generar el API key
+        $apiKey = sprintf("%s-%s-%s-%s-%s", substr(md5($email), 0, 8), substr(md5($password), 0, 4), substr(md5($name), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 8));
+        
+        $sql = "
+            INSERT INTO
+                users (name, lastname, username, identification_type_id, identification, password_hash, email, phone, phone2, birthdate, sex, created, role_id, api_key, password_reset_token, email_confirmed_token, sms_code, profile_image, validate, idr)
+            VALUES
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), 5, ?, ?, ?, ?, ?, ?, 1)
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $name_parts[0]);
+        $stmt->bindValue(2, $name_parts[1]);
+        $stmt->bindValue(3, $name_parts[0].time());
+        $stmt->bindValue(4, 1);
+        $stmt->bindValue(5, $email);
+        $stmt->bindValue(6, $password);
+        $stmt->bindValue(7, $email);
+        $stmt->bindValue(8, 'NULL');
+        $stmt->bindValue(9, 'NULL');
+        $stmt->bindValue(10, 'NULL');
+        $stmt->bindValue(11, 'NULL');
+        $stmt->bindValue(12, $apiKey);
+        $stmt->bindValue(13, $resetPassword);
+        $stmt->bindValue(14, $emailToken);
+        $stmt->bindValue(15, $smsCode);
+        $stmt->bindValue(16, $picture);
+        $stmt->bindValue(17, $validate);
+        
+        if($stmt->execute()){
+            
+            $idUser = $conectar->lastInsertId();
+            
+            $sql2 = "
+                INSERT INTO
+                    auths (user_id, source_id, created, source)
+                VALUES
+                    (?, 1, now(), 'GOOGLE')
+            ";
+            
+            $stmt2         = $conectar->prepare($sql2);
+            $stmt2->bindValue(1, $idUser);
+            $result = $stmt2->execute();
+            
+            return $result;
+        }
+    }
 }
 
 ?>

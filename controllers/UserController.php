@@ -3,8 +3,12 @@
 require_once("../config/connection.php");
 require_once("../models/Users.php");
 require_once("../models/Auths.php");
+require_once("../models/Roles.php");
+require_once("../models/Campuses.php");
 
 $user = new Users();
+$role = new Roles();
+$campuse = new Campuses();
 
 switch($_GET['op']){
     /*
@@ -117,6 +121,104 @@ switch($_GET['op']){
                 $html.= "<option value='".$row['id']."'>".$row['name']." ".$row['lastname']."</option>";
             }
             echo $html;
+        }
+        break;
+     /*
+      * Registrar usuario por Google
+      */
+    case 'registerGoogle':
+        if($_SERVER['REQUEST_METHOD'] === 'POST' AND $_SERVER['CONTENT_TYPE'] === "application/json"){
+            // Recuperar JSON del cuerpo POST
+            $json    = file_get_contents('php://input');
+            $jsonObj = json_decode($json);
+            
+            if(!empty($jsonObj->request_type) AND $jsonObj->request_type == 'user_auth'){
+                $credential = !empty($jsonObj->credential) ? $jsonObj->credential : '';
+                
+                $parts = explode(".", $credential);
+                $header = base64_decode($parts[0]);
+                $payload = base64_decode($parts[1]);
+                $signature = base64_decode($parts[2]);
+                
+                $responsePayload = json_decode($payload);
+                
+                if(!empty($responsePayload)){
+                    // Informacion del perdil del usuario
+                    $name = !empty($responsePayload->name) ? $responsePayload->name : '';
+                    $email = !empty($responsePayload->email) ? $responsePayload->email : '';
+                    $picture = !empty($responsePayload->picture) ? $responsePayload->picture : '';
+                    $validate = !empty($responsePayload->email_verified) ? 1 : 0;
+                }
+                
+                $dataUser = $user->getUserByEmail($email);
+                
+                if(empty($dataUser)){
+                    $data = $user->insertUserGoogle($name, $email, $picture, $validate);
+                    
+                    if($data){
+                        
+                        $user = $user->getUserByEmail($email);
+                        $roleData = $role->getRolesById($user['role_id']);
+                        $campuseData = $campuse->getCampuseById($user['idr']);
+                        
+                        $_SESSION['id']             = $user['id'];
+                        $_SESSION['name']           = $user['name'];
+                        $_SESSION['lastname']       = $user['lastname'];
+                        $_SESSION['email']          = $user['email'];
+                        $_SESSION['identification'] = $user['identification'];
+                        $_SESSION['password_hash']  = $user['password_hash'];
+                        $_SESSION['is_active']      = $user['is_active'];
+                        $_SESSION['created']        = $user['created'];
+                        $_SESSION['role_id']        = $user['role_id'];
+                        $_SESSION['role_name']      = $roleData['name'];
+                        $_SESSION['campuse']        = $campuseData['name'];
+                        
+                        echo json_encode(
+                            [
+                                'status' => true,
+                                'access' => 0
+                            ]
+                        );
+                    }else{
+                        echo json_encode(
+                            [
+                                'status' => false,
+                                'access' => 'Los datos de la cuenta de Google no estan disponibles'
+                            ]
+                       );
+                    }
+                }else{
+                    $user        = $user->getUserByEmail($email);
+                    $roleData    = $role->getRolesById($user['role_id']);
+                    $campuseData = $campuse->getCampuseById($user['idr']);
+                    
+                    $_SESSION['id']             = $user['id'];
+                    $_SESSION['name']           = $user['name'];
+                    $_SESSION['lastname']       = $user['lastname'];
+                    $_SESSION['email']          = $user['email'];
+                    $_SESSION['identification'] = $user['identification'];
+                    $_SESSION['password_hash']  = $user['password_hash'];
+                    $_SESSION['is_active']      = $user['is_active'];
+                    $_SESSION['created']        = $user['created'];
+                    $_SESSION['role_id']        = $user['role_id'];
+                    $_SESSION['role_name']      = $roleData['name'];
+                    $_SESSION['campuse']        = $campuseData['name'];
+                    
+                    echo json_encode(
+                        [
+                            'status' => true,
+                            'access' => 1
+                        ]
+                    );
+                }
+            }else{
+                echo json_encode(
+                    [
+                        'status' => false,
+                        'access' => 'Los datos de la cuenta de Google no estan disponibles'
+                    ]
+                );
+            }
         }
         break;
 }

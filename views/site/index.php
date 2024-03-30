@@ -104,6 +104,34 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
                                 <a href="../register/" id="btnregistrar ">Registrar cuenta</a>
                             </div>
                         </form>
+                        <div class="mt-4 pt-2 text-center" style="margin-top: 1rem;">
+                        	<div class="signin-other-title">
+                        		<h5 class="mb-3 text-muted fw-medium">- Acceder con -</h5>
+                        	</div>
+                        	<div class="list-inline mb-0">
+                        		<li class="list-inline-item">
+                        			<!-- TODO: Boton "Iniciar Sesion con Google" con atributos de date  -->
+                        			<div id="g_id_onload"
+                        				data-client_id="475852867535-v2q5j4cvif9m46qa5s9a42p2hspf67ih.apps.googleusercontent.com"
+                        				data-context="signin"
+                        				data-ux_mode="popup"
+                        				data-callback="handleCredentialResponse"
+                        				data-auto_prompt="false"
+                        			></div>
+                        			
+                        			<!-- TODO: Configuracion del boton de inicio de sesion por Google  -->
+                        			<div class="g_id_signin"
+                        				data-type="standard"
+                        				data-shape="rectangular"
+                        				data-theme="outline"
+                        				data-text="signin_with"
+                        				data-size="large"
+                        				data-logo_alignment="left"
+                        			>
+                        			</div>
+                        		</li>
+                        	</div>
+                        </div>
                   	</div>
                   	<div class="col-lg-5 col-md-12 right-column">
                   	    <div class="d-flex mt-2 text-center">
@@ -136,6 +164,9 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
     <?php
 	require_once("../html/mainJs/js.php");
 	?>
+	<!-- script para cargar la API de Google Sign-in de manera asincrona  -->
+	<script src="https://accounts.google.com/gsi/client" async></script>
+	<script src="google.js"></script>
 </body>
 
 </html>

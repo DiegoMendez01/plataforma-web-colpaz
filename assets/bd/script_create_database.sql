@@ -64,6 +64,7 @@ CREATE TABLE users
     `birthdate` DATE NOT NULL COMMENT 'Fecha de nacimiento del usuario',
     `validate` TINYINT DEFAULT 0 COMMENT 'Indicador de validación para ingreso a la plataforma (1 para validado, 0 para no validado)',
     `email_confirmed_token` VARCHAR(255) COMMENT 'Token de confirmación de correo electrónico, único en la base de datos',
+    `is_update_google` TINYINT(2) DEFAULT 0 COMMENT 'Permitir actualizar ciertos campos del perfil cuando se registra por Google',
     `sms_code` VARCHAR(6) COMMENT 'Código de SMS para validación',
     `profile_image` LONGTEXT COMMENT 'Campo que almacena la imagen de perfil del usuario',
     `api_key` VARCHAR(255) COMMENT 'Clave de API para el usuario, único en la base de datos',
