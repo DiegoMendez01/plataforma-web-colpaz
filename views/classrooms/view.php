@@ -6,7 +6,7 @@ require_once("../../models/Classrooms.php");
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
         $classrooms       = new Classrooms(); // Asegúrate de que la clase Campuses tenga un método getCampusById() definido
-        $clasroomsData    = $classrooms->getClassroomsById($_GET['id']);
+        $clasroomsData    = $classrooms->getClassroomById($_GET['id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,7 +14,7 @@ if(isset($_SESSION['id'])){
     <?php
     require_once ("../html/mainHead/head.php");
     ?>
-    <title>Aula Virtual::Sede <?= $classroomsData['name'] ?></title>
+    <title>Aula Virtual::Sede <?= $clasroomsData['name'] ?></title>
 </head>
 <body class="with-side-menu">
     
@@ -36,10 +36,10 @@ if(isset($_SESSION['id'])){
                 <div class="tbl">
                     <div class="tbl-row">
                         <div class="tbl-cell">
-                            <h3>Sede <?= $classroomsData['name'] ?> [ID: <?= $classroomsData['idr'] ?>]</h3>
+                            <h3>Sede <?= $clasroomsData['name'] ?> [ID: <?= $clasroomsData['idr'] ?>]</h3>
                             <ol class="breadcrumb breadcrumb-simple">
                                 <li><a href="../classrooms/">Inicio</a></li>
-                                <li class="active">Sede <?= $classroomsData['name'] ?> [ID: <?= $classroomsData['idr'] ?>]</li>
+                                <li class="active">Sede <?= $clasroomsData['name'] ?> [ID: <?= $clasroomsData['idr'] ?>]</li>
                             </ol>
                         </div>
                     </div>
@@ -51,7 +51,7 @@ if(isset($_SESSION['id'])){
                     <tbody>
                         <tr>
                             <th style="width: 30%;">Nombre</th>
-                            <td><?= $classroomsData['name'] ?></td>
+                            <td><?= $clasroomsData['name'] ?></td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
@@ -59,11 +59,11 @@ if(isset($_SESSION['id'])){
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
-                            <td><?= $classroomsData['created'] ?></td>
+                            <td><?= $clasroomsData['created'] ?></td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Modificado</th>
-                            <td><?= $classroomsData['modified'] ?></td>
+                            <td><?= $clasroomsData['modified'] ?></td>
                         </tr>
                     </tbody>
                 </table>
