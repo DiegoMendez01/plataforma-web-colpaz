@@ -1,22 +1,34 @@
 <?php
-// Incluye la conexion
-require_once("../../config/connection.php");
 
-// Verifica la sesion del usuario
+require_once("../../config/connection.php");
+require_once("../../models/Zones.php");
+
 if(isset($_SESSION['id'])){
-?>
+    if(!empty($_GET['id'])){
+        $zone           = new Zones(); // Asegúrate de que la clase Zonas tenga un método getZoneById() definido
+        $zoneData       = $zone->getZoneById($_GET['id']);
+        ?>
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <?php require_once("../html/mainHead/head.php"); ?>
-    <title>Aula Virtual::Gestion de Zonas</title>
+<html>
+<head lang="es">
+    <?php
+    require_once ("../html/mainHead/head.php");
+    ?>
+    <title>Aula Virtual::Sede <?= $zoneData['name'] ?></title>
 </head>
 <body class="with-side-menu">
+    
+    <?php
+    require_once ("../html/mainHeader/header.php");
+    ?>
+    <!--.site-header-->
 
-    <?php require_once("../html/mainHeader/header.php"); ?>
     <div class="mobile-menu-left-overlay"></div>
-    <?php require_once("../html/mainNav/nav.php"); ?>
-
+    
+    <?php
+    require_once ("../html/mainNav/nav.php");
+    ?>
+    
     <!-- Contenido  -->
     <div class="page-content">
         <div class="container-fluid">
@@ -24,10 +36,10 @@ if(isset($_SESSION['id'])){
                 <div class="tbl">
                     <div class="tbl-row">
                         <div class="tbl-cell">
-                            <h3>Gestion de Zonas</h3>
+                            <h3>Sede <?= $zoneData['name'] ?> [ID: <?= $zoneData['id'] ?>]</h3>
                             <ol class="breadcrumb breadcrumb-simple">
-                                <li><a href="../home/">Inicio</a></li>
-                                <li class="active">Gestion de Zonas</li>
+                                <li><a href="../classrooms/">Inicio</a></li>
+                                <li class="active">Sede <?= $zoneData['name'] ?> [ID: <?= $zoneData['id'] ?>]</li>
                             </ol>
                         </div>
                     </div>
@@ -35,34 +47,41 @@ if(isset($_SESSION['id'])){
             </header>
             
             <div class="box-typical box-typical-padding">
-                <button type="button" id="btnnuevo" class="btn btn-inline btn-primary">Nuevo Registro</button>
-                <table id="zone_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%;">Nombre</th>
-                            <th style="width: 15%;">Descripción</th>
-                            <th style="width: 15%;">Creado</th> 
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
-                            <th class="text-center" style="width: 5%"></th>
-                            <th class="text-center" style="width: 5%"></th>
-                            <th class="text-center" style="width: 5%"></th>
-                        </tr>
-                    </thead>
+                <table id="campus_view_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <tbody>
+                        <tr>
+                            <th style="width: 30%;">Nombre</th>
+                            <td><?= $zoneData['name'] ?></td>
+                        </tr>
+                        <tr>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
+                            <td><?= (($zoneData['is_active']) ? '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Inactivo</span>') ?></td>
+                        </tr>
+                        <tr>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
+                            <td><?= $zoneData['created'] ?></td>
+                        </tr>
+                        <tr>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Modificado</th>
+                            <td><?= $zoneData['modified'] ?></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     
-    <?php require_once("modalGestionZone.php"); ?>
-    
-    <?php require_once ("../html/mainJs/js.php"); ?>
-    
-    <script src="zones.js" type="text/javascript"></script>
+    <?php
+    require_once ("../html/mainJs/js.php");
+    ?>
+    <script src="periods.js" type="text/javascript"></script>
 </body>
 </html>
-<?php 
+<?php
+    } else {
+        header("Location:" . Connect::route() . "views/periods/");
+        exit;
+    }
 } else {
     header("Location:" . Connect::route() . "views/404/");
     exit;

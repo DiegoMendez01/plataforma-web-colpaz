@@ -148,6 +148,11 @@ function eliminar(id){
 	});
 }
 
+function ver(id)
+{
+	window.open("http://localhost/plataforma-web-colpaz/views/zones/view?id="+id);
+}
+
 $(document).on("click", "#btnnuevo", function(){
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#zones_form')[0].reset();
