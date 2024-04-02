@@ -8,8 +8,11 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
     $user->login();
 }
 
+if(!empty($_SESSION['id'])){
+    header("Location:".Connect::route()."");
+    exit;
+}else{
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -170,3 +173,6 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
 </body>
 
 </html>
+<?php
+}
+?>
