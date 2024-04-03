@@ -16,7 +16,7 @@ $(document).ready(function(){
     	$('#name').val(data.name);
     	$('#lastname').val(data.lastname);
     	$('#email').val(data.email);
-    	if(data.phone == ''){
+    	if(data.phone == 'NULL'){
 			$('#phone').val('');
     		$('#phone2').val('');
 		}else{
