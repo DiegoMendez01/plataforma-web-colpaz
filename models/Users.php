@@ -57,6 +57,7 @@ class Users extends Connect
                             $_SESSION['role_name']      = $result['role_name'];
                             $_SESSION['is_google']      = $result['is_update_google'];
                             $_SESSION['campuse']        = $result['campuse'];
+                            $_SESSION['idr']            = $result['idr'];
                             header("Location:".Connect::route()."views/home/");
                             exit;
                         }else{
@@ -416,10 +417,16 @@ class Users extends Connect
     /*
      * Funcion para traer todos los usuarios registrados hasta el momento menos el de sesion
      */
-    public function getUsersExcludingAdmin($id)
+    public function getUsersExcludingAdmin($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+        
+        if($_SESSION['role_id'] == 1){
+            $condition = 'AND users.role_id <> 1';
+        }else{
+            $condition = 'AND users.role_id <> 1 AND users.idr = ?';
+        }
         
         $sql = "
             SELECT
@@ -428,14 +435,17 @@ class Users extends Connect
                 users
             INNER JOIN roles ON users.role_id = roles.id
             WHERE
-                users.is_active = 1 AND users.id <> ? AND roles.id <> 1
-        ";
+                users.is_active = 1 AND users.id <> ?
+        ".$condition;
         
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
+        if ($_SESSION['role_id'] != 1) {
+            $stmt->bindValue(2, $idr);
+        }
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para traer todos los usuarios registrados hasta el momento
@@ -576,7 +586,7 @@ class Users extends Connect
         return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     /*
-     *  Funcion para actualizar la asignacion del Ticket
+     *  Funcion para actualizar el rol del usuario
      */
     public function updateAsignRole($id, $role_id)
     {
@@ -598,14 +608,22 @@ class Users extends Connect
         $stmtOldRole->execute();
         $old_role = $stmtOldRole->fetch(PDO::FETCH_ASSOC);
         
+        if($role_id == 1 OR $role_id == 2){
+            $condition = 'validate = 1';
+        }else{
+            $condition = '';
+        }
+        
         $sql = "
             UPDATE
                 users
             SET
-                role_id = ?
+                role_id = ?,
+                $condition
             WHERE
                 id = ?
         ";
+        
         $sql    = $conectar->prepare($sql);
         $sql->bindValue(1, $role_id);
         $sql->bindValue(2, $id);
@@ -622,6 +640,42 @@ class Users extends Connect
             $answer = [
                 'status'  => false,
                 'msg'     => 'Fallo con la actualizacion del rol',
+            ];
+        }
+        
+        // Devolver el rol antiguo y el nuevo
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+    /*
+     *  Funcion para actualizar la sede del usuario
+     */
+    public function updateAsignCampuse($id, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            UPDATE
+                users
+            SET
+                idr = ?
+            WHERE
+                id = ?
+        ";
+        $sql    = $conectar->prepare($sql);
+        $sql->bindValue(1, $idr);
+        $sql->bindValue(2, $id);
+        $result = $sql->execute();
+        
+        if($result){
+            $answer = [
+                'status'      => true,
+                'msg'         => 'Registro actualizado correctamente'
+            ];
+        }else{
+            $answer = [
+                'status'  => false,
+                'msg'     => 'Fallo con la actualizacion de la sede',
             ];
         }
         

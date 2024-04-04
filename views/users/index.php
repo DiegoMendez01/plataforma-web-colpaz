@@ -50,8 +50,9 @@ if(isset($_SESSION['id'])){
 							<th style="width: 15%;">Nombre</th> 
 							<th style="width: 15%;">Apellido</th> 
 							<th class="d-none d-sm-table-cell" style="width: 15%;">Correo</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Identificacion</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Rol</th>
+							<th class="d-none d-sm-table-cell" style="width: 10%;">Identificacion</th>
+							<th class="d-none d-sm-table-cell" style="width: 10%;">Rol</th>
+							<th class="d-none d-sm-table-cell" style="width: 10%;">Sede</th>
 							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
 						</tr>
@@ -69,6 +70,7 @@ if(isset($_SESSION['id'])){
     
     <?php
     require_once("modalAsignRole.php");
+    require_once("modalAsignCampuse.php");
     ?>
     
     <?php

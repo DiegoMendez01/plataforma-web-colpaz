@@ -68,5 +68,19 @@ switch($_GET['op'])
             echo json_encode($output);
         }
         break;
+    /*
+     * Listar para comboBox
+     */
+    case 'combo':
+        $datos = $roles->getRoles();
+        if(is_array($datos) == true AND count($datos) > 0){
+            $html = "";
+            $html.= "<option selected></option>";
+            foreach($datos as $row){
+                $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
+            }
+            echo $html;
+        }
+        break;
 }
 ?>

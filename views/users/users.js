@@ -11,6 +11,10 @@ function init()
 	$('#userRol_form').on("submit", function(e){
 		updateAsignRole(e);
 	});
+	
+	$('#userCampuse_form').on("submit", function(e){
+		updateAsignCampuse(e);
+	});
 }
 
 function updateAsignRole(e)
@@ -31,6 +35,35 @@ function updateAsignRole(e)
 	        	
 	        	$('#userRol_form')[0].reset();
 				$('#modalAsignRole').modal('hide');
+				$('#user_data').DataTable().ajax.reload();
+				swal({
+					title: "ColPaz Quipama",
+					text: data.msg,
+					type: "success",
+					confirmButtonClass: "btn-success"
+				});
+			}else{
+				swal("Advertencia", data.msg, "error");
+			}
+		}
+	});
+}
+
+function updateAsignCampuse(e)
+{
+	e.preventDefault();
+	var formData = new FormData($('#userCampuse_form')[0]);
+	$.ajax({
+		url: "../../controllers/UserController.php?op=updateAsignCampuse",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
+	        	$('#userCampuse_form')[0].reset();
+				$('#modalAsignCampuse').modal('hide');
 				$('#user_data').DataTable().ajax.reload();
 				swal({
 					title: "ColPaz Quipama",
@@ -161,6 +194,15 @@ function insertOrUpdate(e)
 }
 
 $(document).ready(function(){
+	
+	$.post("../../controllers/RoleController.php?op=combo", function(data){
+		$('#role_id').html(data);
+	});
+	
+	$.post("../../controllers/CampuseController.php?op=combo", function(data){
+		$('#idr').html(data);
+	});
+	
 	tabla = $('#user_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
@@ -274,6 +316,16 @@ function editarRol(id)
 		$('#user_id').val(data.id);
 		$('#mdltitulo').html('Asignar rol de Usuario');
 		$('#modalAsignRole').modal('show');
+	});
+}
+
+function editCampuse(id)
+{
+	$.post("../../controllers/UserController.php?op=mostrar", { id : id }, function(data){
+		data = JSON.parse(data);
+		$('#userx_id').val(data.id);
+		$('#mdltitulo').html('Asignar sede de Usuario');
+		$('#modalAsignCampuse').modal('show');
 	});
 }
 

@@ -23,9 +23,13 @@ switch($_GET['op']){
      * Ademas, de dibujar una tabla para mostrar los registros
      */
     case 'listUser':
-        $datos = $user->getUsersExcludingAdmin($_POST['id']);
+        $datos = $user->getUsersExcludingAdmin($_POST['id'], $_SESSION['idr']);
+        
         $data  = [];
         foreach($datos as $row){
+            
+            $campuseData = $campuse->getCampuseById($row['idr']);
+            
             $sub_array   = [];
             $sub_array[] = $row['name'];
             $sub_array[] = $row['lastname'];
@@ -40,6 +44,7 @@ switch($_GET['op']){
             }elseif($row['role_id'] == 5){
                 $sub_array[] = '<a onClick="editarRol('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-success">Usuario Provisional</span></a>';
             }
+            $sub_array[] =  '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
             
             $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
             $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
@@ -80,6 +85,12 @@ switch($_GET['op']){
      */
     case "updateAsignRole":
         $user->updateAsignRole($_POST['user_id'], $_POST['role_id']);
+        break;
+    /*
+     * El caso que sirve para actualizar el rol del usuario
+     */
+    case "updateAsignCampuse":
+        $user->updateAsignCampuse($_POST['userx_id'], $_POST['idr']);
         break;
     /*
      * Actualizar el registro de un usuario utilizando su perfil de usuario
@@ -161,6 +172,7 @@ switch($_GET['op']){
                         $_SESSION['is_google']      = $user['is_update_google'];
                         $_SESSION['role_name']      = $roleData['name'];
                         $_SESSION['campuse']        = $campuseData['name'];
+                        $_SESSION['idr']            = $user['idr'];
                         
                         echo json_encode(
                             [
@@ -193,6 +205,7 @@ switch($_GET['op']){
                     $_SESSION['is_google']      = $user['is_update_google'];
                     $_SESSION['role_name']      = $roleData['name'];
                     $_SESSION['campuse']        = $campuseData['name'];
+                    $_SESSION['idr']            = $user['idr'];
                     
                     echo json_encode(
                         [
