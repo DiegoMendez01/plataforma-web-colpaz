@@ -28,7 +28,7 @@ function handleCredentialResponse(response)
 				if(data.access == 0){
 					window.location.href = '../../views/home'
 				}else{
-					window.location.href = '../../views/home'
+					window.location.href = '../../views/perfil'
 				}
 			}else{
 				swal("Error", data.access, "error");

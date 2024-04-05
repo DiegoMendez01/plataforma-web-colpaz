@@ -287,7 +287,7 @@ class Users extends Connect
     /*
      * Funcion para actualizar usuario por medio de perfil
      */
-    public function updatePerfilById($id, $name, $lastname, $password_hash = null, $email, $phone, $phone2 = null, $identification = null, $identification_type_id = null, $sex = null)
+    public function updatePerfilById($id, $name, $lastname, $password_hash = null, $email, $phone, $phone2 = null, $identification = null, $identification_type_id = null, $sex = null, $birthdate = null)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -342,11 +342,12 @@ class Users extends Connect
                         email                   = ?,
                         phone                   = ?,
                         phone2                  = ?";
-                if(isset($identification) && isset($identification_type_id)){
+                if(isset($identification) AND isset($identification_type_id) AND isset($sex) AND isset($birthdate)){
                     $sql .= ",
                         identification          = ?,
                         identification_type_id  = ?,
-                        sex = ?
+                        sex = ?,
+                        birthdate = ?
                     ";
                 }
                 $sql .= ",
@@ -362,16 +363,18 @@ class Users extends Connect
                 $stmt->bindValue(4, $email);
                 $stmt->bindValue(5, $phone);
                 $stmt->bindValue(6, $phone2);
-                if(isset($identification) AND isset($identification_type_id) AND isset($sex)){
+                if(isset($identification) AND isset($identification_type_id) AND isset($sex) AND isset($birthdate)){
                     $stmt->bindValue(7, $identification);
                     $stmt->bindValue(8, $identification_type_id);
                     $stmt->bindValue(9, $sex);
-                    $stmt->bindValue(10, $id);
+                    $stmt->bindValue(10, $birthdate);
+                    $stmt->bindValue(11, $id);
                 } else {
                     $stmt->bindValue(7, $id);
                 }
                 $stmt->execute();
             }else{
+                
                 $sql = "
                     UPDATE
                         users
@@ -381,11 +384,12 @@ class Users extends Connect
                         email                   = ?,
                         phone                   = ?,
                         phone2                  = ?";
-                if(isset($identification) AND isset($identification_type_id) AND isset($sex)){
+                if(isset($identification) AND isset($identification_type_id) AND isset($sex) AND isset($birthdate)){
                     $sql .= ",
                         identification          = ?,
                         identification_type_id  = ?,
-                        sex = ?
+                        sex = ?,
+                        birthdate = ?
                     ";
                 }
                 $sql .= ",
@@ -400,11 +404,12 @@ class Users extends Connect
                 $stmt->bindValue(3, $email);
                 $stmt->bindValue(4, $phone);
                 $stmt->bindValue(5, $phone2);
-                if(isset($identification) AND isset($identification_type_id) AND isset($sex)){
+                if(isset($identification) AND isset($identification_type_id) AND isset($sex) AND isset($birthdate)){
                     $stmt->bindValue(6, $identification);
                     $stmt->bindValue(7, $identification_type_id);
                     $stmt->bindValue(8, $sex);
-                    $stmt->bindValue(9, $id);
+                    $stmt->bindValue(9, $birthdate);
+                    $stmt->bindValue(10, $id);
                 } else {
                     $stmt->bindValue(6, $id);
                 }
@@ -729,7 +734,7 @@ class Users extends Connect
             INSERT INTO
                 users (name, lastname, username, identification_type_id, identification, password_hash, email, phone, birthdate, sex, created, role_id, api_key, password_reset_token, email_confirmed_token, sms_code, profile_image, validate, is_update_google, idr)
             VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), 5, ?, ?, ?, ?, ?, ?, 1, 1)
+                (?, ?, ?, ?, ?, ?, ?, ?, now(), ?, now(), 5, ?, ?, ?, ?, ?, ?, 1, 1)
         ";
         
         $stmt = $conectar->prepare($sql);
@@ -740,15 +745,14 @@ class Users extends Connect
         $stmt->bindValue(5, $email);
         $stmt->bindValue(6, $password);
         $stmt->bindValue(7, $email);
-        $stmt->bindValue(8, 'NULL');
-        $stmt->bindValue(9, 'NULL');
-        $stmt->bindValue(10, 'NULL');
-        $stmt->bindValue(11, $apiKey);
-        $stmt->bindValue(12, $resetPassword);
-        $stmt->bindValue(13, $emailToken);
-        $stmt->bindValue(14, $smsCode);
-        $stmt->bindValue(15, $picture);
-        $stmt->bindValue(16, $validate);
+        $stmt->bindValue(8, $email);
+        $stmt->bindValue(9, 'N/A');
+        $stmt->bindValue(10, $apiKey);
+        $stmt->bindValue(11, $resetPassword);
+        $stmt->bindValue(12, $emailToken);
+        $stmt->bindValue(13, $smsCode);
+        $stmt->bindValue(14, $picture);
+        $stmt->bindValue(15, $validate);
         
         if($stmt->execute()){
             

@@ -96,10 +96,10 @@ switch($_GET['op']){
      * Actualizar el registro de un usuario utilizando su perfil de usuario
      */
     case 'updateUserPerfilById':
-        if(empty($_POST['identification']) AND empty($_POST['identification_type_id']) AND empty($_POST['sex'])){
+        if(empty($_POST['identification']) AND empty($_POST['identification_type_id']) AND empty($_POST['sex']) AND empty($_POST['birthdate'])){
             $user->updatePerfilById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2']);
         }else{
-            $user->updatePerfilById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2'], $_POST['identification'], $_POST['identification_type_id'], $_POST['sex']);
+            $user->updatePerfilById($_POST['id'], $_POST['name'], $_POST['lastname'], $_POST['password_hash'], $_POST['email'], $_POST['phone'], $_POST['phone2'], $_POST['identification'], $_POST['identification_type_id'], $_POST['sex'], $_POST['birthdate']);
         }
         $_SESSION['name']           = $_POST['name'];
         $_SESSION['lastname']       = $_POST['lastname'];
@@ -177,7 +177,7 @@ switch($_GET['op']){
                         echo json_encode(
                             [
                                 'status' => true,
-                                'access' => 0
+                                'access' => $user['is_update_google']
                             ]
                         );
                     }else{
@@ -210,7 +210,7 @@ switch($_GET['op']){
                     echo json_encode(
                         [
                             'status' => true,
-                            'access' => 1
+                            'access' => $user['is_update_google']
                         ]
                     );
                 }

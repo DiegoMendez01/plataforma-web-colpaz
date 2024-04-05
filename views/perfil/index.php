@@ -121,6 +121,18 @@ if (isset($_SESSION['id'])) {
                                                         <input class="form-control" id="identification" name="identification" type="text" placeholder="Ingrese su numero de identificacion">
                                                     </div>
                                                 </div>
+                                                <?php
+                                                // Calcular la fecha maxima permitida (10 años atras desde la fecha actual)
+                                                $maxDate = date('Y-m-d', strtotime('-10 years -1 day'));
+                                                ?>
+                                                <div class="form-group row">
+                                                    <div class="col-xl-2">
+                                                        <label class="form-label" for="birthdate">Fecha Nacimiento <b>*</b></label>
+                                                    </div>
+                                                    <div class="col-xl-7">
+                                                        <input class="form-control" id="birthdate" name="birthdate" type="date" max="<?php echo $maxDate; ?>">
+                                                    </div>
+                                                </div>
                                                 <div class="form-group row">
                                             		<div class="col-xl-2">
                                                     	<label for="sex" class="form-label">Sexo <b>*</b></label>
