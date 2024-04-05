@@ -94,6 +94,15 @@
                     <li><a href="..\campuses\"><span class="lbl">Sedes</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 </ul>
             </li>
+            <li class="blue-dirty with-sub">
+                <span>
+                    <i class="font-icon font-icon-notebook"></i>
+                    <span class="lbl">Gestion Identificaciones</span>
+                </span>
+                <ul>
+                    <li><a href="..\identificationTypes\"><span class="lbl">Tipo Identificaciones</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                </ul>
+            </li>
             <?php } ?>
 		<?php
 		}
