@@ -5,7 +5,7 @@ class Courses extends Connect
     /*
      * Funcion para insertar/registrar cursos por medio de un formulario
      */
-    public function insertOrUpdateCourse($id = null, $name, $description = null)
+    public function insertOrUpdateCourse($id = null, $name, $description = null, $idr)
     {
         if(empty($name)){
             $answer = [
@@ -22,12 +22,13 @@ class Courses extends Connect
                 FROM
                     courses
                 WHERE
-                    name = ? AND id != ? AND is_active != 0
+                    name = ? AND id != ? AND is_active != 0 AND idr = ?
             ';
             
             $query  = $conectar->prepare($sql);
             $query->bindValue(1, $name);
             $query->bindValue(2, $id);
+            $query->bindValue(3, $idr);
             $query->execute();
             $result = $query->fetch(PDO::FETCH_ASSOC);
             
@@ -43,15 +44,16 @@ class Courses extends Connect
                     
                     $sqlInsert = "
                         INSERT INTO
-                            courses (name, description, token, created)
+                            courses (name, description, token, created, idr)
                         VALUES
-                            (?, ?, ?, now())
+                            (?, ?, ?, now(), ?)
                     ";
                     
                     $stmtInsert = $conectar->prepare($sqlInsert);
                     $stmtInsert->bindValue(1, $name);
                     $stmtInsert->bindValue(2, $description);
                     $stmtInsert->bindValue(3, $token);
+                    $stmtInsert->bindValue(4, $idr);
                     $request    = $stmtInsert->execute();
                     $action     = 1;
                 }else{
@@ -62,13 +64,14 @@ class Courses extends Connect
                             name = ?,
                             description = ?
                         WHERE
-                            id = ?
+                            id = ? AND idr = ?
                     ";
                     
                     $stmtUpdate = $conectar->prepare($sqlUpdate);
                     $stmtUpdate->bindValue(1, $name);
                     $stmtUpdate->bindValue(2, $description);
                     $stmtUpdate->bindValue(3, $id);
+                    $stmtUpdate->bindValue(4, $idr);
                     $request    = $stmtUpdate->execute();
                     $action     = 2;
                 }
@@ -98,10 +101,17 @@ class Courses extends Connect
     /*
      * Funcion para traer todos los cursos registrados hasta el momento
      */
-    public function getCourses()
+    public function getCourses($idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+        
+        // Determinar la condición basada en el valor de $_SESSION['role_id']
+        if ($_SESSION['role_id'] == 1) {
+            $condition = ''; // Sin condición adicional si role_id es 1
+        } else {
+            $condition = 'AND idr = ?';
+        }
         
         $sql = "
             SELECT
@@ -109,10 +119,12 @@ class Courses extends Connect
             FROM
                 courses
             WHERE
-                is_active = 1
-        ";
+                is_active = 1 ".$condition;
         
         $stmt = $conectar->prepare($sql);
+        if($_SESSION['role_id'] != 1){
+            $stmt->bindValue(1, $idr);
+        }
         $stmt->execute();
         
         return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

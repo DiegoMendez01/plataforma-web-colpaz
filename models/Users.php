@@ -428,9 +428,9 @@ class Users extends Connect
         parent::set_names();
         
         if($_SESSION['role_id'] == 1){
-            $condition = 'AND users.role_id <> 1';
+            $condition = '';
         }else{
-            $condition = 'AND users.role_id <> 1 AND users.idr = ?';
+            $condition = 'AND users.idr = ?';
         }
         
         $sql = "
@@ -440,12 +440,12 @@ class Users extends Connect
                 users
             INNER JOIN roles ON users.role_id = roles.id
             WHERE
-                users.is_active = 1 AND users.id <> ?
+                users.is_active = 1 AND users.id <> ? AND users.role_id <> 1
         ".$condition;
         
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
-        if ($_SESSION['role_id'] != 1) {
+        if($_SESSION['role_id'] != 1){
             $stmt->bindValue(2, $idr);
         }
         $stmt->execute();
@@ -614,7 +614,7 @@ class Users extends Connect
         $old_role = $stmtOldRole->fetch(PDO::FETCH_ASSOC);
         
         if($role_id == 1 OR $role_id == 2){
-            $condition = 'validate = 1';
+            $condition = 'validate = 1,';
         }else{
             $condition = '';
         }
@@ -623,8 +623,8 @@ class Users extends Connect
             UPDATE
                 users
             SET
-                role_id = ?,
                 $condition
+                role_id = ?
             WHERE
                 id = ?
         ";

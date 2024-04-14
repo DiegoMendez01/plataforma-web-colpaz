@@ -157,8 +157,8 @@ switch($_GET['op']){
                     if($data){
                         
                         $user = $user->getUserByEmail($email);
-                        $roleData = $role->getRolesById($user['role_id']);
                         $campuseData = $campuse->getCampuseById($user['idr']);
+                        $roleData = $role->getRolesById($user['role_id'], $user['idr']);
                         
                         $_SESSION['id']             = $user['id'];
                         $_SESSION['name']           = $user['name'];
@@ -190,7 +190,7 @@ switch($_GET['op']){
                     }
                 }else{
                     $user        = $user->getUserByEmail($email);
-                    $roleData    = $role->getRolesById($user['role_id']);
+                    $roleData    = $role->getRolesById($user['role_id'], $user['idr']);
                     $campuseData = $campuse->getCampuseById($user['idr']);
                     
                     $_SESSION['id']             = $user['id'];

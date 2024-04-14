@@ -5,7 +5,7 @@ class Roles extends Connect
     /*
      * Funcion para insertar/registrar un nuevo rol
      */
-    public function updateOrInsertRole($id = null, $name, $functions)
+    public function updateOrInsertRole($id = null, $name, $functions, $idr)
     {
         if(empty($name) OR empty($functions)){
             $answer = [
@@ -22,12 +22,13 @@ class Roles extends Connect
                 FROM
                     roles
                 WHERE
-                    name = ? AND id != ? AND is_active != 0
+                    name = ? AND id != ? AND is_active != 0 AND idr = ?
             ';
             
             $query  = $conectar->prepare($sql);
             $query->bindValue(1, $name);
             $query->bindValue(2, $id);
+            $query->bindValue(3, $idr);
             $query->execute();
             $result = $query->fetch(PDO::FETCH_ASSOC);
             
@@ -40,14 +41,15 @@ class Roles extends Connect
                 if(empty($id)){
                     $sqlInsert = "
                         INSERT INTO
-                            roles (name, functions, created)
+                            roles (name, functions, created, idr)
                         VALUES
-                            (?, ?, now())
+                            (?, ?, now(), ?)
                     ";
                     
                     $stmtInsert = $conectar->prepare($sqlInsert);
                     $stmtInsert->bindValue(1, $name);
                     $stmtInsert->bindValue(2, $functions);
+                    $stmtInsert->bindValue(3, $idr);
                     $request    = $stmtInsert->execute();
                     $action     = 1;
                 }else{
@@ -58,13 +60,14 @@ class Roles extends Connect
                             name      = ?,
                             functions = ?
                         WHERE
-                            id = ?
+                            id = ? AND idr = ?
                     ";
                     
                     $stmtUpdate = $conectar->prepare($sqlUpdate);
                     $stmtUpdate->bindValue(1, $name);
                     $stmtUpdate->bindValue(2, $functions);
                     $stmtUpdate->bindValue(3, $id);
+                    $stmtUpdate->bindValue(4, $idr);
                     $request    = $stmtUpdate->execute();
                     $action     = 2;
                 }
@@ -94,7 +97,7 @@ class Roles extends Connect
     /*
      * Funcion para obtener todos los roles
      */
-    public function getRoles()
+    public function getRoles($idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -105,9 +108,10 @@ class Roles extends Connect
             FROM 
                 roles
             WHERE
-                is_active = 1 AND id <> 1
+                is_active = 1 AND id <> 1 AND (idr = ? OR idr = 0)
         ";
         $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $idr);
         $stmt->execute();
 
         return $result = $stmt->fetchAll();
@@ -116,7 +120,7 @@ class Roles extends Connect
     /*
      * Funcion para obtener informacion de un rol por su ID
      */
-    public function getRolesById($rol_id)
+    public function getRolesById($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -127,10 +131,11 @@ class Roles extends Connect
             FROM
                 roles
             WHERE
-                id = ? AND is_active = 1
+                id = ? AND is_active = 1 AND (idr = ? OR idr = 0)
         ";
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $rol_id);
+        $stmt->bindValue(1, $id);
+        $stmt->bindValue(2, $idr);
         $stmt->execute();
 
         return $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -140,7 +145,7 @@ class Roles extends Connect
     /*
      * Funcion para eliminar logicamente un rol
      */
-    public function deleteRolesById($id)
+    public function deleteRolesById($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -151,10 +156,11 @@ class Roles extends Connect
             SET
                 is_active = 0
             WHERE
-                id = ?
+                id = ? AND idr = ?
         ";
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
+        $stmt->bindValue(1, $idr);
         $stmt->execute();
 
         return $stmt->fetchAll();
