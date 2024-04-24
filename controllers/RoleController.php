@@ -27,7 +27,7 @@ switch($_GET['op'])
         $data  = [];
         foreach ($datos as $row) {
             
-            $campuseData    = $campuse->getCampuseById($idr);
+            $campuseData    = $campuse->getCampuseById($row['idr']);
             
             $sub_array      = [];
             $sub_array[]    = $row['name'];
@@ -66,15 +66,7 @@ switch($_GET['op'])
      */
     case 'listRoleById':
         $datos = $roles->getRolesById($_POST['id'], $idr);
-        
-        if(is_array($datos) == true AND count($datos)){
-            foreach($datos as $row){
-                $output["id"]           = $row['id'];
-                $output["name"]         = $row['name'];
-                $output["functions"]    = $row['functions'];
-            }
-            echo json_encode($output);
-        }
+        echo json_encode($datos);
         break;
     /*
      * Listar para comboBox

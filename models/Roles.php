@@ -10,7 +10,7 @@ class Roles extends Connect
         if ($_SESSION['role_id'] == 1) {
             return ''; // Sin condición adicional si role_id es 1
         } else {
-            return 'AND idr = '.$idr;
+            return 'AND id <> 1 AND (idr = '.$idr.' OR id IN (2, 3, 4, 5))';
         }
     }
     /*
@@ -71,14 +71,13 @@ class Roles extends Connect
                             name      = ?,
                             functions = ?
                         WHERE
-                            id = ? AND idr = ?
+                            id = ?
                     ";
                     
                     $stmtUpdate = $conectar->prepare($sqlUpdate);
                     $stmtUpdate->bindValue(1, $name);
                     $stmtUpdate->bindValue(2, $functions);
                     $stmtUpdate->bindValue(3, $id);
-                    $stmtUpdate->bindValue(4, $idr);
                     $request    = $stmtUpdate->execute();
                     $action     = 2;
                 }
