@@ -36,7 +36,11 @@ switch($_GET['op'])
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }
-            $sub_array[]    = $campuseData['name'];
+            if($row['idr'] <> 1 OR $_SESSION['role_id'] == 1){
+                $sub_array[] = '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
+            }else{
+                $sub_array[]    = '<span class="label label-pill label-primary">'.$campuseData['name'].'</span>';
+            }
             
             $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
             $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
@@ -67,6 +71,12 @@ switch($_GET['op'])
     case 'listRoleById':
         $datos = $roles->getRolesById($_POST['id'], $idr);
         echo json_encode($datos);
+        break;
+    /*
+     * El caso que sirve para actualizar el rol del usuario
+     */
+    case "updateAsignCampuse":
+        $roles->updateAsignCampuse($_POST['userx_id'], $_POST['idr']);
         break;
     /*
      * Listar para comboBox

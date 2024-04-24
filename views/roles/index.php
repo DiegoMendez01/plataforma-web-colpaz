@@ -66,6 +66,7 @@ if(isset($_SESSION['id'])){
     
     <?php
     require_once("modalGestionRoles.php");
+    require_once("modalAsignCampuse.php");
     ?>
     
     <?php

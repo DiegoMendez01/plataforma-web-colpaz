@@ -311,7 +311,7 @@ function eliminar(id){
 
 function editarRol(id)
 {
-	$.post("../../controllers/UserController.php?op=mostrar", { id : id }, function(data){
+	$.post("../../controllers/UserController.php?op=listUserById", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#user_id').val(data.id);
 		$('#mdltitulo').html('Asignar rol de Usuario');
@@ -321,7 +321,7 @@ function editarRol(id)
 
 function editCampuse(id)
 {
-	$.post("../../controllers/UserController.php?op=mostrar", { id : id }, function(data){
+	$.post("../../controllers/UserController.php?op=listUserById", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#userx_id').val(data.id);
 		$('#mdltitulo').html('Asignar sede de Usuario');

@@ -74,13 +74,6 @@ switch($_GET['op']){
         echo json_encode($datos);
     break;
     /*
-     * El caso que sirve para enviar el ID para el formulario de asignacion de roles
-     */
-    case "mostrar":
-        $datos = $user->getUserById($_POST['id']);
-        echo json_encode($datos);
-        break;
-    /*
      * El caso que sirve para actualizar el rol del usuario
      */
     case "updateAsignRole":
