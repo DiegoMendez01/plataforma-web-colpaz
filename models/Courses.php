@@ -3,6 +3,17 @@
 class Courses extends Connect
 {
     /*
+     * Función para obtener la condición adicional basada en $_SESSION['role_id']
+     */
+    private function getSessionCondition($idr)
+    {
+        if ($_SESSION['role_id'] == 1) {
+            return ''; // Sin condición adicional si role_id es 1
+        } else {
+            return 'AND idr = '.$idr;
+        }
+    }
+    /*
      * Funcion para insertar/registrar cursos por medio de un formulario
      */
     public function insertOrUpdateCourse($id = null, $name, $description = null, $idr)
@@ -107,11 +118,7 @@ class Courses extends Connect
         parent::set_names();
         
         // Determinar la condición basada en el valor de $_SESSION['role_id']
-        if ($_SESSION['role_id'] == 1) {
-            $condition = ''; // Sin condición adicional si role_id es 1
-        } else {
-            $condition = 'AND idr = ?';
-        }
+        $condition = $this->getSessionCondition($idr);
         
         $sql = "
             SELECT
@@ -122,9 +129,6 @@ class Courses extends Connect
                 is_active = 1 ".$condition;
         
         $stmt = $conectar->prepare($sql);
-        if($_SESSION['role_id'] != 1){
-            $stmt->bindValue(1, $idr);
-        }
         $stmt->execute();
         
         return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -132,10 +136,13 @@ class Courses extends Connect
     /*
      * Funcion para eliminar totalmente registros de cursos existentes por su ID
      */
-    public function deleteCourseById($id)
+    public function deleteCourseById($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+        
+        // Determinar la condición basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
         
         $sql = "
             UPDATE
@@ -143,8 +150,7 @@ class Courses extends Connect
             SET
                 is_active = 0
             WHERE
-                id = ?
-        ";
+                id = ? ".$condition;
         
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
@@ -155,10 +161,12 @@ class Courses extends Connect
     /*
      * Funcion para traer los cursos mediante el ID del curso
      */
-    public function getCourseById($id)
+    public function getCourseById($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+        
+        $condition = $this->getSessionCondition($idr);
         
         $sql = "
             SELECT
@@ -166,8 +174,7 @@ class Courses extends Connect
             FROM
                 courses
             WHERE
-                id = ?
-        ";
+                id = ? ".$condition;
         
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);

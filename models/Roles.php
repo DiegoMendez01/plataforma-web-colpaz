@@ -3,6 +3,17 @@
 class Roles extends Connect
 {
     /*
+     * Función para obtener la condición adicional basada en $_SESSION['role_id']
+     */
+    private function getSessionCondition($idr)
+    {
+        if ($_SESSION['role_id'] == 1) {
+            return ''; // Sin condición adicional si role_id es 1
+        } else {
+            return 'AND idr = '.$idr;
+        }
+    }
+    /*
      * Funcion para insertar/registrar un nuevo rol
      */
     public function updateOrInsertRole($id = null, $name, $functions, $idr)
@@ -101,20 +112,22 @@ class Roles extends Connect
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
+        // Determinar la condición basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
+        
         $sql = "
             SELECT
                 *
             FROM 
                 roles
             WHERE
-                is_active = 1 AND id <> 1 AND (idr = ? OR idr = 0)
-        ";
+                is_active = 1 AND id <> 1 ".$condition;
+        
         $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $idr);
         $stmt->execute();
 
-        return $result = $stmt->fetchAll();
+        return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /*
@@ -124,18 +137,20 @@ class Roles extends Connect
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
+        // Determinar la condición basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
+        
         $sql = "
             SELECT
                 *
             FROM
                 roles
             WHERE
-                id = ? AND is_active = 1 AND (idr = ? OR idr = 0)
-        ";
+                id = ? AND is_active = 1 ".$condition;
+        
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
-        $stmt->bindValue(2, $idr);
         $stmt->execute();
 
         return $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -149,21 +164,23 @@ class Roles extends Connect
     {
         $conectar = parent::connection();
         parent::set_names();
-
+        
+        // Determinar la condición basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
+        
         $sql = "
             UPDATE
                 roles
             SET
                 is_active = 0
             WHERE
-                id = ? AND idr = ?
-        ";
+                id = ? ".$condition;
+        
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
-        $stmt->bindValue(1, $idr);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 
