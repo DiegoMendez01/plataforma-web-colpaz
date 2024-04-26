@@ -18,7 +18,7 @@ if(!empty($_SESSION['id'])){
 
 <head lang="es">
     <?php
-    require_once("../html/mainHead/head.php");
+    require_once("../html/head.php");
     ?>
     <title>Aula Virtual::Acceso</title>
 </head>
@@ -165,7 +165,7 @@ if(!empty($_SESSION['id'])){
     </div>
     <!--.page-center-->
     <?php
-	require_once("../html/mainJs/js.php");
+	require_once("../html/js.php");
 	?>
 	<!-- script para cargar la API de Google Sign-in de manera asincrona  -->
 	<script src="https://accounts.google.com/gsi/client" async></script>

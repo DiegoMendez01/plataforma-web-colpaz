@@ -16,7 +16,7 @@ if(!empty($_GET['token'])){
 <html lang="es">
 <head>
     <?php 
-	require_once("../html/mainHead/head.php");
+	require_once("../html/head.php");
 	?>
     <title>Aula Virtual::Confirmación de Correo Electrónico</title>
     <!-- Incluye Bootstrap CSS -->

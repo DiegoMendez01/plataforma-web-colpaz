@@ -5,7 +5,7 @@ require_once("../../config/connection.php");
 <html lang="es">
 <head>
     <?php
-    require_once ("../html/mainHead/head.php");
+    require_once ("../html/head.php");
     ?>
     <title>Aula Virtual: Reenviar Correo Electrónico</title>
 </head>
@@ -80,7 +80,7 @@ require_once("../../config/connection.php");
 		</div>
 	</div>
     <?php
-    require_once ("../html/mainJs/js.php");
+    require_once ("../html/js.php");
     ?>
     
     <script src="site.js"></script>

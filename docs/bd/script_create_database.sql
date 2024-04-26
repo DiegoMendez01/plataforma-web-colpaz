@@ -12,6 +12,38 @@ CREATE TABLE roles
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='Tabla que almacena información sobre roles de usuarios.';
 
+-- AVCONTROL.menus definition
+CREATE TABLE menus
+(
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `route` VARCHAR(200),
+    `identification` VARCHAR(200),
+    `group` VARCHAR(150),
+    `created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(11) DEFAULT 1,
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`))
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- AVCONTROL.menu_roles definition
+CREATE TABLE menu_roles
+(
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+    `menu_id` INT(11) NOT NULL,
+    `role_id` INT(11) NOT NULL,
+    `permission` VARCHAR(2) NOT NULL,
+    `created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(11) DEFAULT 1,
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    FOREIGN KEY (menu_id) REFERENCES menus (id),
+    FOREIGN KEY (role_id) REFERENCES roles (id),
+    INDEX idx_menu_id (menu_id) USING BTREE,
+    INDEX idx_role_id (role_id) USING BTREE
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+
 -- colpazdb.assessments definition
 CREATE TABLE assessments
 (
@@ -633,3 +665,33 @@ CALL sp_InsertDegree("Octavo","2023-10-21", 1);
 CALL sp_InsertDegree("Noveno","2023-10-21", 1);
 CALL sp_InsertDegree("Decimo","2023-10-21", 1);
 CALL sp_InsertDegree("Undecimo","2023-10-21", 1);
+
+/*======================== INSERTAR MENUS ACCESIBLES A USUARIOS =====================*/
+
+INSERT INTO menus (name,route,identification,`group`,created,modified,is_active,custom_fields) VALUES
+	 ('Dashboard','../home/','dashboard','Dashboard','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Usuarios','../users/','users','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Tipo Identificaciones','../identificationTypes/','identificationTypes','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Roles','../roles/','roles','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Periodos','../periods/','periods','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Grados','../degrees/','degrees','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Aulas','../classrooms/','classrooms','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Cursos','../courses/','courses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Alumnos Profesor','../studentTeachers/','studentTeachers','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Cursos Profesor','../teacherCourses/','teacherCourses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Cabecera Contenido','../headerContents/','headerContents','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Sedes','../campuses/','campuses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
+
+INSERT INTO menu_roles (menu_id,role_id,permission,created,modified,is_active,custom_fields) VALUES
+	 (1,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (2,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (3,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (4,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (5,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (6,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (7,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (8,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (9,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (10,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (11,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (12,1,'No','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
