@@ -143,6 +143,69 @@ $(document).ready(function(){
 	}).DataTable();
 });
 
+function permiso(id)
+{
+	$('#permission_data').DataTable({
+        "aProcessing": true,
+        "aServerSide": true,
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+        ],
+        "ajax":{
+            url:"../../controllers/MenuController.php?op=listMenu",
+            type:"post",
+            data: {role_id : id }
+        },
+        "bDestroy": true,
+        "responsive": true,
+        "bInfo":true,
+        "iDisplayLength": 15,
+        "order": [[ 0, "desc" ]],
+        "language": {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar MENU registros",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del START al END de un total de TOTAL registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de MAX registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+    });
+	$('#modalPermission').modal('show');
+}
+
+function habilitar(id)
+{
+	$.post("../../controllers/MenuController.php?op=menuEnable",{id : id},function(data){
+		$('#permission_data').DataTable().ajax.reload();
+    });
+}
+
+function deshabilitar(id)
+{
+	$.post("../../controllers/MenuController.php?op=menuDisabled",{id : id},function(data){
+		$('#permission_data').DataTable().ajax.reload();
+    });
+}
+
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	

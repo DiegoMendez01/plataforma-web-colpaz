@@ -1,111 +1,58 @@
+<?php
+
+require_once("../../config/connection.php");
+require_once("../../models/Menus.php");
+
+$menu  = new Menus();
+$menus = $menu->getMenusByRole($_SESSION['role_id']);
+
+?>
+
 <nav class="side-menu">
     <ul class="side-menu-list">
-    	<li class="blue-dirty">
-    		<a href="..\home\">
-				<i class="font-icon font-icon-home"></i>
-				<span class="lbl">Inicio</span>
-			</a>
-		</li>
-		<?php 
-		if($_SESSION['role_id'] == 1 OR $_SESSION['role_id'] == 2){
-        ?>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-notebook"></i>
-                    <span class="lbl">Gestion Cursos</span>
-                </span>
-                <ul>
-                    <li><a href="..\courses\"><span class="lbl">Cursos</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\teacherCourses\"><span class="lbl">Cursos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-users"></i>
-                    <span class="lbl">Gestion Usuarios</span>
-                </span>
-                <ul>
-                    <li><a href="..\users\"><span class="lbl">Usuarios</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\teacherCourses\"><span class="lbl">Cursos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                    <li><a href="..\studentTeachers\"><span class="lbl">Alumnos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-contacts"></i>
-                    <span class="lbl">Gestion Aulas</span>
-                </span>
-                <ul>
-                    <li><a href="..\classrooms\"><span class="lbl">Aulas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-doc"></i>
-                    <span class="lbl">Gestion Grados</span>
-                </span>
-                <ul>
-                    <li><a href="..\degrees\"><span class="lbl">Grados</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-doc"></i>
-                    <span class="lbl">Gestion Periodos</span>
-                </span>
-                <ul>
-                    <li><a href="..\periods\"><span class="lbl">Periodo Academico</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-doc"></i>
-                    <span class="lbl">Gestion Cabecera Contenidos</span>
-                </span>
-                <ul>
-                    <li><a href="..\headerContents\"><span class="lbl">Cabecera Contenidos</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-users"></i>
-                    <span class="lbl">Gestion Roles</span>
-                </span>
-                <ul>
-                    <li><a href="..\roles\"><span class="lbl">Roles</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <?php if($_SESSION['role_id'] == 1){ ?>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-users"></i>
-                    <span class="lbl">Gestion Zonas</span>
-                </span>
-                <ul>
-                    <li><a href="..\zones\"><span class="lbl">Zonas</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-notebook"></i>
-                    <span class="lbl">Gestion Sedes</span>
-                </span>
-                <ul>
-                    <li><a href="..\campuses\"><span class="lbl">Sedes</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <li class="blue-dirty with-sub">
-                <span>
-                    <i class="font-icon font-icon-notebook"></i>
-                    <span class="lbl">Gestion Identificaciones</span>
-                </span>
-                <ul>
-                    <li><a href="..\identificationTypes\"><span class="lbl">Tipo Identificaciones</span><span class="label label-custom label-pill label-danger">New</span></a></li>
-                </ul>
-            </li>
-            <?php } ?>
+    	<li class="blue-dirty with-sub">
+            <span>
+                <i class="font-icon font-icon-notebook"></i>
+                <span class="lbl">Dashboard</span>
+            </span>
+            <ul>
+                
+                <li><a href="..\teacherCourses\"><span class="lbl">Cursos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
+                <?php foreach($menus as $row){
+                if($row['group'] == 'Dashboard' AND $row['permission'] == "Si"){
+                ?>
+         		   	<li>
+         		   		<a href="<?php echo $row["route"]; ?>">
+         		   			<span class="lbl"><?php echo $row["name"]; ?></span>
+         		   			<span class="label label-custom label-pill label-danger">New</span>
+         		   		</a>
+         		   	</li>
+                <?php
+                }
+            }?>
+            </ul>
+        </li>
+        <li class="blue-dirty with-sub">
+            <span>
+                <i class="font-icon font-icon-notebook"></i>
+                <span class="lbl">Gestion</span>
+            </span>
+            <ul>
+                <?php foreach($menus as $row){
+                if($row['group'] == 'Gestion' AND $row['permission'] == "Si"){
+                ?>
+         		   	<li>
+         		   		<a href="<?php echo $row["route"]; ?>">
+         		   			<span class="lbl"><?php echo $row["name"]; ?></span>
+         		   			<span class="label label-custom label-pill label-danger">New</span>
+         		   		</a>
+         		   	</li>
+                <?php
+                }
+            }?>
+            </ul>
+        </li>
 		<?php
-		}
         if($_SESSION['role_id'] == 3) {
             require_once("../../models/TeacherCourses.php");
         

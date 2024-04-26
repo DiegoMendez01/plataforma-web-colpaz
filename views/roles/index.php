@@ -47,14 +47,15 @@ if(isset($_SESSION['id'])){
 				<table id="role_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 					<thead>
 						<tr>
-							<th style="width: 15%;">Nombre</th> 
-							<th style="width: 15%;">Funciones</th> 
-							<th class="d-none d-sm-table-cell" style="width: 10%;">Creado</th>
-							<th class="d-none d-sm-table-cell" style="width: 10%;">Estado</th>
-							<th class="d-none d-sm-table-cell" style="width: 10%;">Sede</th>
-							<th class="text-center" style="width: 5%"></th>
-							<th class="text-center" style="width: 5%"></th>
-							<th class="text-center" style="width: 5%"></th>
+							<th>Nombre</th> 
+							<th>Funciones</th> 
+							<th>Creado</th>
+							<th>Estado</th>
+							<th>Sede</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -67,6 +68,7 @@ if(isset($_SESSION['id'])){
     <?php
     require_once("modalGestionRoles.php");
     require_once("modalAsignCampuse.php");
+    require_once("modalPermission.php");
     ?>
     
     <?php
