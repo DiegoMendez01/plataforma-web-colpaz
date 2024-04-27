@@ -2,10 +2,25 @@
 
 Class Menus extends Database
 {
+    /*
+     * Función para obtener la condición adicional basada en $_SESSION['role_id']
+     */
+    private function getSessionCondition($idr, $status)
+    {
+        if ($_SESSION['role_id'] == 1) {
+            return ''; // Sin condición adicional si role_id es 1
+        } else if($status) {
+            return 'AND mr.idr = '.$idr;
+        }else{
+            return 'AND idr = '.$idr;
+        }
+    }
     /* TODO Traer los menus del sistema */
-    public function getMenusByRole($role_id)
+    public function getMenusByRole($role_id, $idr)
     {
         $conectar = parent::connection();
+        
+        $conditions = $this->getSessionCondition($idr, true);
         
         $sql = '
             SELECT
@@ -23,8 +38,7 @@ Class Menus extends Database
                 menu_roles as mr
             INNER JOIN menus m ON mr.menu_id = m.id
             WHERE
-                mr.role_id = ?
-        ';
+                mr.role_id = ?'.$conditions;
         
         $query = $conectar->prepare($sql);
         $query->bindValue(1, $role_id);
@@ -33,9 +47,11 @@ Class Menus extends Database
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
     /* TODO Habilitar menus del sistema */
-    public function updateMenuEnable($id)
+    public function updateMenuEnable($id, $idr)
     {
         $conectar = parent::connection();
+        
+        $conditions = $this->getSessionCondition($idr, false);
         
         $sql = '
             UPDATE
@@ -43,8 +59,7 @@ Class Menus extends Database
             SET
                 permission = "Si"
             WHERE
-                id = ?
-        ';
+                id = ? '.$conditions;
         
         $query = $conectar->prepare($sql);
         $query->bindValue(1, $id);
@@ -53,9 +68,11 @@ Class Menus extends Database
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
     /* TODO Deshabilitar menus del sistema */
-    public function updateMenuDisabled($id)
+    public function updateMenuDisabled($id, $idr)
     {
         $conectar = parent::connection();
+        
+        $conditions = $this->getSessionCondition($idr, false);
         
         $sql = '
             UPDATE
@@ -63,8 +80,7 @@ Class Menus extends Database
             SET
                 permission = "No"
             WHERE
-                id = ?
-        ';
+                id = ? '.$conditions;
         
         $query = $conectar->prepare($sql);
         $query->bindValue(1, $id);

@@ -17,12 +17,13 @@ class menuRolesController
                     "menu_id"                   => $value['menu_id'],
                     "role_id"                   => $value['role_id'],
                     "permission"                => $value['permission'],
+                    "idr"                       => $value['idr'],
                     "created"                   => $value['created']
                 ];
                 $arrayData["menuRoles"][] = $menuRoleDetails;
             }
         }else{
-            $menu_roles = menuRoleModel::userById("menu_roles", $id);
+            $menu_roles = menuRoleModel::menuRoleById("menu_roles", $id);
             
             if(empty($menu_roles)){
                 $json = [
@@ -39,6 +40,7 @@ class menuRolesController
                     "menu_id"                   => $menu_roles['menu_id'],
                     "role_id"                   => $menu_roles['role_id'],
                     "permission"                => $menu_roles['permission'],
+                    "idr"                       => $menu_roles['idr'],
                     "created"                   => $menu_roles['created']
                 ]
             ];

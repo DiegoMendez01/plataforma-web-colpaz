@@ -5,10 +5,12 @@ require_once('../models/Menus.php');
 
 $menu = new Menus();
 
+$idr   = $_SESSION['idr'];
+
 switch($_GET['op'])
 {
     case "listMenu":
-        $datos = $menu->getMenusByRole($_POST['role_id']);
+        $datos = $menu->getMenusByRole($_POST['role_id'], $idr);
         $data  = [];
         foreach($datos as $row){
             
@@ -32,10 +34,10 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     case "menuEnable":
-        $menu->updateMenuEnable($_POST['id']);
+        $menu->updateMenuEnable($_POST['id'], $idr);
         break;
     case "menuDisabled":
-        $menu->updateMenuDisabled($_POST['id']);
+        $menu->updateMenuDisabled($_POST['id'], $idr);
         break;
 }
 

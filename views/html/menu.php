@@ -4,7 +4,7 @@ require_once("../../config/database.php");
 require_once("../../models/Menus.php");
 
 $menu  = new Menus();
-$menus = $menu->getMenusByRole($_SESSION['role_id']);
+$menus = $menu->getMenusByRole($_SESSION['role_id'], $_SESSION['idr']);
 
 ?>
 

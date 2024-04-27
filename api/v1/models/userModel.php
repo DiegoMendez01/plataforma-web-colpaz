@@ -1,15 +1,15 @@
 <?php 
 
-require_once(__DIR__ . '/../../../config/connection.php');
+require_once(__DIR__ . '/../../../config/database.php');
 
-class userModel extends Connect
+class userModel extends Database
 {
     /*=========================
      Mostrar todos los registros
      ===========================*/
     static public function index($table)
     {
-        $connect = new Connect();
+        $connect = new Database();
         $conectar = $connect->connection();
         $connect->set_names();
         
@@ -27,7 +27,7 @@ class userModel extends Connect
      ===========================*/
     static public function userById($table, $id)
     {
-        $connect = new Connect();
+        $connect = new Database();
         $conectar = $connect->connection();
         $connect->set_names();
         
@@ -46,7 +46,7 @@ class userModel extends Connect
      ===========================*/
     static public function create($table, $data)
     {
-        $connect = new Connect();
+        $connect = new Database();
         $conectar = $connect->connection();
         $connect->set_names();
         
