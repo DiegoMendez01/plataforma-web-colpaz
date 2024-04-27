@@ -8,7 +8,7 @@ if (isset($_SESSION['id'])) {
 <html lang="es">
 
 <head>
-    <?php require_once("../html/mainHead/head.php"); ?>
+    <?php require_once("../html/head.php"); ?>
     <title>Aula Virtual::Cursos Profesor</title>
 </head>
 
