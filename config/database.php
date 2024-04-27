@@ -2,7 +2,7 @@
 
 session_start();
 
-class Connect
+class Database
 {
     protected $dbh;
     

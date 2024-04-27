@@ -1,6 +1,6 @@
 <?php
 
-class Degrees extends Connect
+class Degrees extends Database
 {
     /*
      * Funcion para insertar/registrar grados por medio de un formulario

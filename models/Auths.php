@@ -1,6 +1,6 @@
 <?php 
 
-class Auths extends Connect
+class Auths extends Database
 {
     /*
      * Funcion para insertar/registrar grados académicos por medio de un formulario

@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../config/connection.php");
+require_once("../../config/database.php");
 require_once("../../models/HeaderContents.php");
 require_once("../../models/TeacherCourses.php");
 require_once("../../models/Campuses.php");
@@ -104,11 +104,11 @@ if(isset($_SESSION['id'])){
 </html>
 <?php
     }else{
-        header("Location:" . Connect::route() . "views/headerContents/");
+        header("Location:" . Database::route() . "views/headerContents/");
         exit;
     }
 }else{
-    header("Location:" . Connect::route() . "views/404/");
+    header("Location:" . Database::route() . "views/404/");
     exit;
 }
 ?>

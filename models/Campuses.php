@@ -1,6 +1,6 @@
 <?php
 
-class Campuses extends Connect
+class Campuses extends Database
 {
     /*
      * Funcion para insertar un nuevo campus.

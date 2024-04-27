@@ -1,6 +1,6 @@
 <?php
 
-class IdentificationTypes extends Connect
+class IdentificationTypes extends Database
 {
     /*
      * Funcion para insertar/registrar aulas academicas por medio de un formulario

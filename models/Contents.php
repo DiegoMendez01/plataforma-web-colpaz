@@ -1,6 +1,6 @@
 <?php
 
-class Contents extends Connect
+class Contents extends Database
 {
     /*
      * Funcion para insertar un nuevo contenido.

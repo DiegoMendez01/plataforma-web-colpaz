@@ -1,6 +1,6 @@
 <?php 
 
-require_once("../../config/connection.php");
+require_once("../../config/database.php");
 
 if($_SESSION['id']){
 ?>
@@ -105,7 +105,7 @@ if($_SESSION['id']){
 </html>
 <?php 
 }else{
-    header("Location:".Connect::route()."views/404/");
+    header("Location:".Database::route()."views/404/");
     exit;
 }
 ?>

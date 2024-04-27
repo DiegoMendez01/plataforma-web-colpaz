@@ -1,6 +1,6 @@
 <?php
 
-class TeacherCourses extends Connect
+class TeacherCourses extends Database
 {
     /*
      * Funcion para inscribir a un docente en un curso mediante un formulario

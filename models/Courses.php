@@ -1,6 +1,6 @@
 <?php 
 
-class Courses extends Connect
+class Courses extends Database
 {
     /*
      * Función para obtener la condición adicional basada en $_SESSION['role_id']

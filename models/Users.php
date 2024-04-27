@@ -1,6 +1,6 @@
 <?php
 
-class Users extends Connect
+class Users extends Database
 {
     /*
      * Funcion para guardar los datos del usuario en variables de SESSION que servira
@@ -20,7 +20,7 @@ class Users extends Connect
             $password_hash      = $_POST['password_hash'];
             
             if(empty($identification) AND empty($password_hash)){
-                header("Location:".Connect::route()."views/site/index?msg=2");
+                header("Location:".Database::route()."views/site/index?msg=2");
                 exit;
             }else{
                 $sql = "
@@ -58,18 +58,18 @@ class Users extends Connect
                             $_SESSION['is_google']      = $result['is_update_google'];
                             $_SESSION['campuse']        = $result['campuse'];
                             $_SESSION['idr']            = $result['idr'];
-                            header("Location:".Connect::route()."views/home/");
+                            header("Location:".Database::route()."views/home/");
                             exit;
                         }else{
-                            header("Location:".Connect::route()."views/site/index?msg=3");
+                            header("Location:".Database::route()."views/site/index?msg=3");
                             exit;
                         }
                     }else{
-                        header("Location:".Connect::route()."views/site/index?msg=4");
+                        header("Location:".Database::route()."views/site/index?msg=4");
                         exit;
                     }
                 }else{
-                    header("Location:".Connect::route()."views/site/index?msg=1");
+                    header("Location:".Database::route()."views/site/index?msg=1");
                     exit;
                 }
             }

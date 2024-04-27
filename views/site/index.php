@@ -1,6 +1,6 @@
 <?php 
 
-require_once("../../config/connection.php");
+require_once("../../config/database.php");
 
 if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
     require_once("../../models/Users.php");
@@ -9,7 +9,7 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
 }
 
 if(!empty($_SESSION['id'])){
-    header("Location:".Connect::route()."");
+    header("Location:".Database::route()."");
     exit;
 }else{
 ?>

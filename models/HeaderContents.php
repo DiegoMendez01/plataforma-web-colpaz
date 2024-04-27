@@ -1,6 +1,6 @@
 <?php
 
-class HeaderContents extends Connect
+class HeaderContents extends Database
 {
     /*
      * Funcion para insertar un nuevo contenido.

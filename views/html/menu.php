@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../config/connection.php");
+require_once("../../config/database.php");
 require_once("../../models/Menus.php");
 
 $menu  = new Menus();
@@ -16,15 +16,13 @@ $menus = $menu->getMenusByRole($_SESSION['role_id']);
                 <span class="lbl">Dashboard</span>
             </span>
             <ul>
-                
-                <li><a href="..\teacherCourses\"><span class="lbl">Cursos Profesores</span><span class="label label-custom label-pill label-danger">New</span></a></li>
                 <?php foreach($menus as $row){
                 if($row['group'] == 'Dashboard' AND $row['permission'] == "Si"){
                 ?>
          		   	<li>
          		   		<a href="<?php echo $row["route"]; ?>">
          		   			<span class="lbl"><?php echo $row["name"]; ?></span>
-         		   			<span class="label label-custom label-pill label-danger">New</span>
+         		   			<!-- <span class="label label-custom label-pill label-danger">New</span> -->
          		   		</a>
          		   	</li>
                 <?php
@@ -44,7 +42,6 @@ $menus = $menu->getMenusByRole($_SESSION['role_id']);
          		   	<li>
          		   		<a href="<?php echo $row["route"]; ?>">
          		   			<span class="lbl"><?php echo $row["name"]; ?></span>
-         		   			<span class="label label-custom label-pill label-danger">New</span>
          		   		</a>
          		   	</li>
                 <?php

@@ -1,6 +1,6 @@
 <?php
 // Importa la clase del modelo
-require_once("../config/connection.php");
+require_once("../config/database.php");
 require_once("../models/TeacherCourses.php");
 require_once("../models/Users.php");
 require_once("../models/Courses.php");

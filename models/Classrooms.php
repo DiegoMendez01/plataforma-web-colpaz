@@ -1,6 +1,6 @@
 <?php
 
-class Classrooms extends Connect
+class Classrooms extends Database
 {
     /*
      * Funcion para insertar/registrar aulas academicas por medio de un formulario

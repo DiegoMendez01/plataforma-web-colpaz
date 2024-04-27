@@ -1,6 +1,6 @@
 <?php
 
-class StudentTeachers extends Connect
+class StudentTeachers extends Database
 {
     /*
      * Funcion para inscribir a un estudiante en un curso mediante un formulario

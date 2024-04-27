@@ -1,6 +1,6 @@
 <?php
 
-class Periods extends Connect
+class Periods extends Database
 {
     /*
      * Funcion para insertar/actualizar un nuevo periodo

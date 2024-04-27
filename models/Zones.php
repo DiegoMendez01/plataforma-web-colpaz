@@ -1,6 +1,6 @@
 <?php
 
-class Zones extends Connect
+class Zones extends Database
 {
     /*
      * Funcion para insertar/registrar zonas por medio de un formulario

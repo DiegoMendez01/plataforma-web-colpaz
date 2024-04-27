@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // Llamada de las clases necesarias que se usaran en el envio del Email
-require_once("../config/connection.php");
+require_once("../config/database.php");
 require_once("../models/Users.php");
 require_once("../models/Roles.php");
 

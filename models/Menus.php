@@ -1,6 +1,6 @@
 <?php
 
-Class Menus extends Connect
+Class Menus extends Database
 {
     /* TODO Traer los menus del sistema */
     public function getMenusByRole($role_id)

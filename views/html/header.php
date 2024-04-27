@@ -1,5 +1,5 @@
 <?php 
-require_once("../../config/connection.php");
+require_once("../../config/database.php");
 ?>
 
 <header class="site-header">
