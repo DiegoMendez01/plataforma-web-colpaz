@@ -18,9 +18,6 @@ class menuRoleModel extends Connect
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        $stmt->close();
-        $stmt = null;
-        
     }
     /*=========================
      Mostrar registro por ID
@@ -36,10 +33,6 @@ class menuRoleModel extends Connect
         $stmt->execute();
         
         return $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        $stmt->close();
-        $stmt = null;
-        
     }
     /*=========================
      Crear usuario
@@ -50,16 +43,29 @@ class menuRoleModel extends Connect
         $conectar = $connect->connection();
         $connect->set_names();
         
-        $stmt = $conectar->prepare("
-           INSERT INTO
-                $table (name, lastname, username, identification_type_id, identification, password_hash, password_reset_token, email, email_confirmed_token, phone, phone2, api_key, birthdate, sex, created, role_id)
-           VALUES
-                (:name, :lastname, :username, :identification_type_id, :identification, :password_hash, :password_reset_token, :email, :email_confirmed_token, :phone, :phone2, :api_key, :birthdate, :sex, :created, :role_id)
-        ");
+        $success = true;
         
-        return $stmt->execute();
+        foreach($data as $row){
+            $stmt = $conectar->prepare("
+               INSERT INTO
+                    $table (menu_id, role_id, permission, created)
+               VALUES
+                    (:menu_id, :role_id, :permission, :created)
+            ");
+            
+            $stmt->bindParam(":menu_id", $row['menu_id'], PDO::PARAM_INT);
+            $stmt->bindParam(":role_id", $row['role_id'], PDO::PARAM_INT);
+            $stmt->bindParam(":permission", $row['permission'], PDO::PARAM_STR);
+            $stmt->bindParam(":created", $row['created'], PDO::PARAM_STR);
+            
+            // Ejecutar la inserción y verificar si hubo algún error
+            if (!$stmt->execute()) {
+                $success = false;
+                break; // Si hay un error, salir del bucle
+            }
+        }
+        $stmt = null; // Cerrar el objeto PDOStatement
         
-        $stmt->close();
-        $stmt = null;
+        return $success;
     }
 }
