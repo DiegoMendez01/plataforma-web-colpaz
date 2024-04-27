@@ -8,21 +8,21 @@ if(isset($_SESSION['id'])){
 <html>
 <head lang="es">
 	<?php
-    require_once ("../html/mainHead/head.php");
+    require_once ("../html/head.php");
     ?>
     <title>Aula Virtual::Gestion de Usuarios</title>
 </head>
 <body class="with-side-menu">
 	
 	<?php
-    require_once ("../html/mainHeader/header.php");
+    require_once ("../html/header.php");
     ?>
 	<!--.site-header-->
 
 	<div class="mobile-menu-left-overlay"></div>
 	
 	<?php
-    require_once ("../html/mainNav/nav.php");
+    require_once ("../html/menu.php");
     ?>
     
     <!-- Contenido  -->
@@ -50,8 +50,9 @@ if(isset($_SESSION['id'])){
 							<th style="width: 15%;">Nombre</th> 
 							<th style="width: 15%;">Apellido</th> 
 							<th class="d-none d-sm-table-cell" style="width: 15%;">Correo</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Identificacion</th>
-							<th class="d-none d-sm-table-cell" style="width: 15%;">Rol</th>
+							<th class="d-none d-sm-table-cell" style="width: 10%;">Identificacion</th>
+							<th class="d-none d-sm-table-cell" style="width: 10%;">Rol</th>
+							<th class="d-none d-sm-table-cell" style="width: 10%;">Sede</th>
 							<th class="text-center" style="width: 5%"></th>
 							<th class="text-center" style="width: 5%"></th>
 						</tr>
@@ -69,17 +70,18 @@ if(isset($_SESSION['id'])){
     
     <?php
     require_once("modalAsignRole.php");
+    require_once("modalAsignCampuse.php");
     ?>
     
     <?php
-    require_once ("../html/mainJs/js.php");
+    require_once ("../html/js.php");
     ?>
     <script src="users.js" type="text/javascript"></script>
 </body>
 </html>
 <?php 
 }else{
-    header("Location:" . Connect::route() . "views/site/");
+    header("Location:" . Connect::route() . "views/404/");
     exit;
 }
 ?>

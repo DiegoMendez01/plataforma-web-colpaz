@@ -8,21 +8,21 @@ if(isset($_SESSION['id'])){
 <html>
 <head lang="es">
 	<?php
-    require_once ("../html/mainHead/head.php");
+    require_once ("../html/head.php");
     ?>
     <title>Aula Virtual::Gestion de Cursos</title>
 </head>
 <body class="with-side-menu">
 	
 	<?php
-    require_once ("../html/mainHeader/header.php");
+    require_once ("../html/header.php");
     ?>
 	<!--.site-header-->
 
 	<div class="mobile-menu-left-overlay"></div>
 	
 	<?php
-    require_once ("../html/mainNav/nav.php");
+    require_once ("../html/menu.php");
     ?>
     
     <!-- Contenido  -->
@@ -67,14 +67,14 @@ if(isset($_SESSION['id'])){
     ?>
     
     <?php
-    require_once ("../html/mainJs/js.php");
+    require_once ("../html/js.php");
     ?>
     <script src="courses.js" type="text/javascript"></script>
 </body>
 </html>
 <?php 
 }else{
-    header("Location:" . Connect::route() . "views/site/");
+    header("Location:" . Connect::route() . "views/404/");
     exit;
 }
 ?>

@@ -119,6 +119,11 @@ function editar(id){
 	$('#modalGestionPeriods').modal('show');
 }
 
+function ver(id)
+{
+	window.open("http://localhost/plataforma-web-colpaz/views/periods/view?id="+id);
+}
+
 function eliminar(id){
 	swal({
     	title: "ColPaz Quipama",

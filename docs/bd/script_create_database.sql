@@ -12,11 +12,48 @@ CREATE TABLE roles
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='Tabla que almacena información sobre roles de usuarios.';
 
+-- AVCONTROL.menus definition
+CREATE TABLE menus
+(
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `route` VARCHAR(200),
+    `identification` VARCHAR(200),
+    `group` VARCHAR(150),
+    `created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(11) DEFAULT 1,
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`))
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- AVCONTROL.menu_roles definition
+CREATE TABLE menu_roles
+(
+    `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+    `menu_id` INT(11) NOT NULL,
+    `role_id` INT(11) NOT NULL,
+    `permission` VARCHAR(2) NOT NULL,
+    `created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(11) DEFAULT 1,
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    FOREIGN KEY (menu_id) REFERENCES menus (id),
+    FOREIGN KEY (role_id) REFERENCES roles (id),
+    INDEX idx_menu_id (menu_id) USING BTREE,
+    INDEX idx_role_id (role_id) USING BTREE
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+
 -- colpazdb.assessments definition
 CREATE TABLE assessments
 (
   `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único autoincremental',
-  `name` VARCHAR(255) NOT NULL COMMENT 'Nombre de la evaluacion',
+  `title` VARCHAR(255) NOT NULL COMMENT 'Titulo de la evaluacion',
+  `comment` VARCHAR(255) NOT NULL COMMENT 'Comentarios de la evaluacion',
+  `date_limit` DATE NOT NULL COMMENT 'Fecha limite de la evaluacion',
+  `percentage` DECIMAL(18, 2) NOT NULL COMMENT 'Valor de porcentaje de la evaluacion',
+  `status` INT(11) NOT NULL COMMENT 'Estado de la evaluacion',
+  `file` LONGTEXT COMMENT 'Archivo relacionado con la actividad',
   `created` DATETIME NOT NULL COMMENT 'Fecha y hora de creación del registro',
   `modified` TIMESTAMP NOT NULL COMMENT 'Marca de tiempo que se actualiza al modificar el registro',
   `is_active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Indicador de activación (1 para activo, 0 para inactivo)',
@@ -59,6 +96,7 @@ CREATE TABLE users
     `birthdate` DATE NOT NULL COMMENT 'Fecha de nacimiento del usuario',
     `validate` TINYINT DEFAULT 0 COMMENT 'Indicador de validación para ingreso a la plataforma (1 para validado, 0 para no validado)',
     `email_confirmed_token` VARCHAR(255) COMMENT 'Token de confirmación de correo electrónico, único en la base de datos',
+    `is_update_google` TINYINT(2) DEFAULT 0 COMMENT 'Permitir actualizar ciertos campos del perfil cuando se registra por Google',
     `sms_code` VARCHAR(6) COMMENT 'Código de SMS para validación',
     `profile_image` LONGTEXT COMMENT 'Campo que almacena la imagen de perfil del usuario',
     `api_key` VARCHAR(255) COMMENT 'Clave de API para el usuario, único en la base de datos',
@@ -125,7 +163,7 @@ CREATE TABLE course_forums
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `header_id` INT(11) NOT NULL COMMENT 'Identificador del encabezado asociado al foro del curso',
     `comment` LONGTEXT COMMENT 'Comentario del foro del curso',
-    `file` LONGTEXT COMMENT 'Archivo relacionado con el foro del curso',
+    `file` LONGTEXT COMMENT 'Archivo de ayuda relacionado con el curso',
     `created` DATETIME NOT NULL COMMENT 'Fecha y hora de creacion del registro',
     `modified` TIMESTAMP NOT NULL COMMENT 'Marca de tiempo que se actualiza al modificar el registro',
     `is_active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Indicador de activacion (1 para activo, 0 para inactivo)',
@@ -627,3 +665,33 @@ CALL sp_InsertDegree("Octavo","2023-10-21", 1);
 CALL sp_InsertDegree("Noveno","2023-10-21", 1);
 CALL sp_InsertDegree("Decimo","2023-10-21", 1);
 CALL sp_InsertDegree("Undecimo","2023-10-21", 1);
+
+/*======================== INSERTAR MENUS ACCESIBLES A USUARIOS =====================*/
+
+INSERT INTO menus (name,route,identification,`group`,created,modified,is_active,custom_fields) VALUES
+	 ('Dashboard','../home/','dashboard','Dashboard','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Usuarios','../users/','users','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Tipo Identificaciones','../identificationTypes/','identificationTypes','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Roles','../roles/','roles','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Periodos','../periods/','periods','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Grados','../degrees/','degrees','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Aulas','../classrooms/','classrooms','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Cursos','../courses/','courses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Alumnos Profesor','../studentTeachers/','studentTeachers','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Cursos Profesor','../teacherCourses/','teacherCourses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Cabecera Contenido','../headerContents/','headerContents','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 ('Sedes','../campuses/','campuses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
+
+INSERT INTO menu_roles (menu_id,role_id,permission,created,modified,is_active,custom_fields) VALUES
+	 (1,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (2,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (3,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (4,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (5,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (6,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (7,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (8,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (9,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (10,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (11,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (12,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);

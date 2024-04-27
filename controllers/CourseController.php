@@ -5,20 +5,22 @@ require_once("../models/Courses.php");
 
 $course = new Courses();
 
+$idr = $_SESSION['idr'];
+
 switch($_GET['op']){
     /*
      * Insertar o actualizar el registro de un curso. Dependiendo si existe o no el curso
      * se tomara un flujo
      */
     case 'insertOrUpdate':
-        $course->InsertOrupdateCourse($_POST['id'], $_POST['name'], $_POST['description']);
+        $course->InsertOrupdateCourse($_POST['id'], $_POST['name'], $_POST['description'], $idr);
         break;
     /*
      * Es para listar/obtener los cursos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros
      */
     case 'listCourse':
-        $datos = $course->getCourses();
+        $datos = $course->getCourses($idr);
         $data  = [];
         foreach($datos as $row){
             $sub_array   = [];
@@ -46,14 +48,14 @@ switch($_GET['op']){
      * Eliminar un usuario por medio de su identificador
      */
     case 'deleteCourseById':
-        $course->deleteCourseById($_POST['id']);
+        $course->deleteCourseById($_POST['id'], $idr);
         break;
     /*
      * Es para listar/obtener los cursos que existen registrados en el sistema.
      * Pero debe mostrar el curso por medio de su identificador unico
      */
     case 'listCourseById':
-        $data = $course->getCourseById($_POST['id']);
+        $data = $course->getCourseById($_POST['id'], $idr);
         
         $output["id"]           = $data['id'];
         $output["name"]         = $data['name'];
@@ -65,7 +67,7 @@ switch($_GET['op']){
      * Listar para comboBox
      */
     case 'combo':
-        $datos = $course->getCourses();
+        $datos = $course->getCourses($idr);
         if(is_array($datos) == true AND count($datos) > 0){
             $html = "";
             $html.= "<option selected></option>";

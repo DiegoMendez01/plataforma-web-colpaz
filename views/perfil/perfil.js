@@ -5,6 +5,11 @@ function init()
 
 $(document).ready(function(){
 	let id = $('#user_idx').val();
+	
+	$.post("../../controllers/IdentificationTypeController.php?op=combo", function(data){
+		$('#identification_type_id').html(data)
+	})
+	
 	$.post("../../controllers/UserController.php?op=listUserById", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
@@ -13,8 +18,6 @@ $(document).ready(function(){
     	$('#email').val(data.email);
     	$('#phone').val(data.phone);
     	$('#phone2').val(data.phone2);
-    	$('#repeatPass').val(data.password_hash);
-    	$('#password_hash').val(data.password_hash);
     });
 });
 
@@ -27,7 +30,7 @@ $('#user_perfil').on("submit", function(e){
 
     formData.forEach(function(value, key) {
 		// Excluir phone2 de campos vacios
-	    if (key !== "phone2") {
+	    if (key !== "phone2" && key !== "password_hash" && key !== "repeatPass") {
 	        if (value === "") {
 	            camposVacios = true;
 	            return false; // Sale del bucle forEach si encuentra un campo vacio

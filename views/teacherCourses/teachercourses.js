@@ -200,6 +200,11 @@ $("#classroom_id").change(function() {
     }
 });
 
+function ver(id)
+{
+	window.open("http://localhost/plataforma-web-colpaz/views/teacherCourses/view?id="+id);
+}
+
 // Funcion para generar combos
 function generarCombos() {
     $.post("../../controllers/DegreeController.php?op=combo", function (data) {

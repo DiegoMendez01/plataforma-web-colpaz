@@ -10,16 +10,13 @@
 			<form method="post" id="userRol_form">
     			<div class="modal-body">
     				<input type="hidden" id="user_id" name="user_id">
-    				<div class="form-group">
-    					<label class="form-label" for="role_id">Roles</label>
-    					<select class="select2" id="role_id" name="role_id" data-placeholder="Seleccionar" required>
-                            <option value="">Seleccione</option>
-    						<option value="2">Administrador</option>
-    						<option value="3">Docente</option>
-    						<option value="4">Estudiante</option>
-    						<option value="5">Usuario Provisional</option>
-    					</select>
-    				</div>
+    				<div class="form-group row">
+        				<label for="role_id" class="col-sm-2 form-control-label">Rol <b>*</b></label>
+                        <div class="col-sm-10">
+                            <select id="role_id" class="form-control" name="role_id">
+    						</select>
+                        </div>
+                    </div>
     			</div>
     			<div class="modal-footer">
     				<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Cerrar</button>

@@ -1,3 +1,9 @@
+<?php
+
+require_once("config/connection.php");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,10 +76,23 @@
                                 </div>
                             </div>
                             <div class="dropdown dropdown-typical">
+                            	<?php
+                            	if(!empty($_SESSION['id'])){
+                            	?>
+                                <a href="views/home/" class="dropdown-toggle no-arr" style="color: white;">
+                                    <span class="fa fa-graduation-cap"></span>
+                                    <span class="lbl">Aula virtual</span>
+                                </a>
+                                <?php
+                            	}else{
+                                ?>
                                 <a href="views/site/" class="dropdown-toggle no-arr" style="color: white;">
                                     <span class="fa fa-graduation-cap"></span>
                                     <span class="lbl">Aula virtual</span>
                                 </a>
+                                <?php
+                            	}
+                                ?>
                             </div>
                         </div>
                     </div>

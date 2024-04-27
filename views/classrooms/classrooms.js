@@ -123,6 +123,11 @@ function editar(id){
 	$('#modalGestionClassroom').modal('show');
 }
 
+function ver(id)
+{
+	window.open("http://localhost/plataforma-web-colpaz/views/classrooms/view?id="+id);
+}
+
 function eliminar(id){
 	swal({
     	title: "ColPaz Quipama",

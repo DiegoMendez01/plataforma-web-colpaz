@@ -14,9 +14,9 @@ if (isset($_SESSION['id'])) {
 
 <body class="with-side-menu">
 
-    <?php require_once("../html/mainHeader/header.php"); ?>
+    <?php require_once("../html/header.php"); ?>
     <div class="mobile-menu-left-overlay"></div>
-    <?php require_once("../html/mainNav/nav.php"); ?>
+    <?php require_once("../html/menu.php"); ?>
 
     <!-- Contenido  -->
     <div class="page-content">
@@ -58,7 +58,7 @@ if (isset($_SESSION['id'])) {
     
     <?php require_once("modalGestionTeacherCourse.php"); ?>
     
-    <?php require_once ("../html/mainJs/js.php"); ?>
+    <?php require_once ("../html/js.php"); ?>
     
     <script src="teachercourses.js" type="text/javascript"></script>
 </body>
@@ -66,7 +66,7 @@ if (isset($_SESSION['id'])) {
 
 <?php
 } else {
-    header("Location:" . Connect::route() . "views/site/");
+    header("Location:" . Connect::route() . "views/404/");
     exit;
 }
 ?>
