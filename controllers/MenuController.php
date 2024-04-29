@@ -15,9 +15,17 @@ switch($_GET['op'])
             $sub_array   = [];
             $sub_array[] = $row["name"];
             if($row["permission"] == "Si"){
-                $sub_array[] = '<button type="button" onCLick="deshabilitar('.$row['id'].')" id="'.$row['id'].'" class="btn btn-success btn-label btn-sm"><i fa fa-wrench"></i>'.$row['permission'].'</button>';
+                if(($_POST['role_id'] == 2 OR $_POST['role_id'] == 3 OR $_POST['role_id'] == 4 OR $_POST['role_id'] == 5) AND $_SESSION['role_id'] != 1){
+                    $sub_array[] = '<span class="label label-success">'.$row['permission'].'</span>';
+                }else{
+                    $sub_array[] = '<button type="button" onCLick="deshabilitar('.$row['id'].')" id="'.$row['id'].'" class="btn btn-success btn-label btn-sm"><i fa fa-wrench"></i>'.$row['permission'].'</button>';
+                }
             }else{
-                $sub_array[] = '<button type="button" onCLick="habilitar('.$row['id'].')" id="'.$row['id'].'" class="btn btn-danger btn-label btn-sm"><i fa fa-wrench"></i>'.$row['permission'].'</button>';
+                if(($_POST['role_id'] == 2 OR $_POST['role_id'] == 3 OR $_POST['role_id'] == 4 OR $_POST['role_id'] == 5) AND $_SESSION['role_id'] != 1){
+                    $sub_array[] = '<span class="label label-danger">'.$row['permission'].'</span>';
+                }else{
+                    $sub_array[] = '<button type="button" onCLick="habilitar('.$row['id'].')" id="'.$row['id'].'" class="btn btn-danger btn-label btn-sm"><i fa fa-wrench"></i>'.$row['permission'].'</button>';
+                }
             }
             $data[]      = $sub_array;
             
