@@ -139,7 +139,7 @@ class Users extends Database
             if(empty($id)){
                 $resetPassword  = str_replace("$", "a", crypt($email.$lastname.$phone, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
                 $emailToken     = str_replace("$", "a", crypt($email.$username.$name, '$2a$07$afartwetsdAD52356FEDGsfhsd$'));
-                $smsCode        = rand(1000, 9999);;
+                $smsCode        = rand(1000, 9999);
                 $password       = password_hash($password_hash, PASSWORD_DEFAULT);
                 
                 // Concatenar y formatear las credenciales para generar el API key

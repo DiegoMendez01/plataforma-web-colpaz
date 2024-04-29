@@ -73,12 +73,15 @@ class userModel extends Database
         $email_confirmed_token = hash('md5', $data['email'] . bin2hex(random_bytes(32)));
         // Generar una api_key para el usuario combinada con el email
         $api_key = hash('md5', $data['email'] . bin2hex(random_bytes(16)));
+        $smsCode        = rand(1000, 9999);
+        
+        $password_hash = password_hash($data['password_hash'], PASSWORD_DEFAULT);
         
         $stmt = $conectar->prepare("
            INSERT INTO
-                $table (name, lastname, username, identification_type_id, identification, password_hash, password_reset_token, email, email_confirmed_token, phone, phone2, api_key, birthdate, sex, created, role_id)
+                $table (name, lastname, username, identification_type_id, identification, password_hash, password_reset_token, email, email_confirmed_token, phone, phone2, api_key, birthdate, sex, created, role_id, profile_image, sms_code, idr)
            VALUES
-                (:name, :lastname, :username, :identification_type_id, :identification, :password_hash, :password_reset_token, :email, :email_confirmed_token, :phone, :phone2, :api_key, :birthdate, :sex, :created, :role_id)
+                (:name, :lastname, :username, :identification_type_id, :identification, :password_hash, :password_reset_token, :email, :email_confirmed_token, :phone, :phone2, :api_key, :birthdate, :sex, :created, :role_id, :profile_image, :sms_code, 1)
         ");
         
         $stmt->bindParam(":name", $data['name'], PDO::PARAM_STR);
@@ -86,7 +89,7 @@ class userModel extends Database
         $stmt->bindParam(":username", $data['username'], PDO::PARAM_STR);
         $stmt->bindParam(":identification_type_id", $data['identification_type_id'], PDO::PARAM_STR);
         $stmt->bindParam(":identification", $data['identification'], PDO::PARAM_STR);
-        $stmt->bindParam(":password_hash", $data['password_hash'], PDO::PARAM_STR);
+        $stmt->bindParam(":password_hash", $password_hash, PDO::PARAM_STR);
         $stmt->bindParam(":password_reset_token", $password_reset_token, PDO::PARAM_STR);
         $stmt->bindParam(":email", $data['email'], PDO::PARAM_STR);
         $stmt->bindParam(":email_confirmed_token", $email_confirmed_token, PDO::PARAM_STR);
@@ -97,6 +100,8 @@ class userModel extends Database
         $stmt->bindParam(":sex", $data['sex'], PDO::PARAM_STR);
         $stmt->bindParam(":created", $data['created'], PDO::PARAM_STR);
         $stmt->bindParam(":role_id", $data['role_id'], PDO::PARAM_STR);
+        $stmt->bindParam(":profile_image", $data['profile_image'], PDO::PARAM_STR);
+        $stmt->bindParam(":sms_code", $smsCode, PDO::PARAM_STR);
         
         if($stmt->execute()){
             return 'create';
