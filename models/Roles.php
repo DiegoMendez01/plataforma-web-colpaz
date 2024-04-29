@@ -136,13 +136,13 @@ class Roles extends Database
     /*
      * Funcion para obtener informacion de un rol por su ID
      */
-    public function getRolesById($id, $idr, $view = null)
+    public function getRolesById($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
         
         // Determinar la condición basada en el valor de $_SESSION['role_id']
-        $condition = $this->getSessionCondition($idr, $view);
+        $condition = $this->getSessionCondition($idr);
         
         $sql = "
             SELECT
