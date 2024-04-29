@@ -2,11 +2,15 @@
 
 require_once("../../config/database.php");
 require_once("../../models/Roles.php");
+require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
-    if(!empty($_GET['id'])){
+    if(!empty($_GET['id']) AND !empty($_GET['idr'])){
         $roles      = new Roles(); // Asegúrate de que la clase Campuses tenga un método getCampusById() definido
-        $roleData   = $roles->getRolesById($_GET['id']);
+        $campuse    = new Campuses();
+        $roleData   = $roles->getRolesById($_GET['id'], $_GET['idr'], 'view');
+        if(!empty($roleData)){
+            $campuseData = $campuse->getCampuseById($roleData['idr']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -68,6 +72,10 @@ if(isset($_SESSION['id'])){
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Modificado</th>
                             <td><?= $roleData['modified'] ?></td>
                         </tr>
+                        <tr>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Sede</th>
+                            <td><span class="label label-primary"><?= $campuseData['name'] ?></span></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -81,8 +89,12 @@ if(isset($_SESSION['id'])){
 </body>
 </html>
 <?php
+        }else{
+            header("Location:" . Database::route() . "views/roles/");
+            exit;
+        }
     } else {
-        header("Location:" . Database::route() . "views/campuses/");
+        header("Location:" . Database::route() . "views/roles/");
         exit;
     }
 } else {

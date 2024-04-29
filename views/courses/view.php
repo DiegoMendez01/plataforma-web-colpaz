@@ -5,11 +5,12 @@ require_once("../../models/Courses.php");
 require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
-    if(!empty($_GET['id'])){
+    if(!empty($_GET['id']) AND !empty($_GET['idr'])){
         $course      = new Courses();
         $campuse     = new Campuses();
-        $courseData  = $course->getCourseById($_GET['id']);
-        $campuseData = $campuse->getCampuseById($courseData['idr']);
+        $courseData  = $course->getCourseById($_GET['id'], $_GET['idr'], 'view');
+        if(!empty($courseData)){
+            $campuseData = $campuse->getCampuseById($courseData['idr']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -93,6 +94,10 @@ if(isset($_SESSION['id'])){
 </body>
 </html>
 <?php
+        }else{
+            header("Location:" . Database::route() . "views/courses/");
+            exit;
+        }
     }else{
         header("Location:" . Database::route() . "views/courses/");
         exit;

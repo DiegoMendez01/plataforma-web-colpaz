@@ -5,10 +5,14 @@ class Roles extends Database
     /*
      * Función para obtener la condición adicional basada en $_SESSION['role_id']
      */
-    private function getSessionCondition($idr)
+    private function getSessionCondition($idr, $view = null)
     {
         if ($_SESSION['role_id'] == 1) {
-            return ''; // Sin condición adicional si role_id es 1
+            if(!empty($view)){
+                return 'AND idr = '.$idr;
+            }else{
+                return ''; // Sin condición adicional si role_id es 1
+            }
         } else {
             return 'AND id <> 1 AND (idr = '.$idr.' OR id IN (2, 3, 4, 5))';
         }
@@ -132,13 +136,13 @@ class Roles extends Database
     /*
      * Funcion para obtener informacion de un rol por su ID
      */
-    public function getRolesById($id, $idr)
+    public function getRolesById($id, $idr, $view = null)
     {
         $conectar = parent::connection();
         parent::set_names();
         
         // Determinar la condición basada en el valor de $_SESSION['role_id']
-        $condition = $this->getSessionCondition($idr);
+        $condition = $this->getSessionCondition($idr, $view);
         
         $sql = "
             SELECT

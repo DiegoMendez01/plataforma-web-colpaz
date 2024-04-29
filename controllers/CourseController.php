@@ -2,8 +2,10 @@
 
 require_once("../config/database.php");
 require_once("../models/Courses.php");
+require_once("../models/Campuses.php");
 
-$course = new Courses();
+$course  = new Courses();
+$campuse = new Campuses();
 
 $idr = $_SESSION['idr'];
 
@@ -23,16 +25,20 @@ switch($_GET['op']){
         $datos = $course->getCourses($idr);
         $data  = [];
         foreach($datos as $row){
+            
+            $campuseData = $campuse->getCampuseById($row['idr']);
+            
             $sub_array   = [];
             $sub_array[] = $row['name'];
             $sub_array[] = $row['description'];
+            $sub_array[] = '<span class="label label-pill label-primary">'.$campuseData['name'].'</span>';
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }
             
             $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
             $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
-            $sub_array[] = '<button type="button" onClick="ver('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
+            $sub_array[] = '<button type="button" onClick="ver('.$row["id"].', '.$row['idr'].')"; id="'.$row['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
             
             $data[] = $sub_array;
         }

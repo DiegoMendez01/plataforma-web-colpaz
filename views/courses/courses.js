@@ -149,9 +149,9 @@ function eliminar(id){
 	});
 }
 
-function ver(id)
+function ver(id, idr)
 {
-	window.open("http://localhost/plataforma-web-colpaz/views/courses/view?id=" + id);
+	window.open("http://localhost/plataforma-web-colpaz/views/courses/view?id="+id+"&idr="+idr);
 }
 
 $(document).on("click", "#btnnuevo", function(){

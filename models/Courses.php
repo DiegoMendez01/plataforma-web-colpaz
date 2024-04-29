@@ -5,10 +5,14 @@ class Courses extends Database
     /*
      * Función para obtener la condición adicional basada en $_SESSION['role_id']
      */
-    private function getSessionCondition($idr)
+    private function getSessionCondition($idr, $view = null)
     {
         if ($_SESSION['role_id'] == 1) {
-            return ''; // Sin condición adicional si role_id es 1
+            if(!empty($view)){
+                return 'AND idr = '.$idr;
+            }else{
+                return ''; // Sin condición adicional si role_id es 1
+            }
         } else {
             return 'AND idr = '.$idr;
         }
@@ -161,12 +165,12 @@ class Courses extends Database
     /*
      * Funcion para traer los cursos mediante el ID del curso
      */
-    public function getCourseById($id, $idr)
+    public function getCourseById($id, $idr, $view = null)
     {
         $conectar = parent::connection();
         parent::set_names();
         
-        $condition = $this->getSessionCondition($idr);
+        $condition = $this->getSessionCondition($idr, $view);
         
         $sql = "
             SELECT

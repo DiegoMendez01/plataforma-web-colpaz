@@ -11,3 +11,7 @@
   height: 40px;
   width: 5rem;
 }
+
+.dataTables_filter{
+	margin-bottom: 1rem;
+}
