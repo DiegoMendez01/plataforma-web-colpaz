@@ -258,9 +258,9 @@ function editCampuse(id)
 	});
 }
 
-function ver(id, idr)
+function ver(id)
 {
-	window.open("http://localhost/plataforma-web-colpaz/views/roles/view?id="+id+"&idr="+idr);
+	window.open("http://localhost/plataforma-web-colpaz/views/roles/view?id="+id);
 }
 
 $(document).on("click", "#btnnuevo", function(){

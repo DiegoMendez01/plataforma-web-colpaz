@@ -5,10 +5,10 @@ require_once("../../models/Courses.php");
 require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
-    if(!empty($_GET['id']) AND !empty($_GET['idr'])){
+    if(!empty($_GET['id'])){
         $course      = new Courses();
         $campuse     = new Campuses();
-        $courseData  = $course->getCourseById($_GET['id'], $_GET['idr'], 'view');
+        $courseData  = $course->getCourseById($_GET['id'], $_SESSION['idr']);
         if(!empty($courseData)){
             $campuseData = $campuse->getCampuseById($courseData['idr']);
 ?>

@@ -5,10 +5,10 @@ require_once("../../models/Roles.php");
 require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
-    if(!empty($_GET['id']) AND !empty($_GET['idr'])){
+    if(!empty($_GET['id'])){
         $roles      = new Roles(); // Asegúrate de que la clase Campuses tenga un método getCampusById() definido
         $campuse    = new Campuses();
-        $roleData   = $roles->getRolesById($_GET['id'], $_GET['idr'], 'view');
+        $roleData   = $roles->getRolesById($_GET['id'], $_SESSION['idr']);
         if(!empty($roleData)){
             $campuseData = $campuse->getCampuseById($roleData['idr']);
 ?>
@@ -74,7 +74,7 @@ if(isset($_SESSION['id'])){
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Sede</th>
-                            <td><span class="label label-primary"><?= $campuseData['name'] ?></span></td>
+                            <td><span class="label label-primary"><?= ($campuseData) ? $campuseData['name'] : 'General' ?></span></td>
                         </tr>
                     </tbody>
                 </table>
