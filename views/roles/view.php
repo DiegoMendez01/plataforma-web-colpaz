@@ -82,11 +82,11 @@ if(isset($_SESSION['id'])){
 </html>
 <?php
     } else {
-        header("Location:" . Connect::route() . "views/campuses/");
+        header("Location:" . Database::route() . "views/campuses/");
         exit;
     }
 } else {
-    header("Location:" . Connect::route() . "views/404/");
+    header("Location:" . Database::route() . "views/404/");
     exit;
 }
 ?>

@@ -17,7 +17,6 @@ class menuRolesController
                     "menu_id"                   => $value['menu_id'],
                     "role_id"                   => $value['role_id'],
                     "permission"                => $value['permission'],
-                    "idr"                       => $value['idr'],
                     "created"                   => $value['created']
                 ];
                 $arrayData["menuRoles"][] = $menuRoleDetails;
@@ -40,7 +39,6 @@ class menuRolesController
                     "menu_id"                   => $menu_roles['menu_id'],
                     "role_id"                   => $menu_roles['role_id'],
                     "permission"                => $menu_roles['permission'],
-                    "idr"                       => $menu_roles['idr'],
                     "created"                   => $menu_roles['created']
                 ]
             ];

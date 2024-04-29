@@ -48,15 +48,14 @@ class menuRoleModel extends Database
         foreach($data as $row){
             $stmt = $conectar->prepare("
                INSERT INTO
-                    $table (menu_id, role_id, permission, idr, created)
+                    $table (menu_id, role_id, permission, created)
                VALUES
-                    (:menu_id, :role_id, :permission, :idr, :created)
+                    (:menu_id, :role_id, :permission, :created)
             ");
             
             $stmt->bindParam(":menu_id", $row['menu_id'], PDO::PARAM_INT);
             $stmt->bindParam(":role_id", $row['role_id'], PDO::PARAM_INT);
             $stmt->bindParam(":permission", $row['permission'], PDO::PARAM_STR);
-            $stmt->bindParam(":idr", $row['idr'], PDO::PARAM_INT);
             $stmt->bindParam(":created", $row['created'], PDO::PARAM_STR);
             
             // Ejecutar la inserción y verificar si hubo algún error

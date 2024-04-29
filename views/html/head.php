@@ -40,4 +40,4 @@
 <link rel="stylesheet" href="../../assets/css/separate/pages/widgets.min.css">
 
 <link rel="stylesheet" href="../../assets/css/main.css">
-<link rel="stylesheet" href="../../assets/css/style.css">
+<link rel="stylesheet" href="../../assets/css/styles.css">

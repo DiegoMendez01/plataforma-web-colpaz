@@ -1,28 +1,33 @@
-<div id="modalPermission" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="lbltitulo">Permisos</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-            </div>
-            <!-- TODO: Formulario de Mantenimiento de identificacion -->
-            <form method="post" id="modalPermission_form">
-                <div class="modal-body">
-                	<table id="permission_data" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Permiso</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="reset" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div id="modalPermission" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labellebdy="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="model-close" data-dismiss="modal" aria-label="Close">
+					<i class="font-icon-close-2"></i>
+				</button>
+				<h4 class="modal-title" id="mdltitulo"></h4>
+			</div>
+			<form method="post" id="modalPermission_form">
+    			<div class="modal-body">
+    				<div class="form-group">
+    					<div class="table-responsive">
+                            <table id="permission_data" class="table table-bordered table-striped table-vcenter js-dataTable-full w-100">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th> 
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+    				</div>
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Cerrar</button>
+    			</div>
+			</form>
+		</div>
+	</div>
 </div>

@@ -5,7 +5,12 @@
 <script type="text/javascript " src="../../assets/js/lib/match-height/jquery.matchHeight.min.js "></script>
 <script src="../../assets/js/app.js"></script>
 
-<script src="../../assets/js/lib/datatables-net/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
 <!-- TODO: Liberia SweetAlert -->
 <script src="../../assets/js/lib/bootstrap-sweetalert/sweetalert.min.js"></script>
 

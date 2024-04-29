@@ -36,7 +36,6 @@ CREATE TABLE menu_roles
     `created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(11) DEFAULT 1,
-    `idr` INT(11) NOT NULL DEFAULT 0 COMMENT 'Campo que almacena el id unico de la sede',
     `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
     FOREIGN KEY (menu_id) REFERENCES menus (id),
     FOREIGN KEY (role_id) REFERENCES roles (id),
@@ -683,16 +682,16 @@ INSERT INTO menus (name,route,identification,`group`,created,modified,is_active,
 	 ('Cabecera Contenido','../headerContents/','headerContents','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
 	 ('Sedes','../campuses/','campuses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
 
-INSERT INTO menu_roles (menu_id,role_id,permission,created,modified,is_active,idr,custom_fields) VALUES
-	 (1,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (2,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (3,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (4,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (5,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (6,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (7,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (8,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (9,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (10,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (11,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL),
-	 (12,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,0,NULL);
+INSERT INTO menu_roles (menu_id,role_id,permission,created,modified,is_active,custom_fields) VALUES
+	 (1,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (2,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (3,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (4,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (5,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (6,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (7,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (8,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (9,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (10,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (11,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+	 (12,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
