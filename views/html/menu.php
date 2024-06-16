@@ -82,11 +82,5 @@ $menus = $menu->getMenusByRole($_SESSION['role_id'], $_SESSION['idr']);
         <?php
         }
         ?>
-        <li class="blue-dirty">
-    		<a href="..\site\logout">
-				<i class="font-icon glyphicon glyphicon-log-out"></i>
-				<span class="lbl">Cerrar Sesion</span>
-			</a>
-		</li>
 	</ul>
 </nav>
