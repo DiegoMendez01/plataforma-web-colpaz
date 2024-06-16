@@ -10,6 +10,7 @@ require_once("../../models/HeaderContents.php");
 if(!empty($_SESSION['id'])){
     if(!empty($_GET['course'])){
         $courseId          = $_GET['course'];
+        $idr               = $_SESSION['idr'];
         
         $content           = new Contents();
         $teacherCourse     = new TeacherCourses();
@@ -18,9 +19,9 @@ if(!empty($_SESSION['id'])){
         $headerContent     = new HeaderContents();
         
         $dataTeacherC      = $teacherCourse->getTeacherCourseById($courseId);
-        $dataCourse        = $course->getCourseById($dataTeacherC['course_id']);
+        $dataCourse        = $course->getCourseById($dataTeacherC['course_id'], $idr);
         $dataHeaderC       = $headerContent->getHeaderContentByTeacher($dataTeacherC['id']);
-        $dataClassroom     = $classroom->getClassroomById($dataTeacherC['classroom_id']);
+        $dataClassroom     = $classroom->getClassroomById($dataTeacherC['classroom_id'], $idr);
         $dataAllContent    = $content->getContentByTeacherCourseId($courseId, $dataHeaderC['id']);
 ?>
 <!DOCTYPE html>
@@ -256,10 +257,7 @@ if(!empty($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modalGestionContenido.php");
-    ?>
-    
-    <?php
+    require_once("mantenimiento.php");
     require_once("modalGestionHeaderContent.php");
     ?>
     

@@ -63,7 +63,7 @@ if(isset($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modalGestionCampuses.php");
+    require_once("mantenimiento.php");
     ?>
     
     <?php
