@@ -2,7 +2,7 @@ var tabla;
 
 function init()
 {
-	$('#roles_form').on("submit", function(e){
+	$('#mantenimiento_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
 	
@@ -43,7 +43,7 @@ function updateAsignCampuse(e)
 function insertOrUpdate(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#roles_form')[0]);
+	var formData = new FormData($('#mantenimiento_form')[0]);
 	
 	var camposVacios = false;
 	
@@ -70,8 +70,8 @@ function insertOrUpdate(e)
 		success: function(data){
 			data = JSON.parse(data);
 			if(data.status){
-				$('#roles_form')[0].reset();
-				$('#modalGestionRoles').modal('hide');
+				$('#mantenimiento_form')[0].reset();
+				$('#modalmantenimiento').modal('hide');
 				$('#role_data').DataTable().ajax.reload();
 	        	swal({
 					title: "ColPaz Quipama",
@@ -266,8 +266,8 @@ function ver(id)
 $(document).on("click", "#btnnuevo", function(){
 	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
-	$('#roles_form')[0].reset();
-	$('#modalGestionRoles').modal('show');
+	$('#mantenimiento_form')[0].reset();
+	$('#modalmantenimiento').modal('show');
 });
 
 init();

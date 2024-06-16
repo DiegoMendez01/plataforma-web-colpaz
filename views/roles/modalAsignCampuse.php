@@ -14,6 +14,7 @@
         				<label for="idr" class="col-sm-2 form-control-label">Sede <b>*</b></label>
                         <div class="col-sm-10">
                             <select id="idr" class="form-control" name="idr">
+								<option value="0" selected>Seleccionar</option>
     						</select>
                         </div>
                     </div>
