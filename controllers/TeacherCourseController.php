@@ -7,6 +7,7 @@ require_once("../models/Courses.php");
 require_once("../models/Periods.php");
 require_once("../models/Classrooms.php");
 require_once("../models/Degrees.php");
+require_once("../models/Campuses.php");
 
 $teacherCourse = new TeacherCourses();
 $user          = new Users();
@@ -14,6 +15,9 @@ $course        = new Courses();
 $classroom     = new Classrooms();
 $period        = new Periods();
 $degree        = new Degrees();
+$campuse       = new Campuses();
+
+$idr = $_SESSION['idr'];
 
 switch($_GET['op'])
 {
@@ -33,10 +37,11 @@ switch($_GET['op'])
         $data  = [];
         foreach ($datos as $row) {
             $userData      = $user->getUserById($row['user_id']);
-            $courseData    = $course->getCourseById($row['course_id']);
-            $classroomData = $classroom->getClassroomById($row['classroom_id']);
+            $courseData    = $course->getCourseById($row['course_id'], $idr);
+            $classroomData = $classroom->getClassroomById($row['classroom_id'], $idr);
             $periodData    = $period->getPeriodsById($row['period_id']);
             $degreeData    = $degree->getDegreeById($row['degree_id']);
+            $campuseData   = $campuse->getCampuseById($row['idr']);
             
             $sub_array      = [];
             $sub_array[]    = $courseData['name'];
@@ -44,6 +49,7 @@ switch($_GET['op'])
             $sub_array[]    = $degreeData['name'];
             $sub_array[]    = $periodData['name'];
             $sub_array[]    = $userData['name'].' '.$userData['lastname'];
+            $sub_array[]    =  '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }

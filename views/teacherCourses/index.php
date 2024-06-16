@@ -40,15 +40,16 @@ if (isset($_SESSION['id'])) {
                 <table id="teachercourse_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
-                            <th style="width: 15%;">Materia</th>
-                            <th style="width: 15%;">Aula</th>
-                            <th style="width: 15%;">Grado</th>
-                            <th style="width: 10%;">Periodo</th>
-                            <th style="width: 25%;">Usuario</th>
-                            <th class="d-none d-sm-table-cell" style="width: 5%;">Estado</th>
-                            <th class="text-center" style="width: 5%"></th>
-                            <th class="text-center" style="width: 5%"></th>
-                            <th class="text-center" style="width: 5%"></th>
+                            <th>Materia</th>
+                            <th>Aula</th>
+                            <th>Grado</th>
+                            <th>Periodo</th>
+                            <th>Usuario</th>
+                            <th>Sede</th>
+                            <th class="d-none d-sm-table-cell">Estado</th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
                         </tr>
                     </thead>
                 </table>
@@ -58,6 +59,7 @@ if (isset($_SESSION['id'])) {
     
     <?php
     require_once("mantenimiento.php");
+    require_once("modalAsignCampuse.php");
     ?>
     
     <?php require_once ("../html/js.php"); ?>
