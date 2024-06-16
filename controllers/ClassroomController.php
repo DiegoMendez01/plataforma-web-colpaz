@@ -3,9 +3,13 @@
 require_once("../config/database.php");
 require_once("../models/Classrooms.php");
 require_once("../models/Degrees.php");
+require_once("../models/Campuses.php");
 
 $classroom = new Classrooms();
 $degree    = new Degrees();
+$campuse = new Campuses();
+
+$idr = $_SESSION['idr'];
 
 switch($_GET['op'])
 {
@@ -14,22 +18,24 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $classroom->InsertOrupdateClassroom($_POST['id'], $_POST['name'], $_POST['degree_id']);
+        $classroom->InsertOrupdateClassroom($_POST['id'], $_POST['name'], $_POST['degree_id'], $idr);
         break;
     /*
      * Es para listar/obtener las aulas academicas que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listClassroom':
-        $datos = $classroom->getClassrooms();
+        $datos = $classroom->getClassrooms($idr);
         $data  = [];
         foreach ($datos as $row) {
             
-            $degreeData = $degree->getDegreeById($row['degree_id']);
+            $degreeData  = $degree->getDegreeById($row['degree_id']);
+            $campuseData = $campuse->getCampuseById($row['idr']);
             
             $sub_array      = [];
             $sub_array[]    = $row['name'];
             $sub_array[]    = $degreeData['name'];
+            $sub_array[] =  '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
             $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
@@ -50,11 +56,17 @@ switch($_GET['op'])
         echo json_encode($results);
         break;
     /*
+     * El caso que sirve para actualizar la sede
+     */
+    case "updateAsignCampuse":
+        $classroom->updateAsignCampuse($_POST['xid'], $_POST['idr']);
+        break;
+    /*
      * Eliminar totalmente registros de aulas academicas existentes por su ID (eliminado logico).
      */
     case 'deleteClassroomById':
         if(isset($_POST['id'])){
-            $classroom->deleteClassroomById($_POST['id']);
+            $classroom->deleteClassroomById($_POST['id'], $idr);
         }
         break;
     /*
@@ -62,19 +74,15 @@ switch($_GET['op'])
      * Pero debe mostrar el aula por medio de su identificador unico
      */
     case 'listClassroomById':
-        $data = $classroom->getClassroomById($_POST['id']);
-        
-        $output["id"]           = $data['id'];
-        $output["name"]         = $data['name'];
-        
-        echo json_encode($output);
+        $data = $classroom->getClassroomById($_POST['id'], $idr);
+        echo json_encode($data);
         break;
     /*
      * Listar para comboBox
      */
     case 'combo':
         if(empty($_POST['degree_id'])){
-            $datos = $classroom->getClassrooms();
+            $datos = $classroom->getClassrooms($idr);
             if(is_array($datos) == true AND count($datos) > 0){
                 $html = "";
                 $html.= "<option selected></option>";
@@ -84,7 +92,7 @@ switch($_GET['op'])
                 echo $html;
             }
         }else{
-            $datos = $classroom->getClassroomsByDegree($_POST['degree_id']);
+            $datos = $classroom->getClassroomsByDegree($_POST['degree_id'], $idr);
             if(is_array($datos) == true AND count($datos) > 0){
                 $html = "";
                 $html.= "<option selected></option>";

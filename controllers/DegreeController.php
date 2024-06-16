@@ -74,7 +74,7 @@ switch($_GET['op'])
             $datos = $degree->getDegrees();
             if(is_array($datos) == true AND count($datos) > 0){
                 $html = "";
-                $html.= "<option selected></option>";
+                $html.= "<option value='0' selected>Seleccionar</option>";
                 foreach($datos as $row){
                     $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
                 }
@@ -84,7 +84,7 @@ switch($_GET['op'])
             $datos = $degree->getDegreesByClassroom($_POST['classroom_id']);
             if(is_array($datos) == true AND count($datos) > 0){
                 $html = "";
-                $html.= "<option selected></option>";
+                $html.= "<option value='0' selected>Seleccionar</option>";
                 foreach($datos as $row){
                     $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
                 }

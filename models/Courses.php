@@ -154,9 +154,8 @@ class Courses extends Database
         
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
-        $stmt->execute();
         
-        return $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->execute();
     }
     /*
      * Funcion para traer los cursos mediante el ID del curso

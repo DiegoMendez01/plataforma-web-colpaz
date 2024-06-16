@@ -20,7 +20,7 @@
                         <label for="user_id" class="col-sm-2 form-control-label">Grado <b>*</b></label>
                         <div class="col-sm-10">
                             <select id="degree_id" class="form-control" name="degree_id">
-                            	<option selected>Seleccionar</option>
+                            	<option value="0" selected>Seleccionar</option>
 							</select>
                         </div>
                     </div>

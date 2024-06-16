@@ -5,6 +5,10 @@ function init()
 	$('#classroom_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
+
+	$('#campuse_form').on("submit", function(e){
+		updateAsignCampuse(e);
+	});
 }
 
 function insertOrUpdate(e)
@@ -53,10 +57,43 @@ function insertOrUpdate(e)
 	});
 }
 
+function updateAsignCampuse(e)
+{
+	e.preventDefault();
+	var formData = new FormData($('#campuse_form')[0]);
+	$.ajax({
+		url: "../../controllers/ClassroomController.php?op=updateAsignCampuse",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
+				$('#campuse_form')[0].reset();
+				$('#modalAsignCampuse').modal('hide');
+				$('#classroom_data').DataTable().ajax.reload();
+				swal({
+					title: "ColPaz Quipama",
+					text: data.msg,
+					type: "success",
+					confirmButtonClass: "btn-success"
+				});
+			}else{
+				swal("Advertencia", data.msg, "error");
+			}
+		}
+	});
+}
+
 $(document).ready(function(){
 	$.post("../../controllers/DegreeController.php?op=combo",function(data){
         $("#degree_id").html(data);
     });
+
+	$.post("../../controllers/CampuseController.php?op=combo", function(data){
+		$('#idr').html(data);
+	});
     
 	tabla = $('#classroom_data').dataTable({
 		"aProcessing": true,
@@ -118,6 +155,7 @@ function editar(id){
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
+		$('#degree_id').val(data.degree_id).trigger('change');
     });
 	
 	$('#modalGestionClassroom').modal('show');
@@ -154,6 +192,17 @@ function eliminar(id){
 				confirmButtonClass: "btn-success"
 			});
 		}
+	});
+}
+
+function editCampuse(id)
+{
+	$.post("../../controllers/ClassroomController.php?op=listClassroomById", { id : id }, function(data){
+		data = JSON.parse(data);
+		$('#mdltitulo').html('Asignar sede');
+		$('#campuse_form')[0].reset();
+		$('#xid').val(data.id);
+		$('#modalAsignCampuse').modal('show');
 	});
 }
 
