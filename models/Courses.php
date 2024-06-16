@@ -181,6 +181,42 @@ class Courses extends Database
         
         return $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    /*
+     *  Funcion para actualizar la sede
+     */
+    public function updateAsignCampuse($id, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            UPDATE
+                courses
+            SET
+                idr = ?
+            WHERE
+                id = ?
+        ";
+        $sql    = $conectar->prepare($sql);
+        $sql->bindValue(1, $idr);
+        $sql->bindValue(2, $id);
+        $result = $sql->execute();
+        
+        if($result){
+            $answer = [
+                'status'      => true,
+                'msg'         => 'Registro actualizado correctamente'
+            ];
+        }else{
+            $answer = [
+                'status'  => false,
+                'msg'     => 'Fallo con la actualizacion de la sede',
+            ];
+        }
+        
+        // Devolver el rol antiguo y el nuevo
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
 }
 
 ?>

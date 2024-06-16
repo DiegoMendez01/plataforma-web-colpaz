@@ -31,7 +31,7 @@ switch($_GET['op']){
             $sub_array   = [];
             $sub_array[] = $row['name'];
             $sub_array[] = $row['description'];
-            $sub_array[] = '<span class="label label-pill label-primary">'.$campuseData['name'].'</span>';
+            $sub_array[] =  '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
             }
@@ -49,6 +49,12 @@ switch($_GET['op']){
             "aaData"                => $data
         ];
         echo json_encode($results);
+        break;
+    /*
+     * El caso que sirve para actualizar la sede
+     */
+    case "updateAsignCampuse":
+        $course->updateAsignCampuse($_POST['xid'], $_POST['idr']);
         break;
     /*
      * Eliminar un usuario por medio de su identificador
