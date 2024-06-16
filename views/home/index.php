@@ -32,8 +32,66 @@ if($_SESSION['id']){
     		<div class="col-md-12">
     			<?php 
                 if($_SESSION['role_id'] == 1 OR $_SESSION['role_id'] == 2){
+                    require_once("../../models/Dashboard.php");
+                    $dashboard = new Dashboard();
                 ?>
-                <img src="../../assets/img/school.svg" alt="Imagen Colegio" />
+                <div class="row">
+                    <div class="col-sm-6 col-lg-3">
+                        <article class="statistic-box purple">
+                            <div>
+                                <?php 
+                                $totalUsuarios = $dashboard->countTable('users');
+                                ?>
+                                <div class="number"><?php echo $totalUsuarios['total']; ?></div>
+                                <div class="caption"><div>Total de Usuarios</div></div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <article class="statistic-box yellow">
+                            <div>
+                                <?php 
+                                $totalCursos = $dashboard->countTable('courses');
+                                ?>
+                                <div class="number"><?php echo $totalCursos['total']; ?></div>
+                                <div class="caption"><div>Total de Cursos</div></div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <article class="statistic-box green">
+                            <div>
+                                <?php 
+                                $totalMaterias = $dashboard->countTable('zones');
+                                ?>
+                                <div class="number"><?php echo $totalMaterias['total']; ?></div>
+                                <div class="caption"><div>Total de Zonas</div></div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <article class="statistic-box blue" style="background-color: #357CA5; color: #fff;">
+                            <div>
+                                <?php 
+                                $totalGrados = $dashboard->countTable('degrees');
+                                ?>
+                                <div class="number"><?php echo $totalGrados['total']; ?></div>
+                                <div class="caption"><div>Total de Grados</div></div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <article class="statistic-box red">
+                            <div>
+                                <?php 
+                                $totalAulas = $dashboard->countTable('classrooms');
+                                ?>
+                                <div class="number"><?php echo $totalAulas['total']; ?></div>
+                                <div class="caption"><div>Total de Aulas</div></div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
                 <?php 
                 }elseif($_SESSION['role_id'] == 3){
                     require_once("../../models/TeacherCourses.php");

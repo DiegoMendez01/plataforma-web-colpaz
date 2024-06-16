@@ -10,26 +10,19 @@ $menus = $menu->getMenusByRole($_SESSION['role_id'], $_SESSION['idr']);
 
 <nav class="side-menu">
     <ul class="side-menu-list">
-    	<li class="blue-dirty with-sub">
-            <span>
-                <i class="font-icon font-icon-notebook"></i>
-                <span class="lbl">Dashboard</span>
-            </span>
-            <ul>
-                <?php foreach($menus as $row){
-                if($row['group'] == 'Dashboard' AND $row['permission'] == "Si"){
-                ?>
-         		   	<li>
-         		   		<a href="<?php echo $row["route"]; ?>">
-         		   			<span class="lbl"><?php echo $row["name"]; ?></span>
-         		   			<!-- <span class="label label-custom label-pill label-danger">New</span> -->
-         		   		</a>
-         		   	</li>
-                <?php
-                }
-            }?>
-            </ul>
-        </li>
+        <?php foreach($menus as $row){
+            if($row['group'] == 'Dashboard' AND $row['permission'] == "Si"){
+            ?>
+                <li>
+                    <a href="<?php echo $row["route"]; ?>">
+                        <i class="font-icon font-icon-home"></i>
+                        <span class="lbl"><?php echo $row["name"]; ?></span>
+                        <span class="label label-custom label-pill label-danger">New</span>
+                    </a>
+                </li>
+            <?php
+            }
+        }?>
         <li class="blue-dirty with-sub">
             <span>
                 <i class="font-icon font-icon-notebook"></i>
