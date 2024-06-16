@@ -5,6 +5,10 @@ function init()
 	$('#zones_form').on("submit", function(e){
 		insertOrUpdate(e);
 	});
+
+	$('#campuse_form').on("submit", function(e){
+		updateAsignCampuse(e);
+	});
 }
 
 function insertOrUpdate(e)
@@ -53,7 +57,41 @@ function insertOrUpdate(e)
 	});
 }
 
+function updateAsignCampuse(e)
+{
+	e.preventDefault();
+	var formData = new FormData($('#campuse_form')[0]);
+	$.ajax({
+		url: "../../controllers/ZoneController.php?op=updateAsignCampuse",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			data = JSON.parse(data);
+			if(data.status){
+				$('#campuse_form')[0].reset();
+				$('#modalAsignCampuse').modal('hide');
+				$('#zone_data').DataTable().ajax.reload();
+				swal({
+					title: "ColPaz Quipama",
+					text: data.msg,
+					type: "success",
+					confirmButtonClass: "btn-success"
+				});
+			}else{
+				swal("Advertencia", data.msg, "error");
+			}
+		}
+	});
+}
+
 $(document).ready(function(){
+	
+	$.post("../../controllers/CampuseController.php?op=combo", function(data){
+		$('#idr').html(data);
+	});
+
 	tabla = $('#zone_data').dataTable({
 		"aProcessing": true,
         "aServerSide": true,
@@ -145,6 +183,17 @@ function eliminar(id){
 				confirmButtonClass: "btn-success"
 			});
 		}
+	});
+}
+
+function editCampuse(id)
+{
+	$.post("../../controllers/ZoneController.php?op=listZoneById", { id : id }, function(data){
+		data = JSON.parse(data);
+		$('#mdltitulo').html('Asignar sede');
+		$('#campuse_form')[0].reset();
+		$('#xid').val(data.id);
+		$('#modalAsignCampuse').modal('show');
 	});
 }
 

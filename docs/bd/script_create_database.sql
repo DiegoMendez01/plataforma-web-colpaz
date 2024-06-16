@@ -680,7 +680,8 @@ INSERT INTO menus (name,route,identification,`group`,created,modified,is_active,
 	 ('Alumnos Profesor','../studentTeachers/','studentTeachers','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
 	 ('Cursos Profesor','../teacherCourses/','teacherCourses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
 	 ('Cabecera Contenido','../headerContents/','headerContents','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
-	 ('Sedes','../campuses/','campuses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
+	 ('Sedes','../campuses/','campuses','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+     ('Zonas','../zones/','zones','Gestion','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
 
 INSERT INTO menu_roles (menu_id,role_id,permission,created,modified,is_active,custom_fields) VALUES
 	 (1,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
@@ -694,4 +695,5 @@ INSERT INTO menu_roles (menu_id,role_id,permission,created,modified,is_active,cu
 	 (9,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
 	 (10,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
 	 (11,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
-	 (12,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
+	 (12,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL),
+     (13,1,'Si','2024-04-16 00:00:00','2024-04-16 11:26:45',1,NULL);
