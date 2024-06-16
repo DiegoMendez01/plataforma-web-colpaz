@@ -1,6 +1,6 @@
 <?php 
 
-class Auths extends Connect
+class Auths extends Database
 {
     /*
      * Funcion para insertar/registrar grados académicos por medio de un formulario
@@ -8,6 +8,7 @@ class Auths extends Connect
     public function insertAuths($username)
     {
         $conectar = parent::connection();
+
         parent::set_names();
         
         $user = "
@@ -23,7 +24,7 @@ class Auths extends Connect
         $stmtUser->bindValue(1, $username);
         $stmtUser->execute();
         
-        $resultUser = $stmtUser->fetchAll();
+        $resultUser = $stmtUser->fetch(PDO::FETCH_ASSOC);
         
         $sql = "
             INSERT INTO

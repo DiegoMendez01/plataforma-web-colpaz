@@ -1,0 +1,17 @@
+.dt-button.buttons-csv.buttons-html5,
+.dt-button.buttons-copy.buttons-html5 {
+  border: 50px;
+  padding: 10px;
+  background-color: #adb7be;
+  border-radius: 0;
+  border-color: #adb7be;
+  color: #fff !important;
+  font-weight: bold;
+  margin-left: -1px;
+  height: 40px;
+  width: 5rem;
+}
+
+.dataTables_filter{
+	margin-bottom: 1rem;
+}
