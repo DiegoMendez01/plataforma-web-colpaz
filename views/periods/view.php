@@ -5,8 +5,9 @@ require_once("../../models/Periods.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
-        $periods        = new Periods(); // Asegúrate de que la clase Campuses tenga un método getCampusById() definido
-        $periodsData    = $periods->getPeriodsById($_GET['id']);
+        $idr            = $_SESSION['idr'];
+        $periods        = new Periods();
+        $periodsData    = $periods->getPeriodsById($_GET['id'], $idr);
 ?>
 <!DOCTYPE html>
 <html>

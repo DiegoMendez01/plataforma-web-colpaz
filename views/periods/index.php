@@ -47,12 +47,13 @@ if(isset($_SESSION['id'])){
 				<table id="period_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 					<thead>
 						<tr>
-							<th style="width: 30%;">Nombre</th> 
-							<th style="width: 30%;">Creado</th> 
-							<th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
-							<th class="text-center" style="width: 5%"></th>
-							<th class="text-center" style="width: 5%"></th>
-							<th class="text-center" style="width: 5%"></th>
+							<th>Nombre</th>
+							<th>Sede</th>
+							<th>Creado</th> 
+							<th class="d-none d-sm-table-cell">Estado</th>
+							<th class="text-center"></th>
+							<th class="text-center"></th>
+							<th class="text-center"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -64,6 +65,7 @@ if(isset($_SESSION['id'])){
     
     <?php
     require_once("mantenimiento.php");
+	require_once("modalAsignCampuse.php");
     ?>
     
     <?php

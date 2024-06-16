@@ -5,7 +5,7 @@
 				<button type="button" class="model-close" data-dismiss="modal" aria-label="Close">
 					<i class="font-icon-close-2"></i>
 				</button>
-				<h4 class="modal-title" id="mdltitulo"></h4>
+				<h4 class="modal-title" id="xmdltitulo"></h4>
 			</div>
 			<form method="post" id="updateCampuse_form">
     			<div class="modal-body">

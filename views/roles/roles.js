@@ -253,7 +253,7 @@ function editCampuse(id)
 	$.post("../../controllers/RoleController.php?op=listRoleById", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#userx_id').val(data.id);
-		$('#mdltitulo').html('Asignar sede de Usuario');
+		$('#xmdltitulo').html('Asignar sede de Usuario');
 		$('#modalAsignCampuse').modal('show');
 	});
 }

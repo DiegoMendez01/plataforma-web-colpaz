@@ -5,7 +5,8 @@ require_once("../../models/Classrooms.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
-        $classrooms       = new Classrooms(); // Asegúrate de que la clase Campuses tenga un método getCampusById() definido
+        $idr              = $_SESSION['idr'];
+        $classrooms       = new Classrooms();
         $clasroomsData    = $classrooms->getClassroomById($_GET['id'], $idr);
 ?>
 <!DOCTYPE html>

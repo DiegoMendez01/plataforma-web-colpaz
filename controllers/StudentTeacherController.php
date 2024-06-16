@@ -26,18 +26,18 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $studentTeacher->insertOrUpdateStudentTeacher($_POST['id'], $_POST['user_id'], $_POST['teacher_course_id'], $_POST['period_id']);
+        $studentTeacher->insertOrUpdateStudentTeacher($_POST['id'], $_POST['user_id'], $_POST['teacher_course_id'], $_POST['period_id'], $idr);
         break;
     /*
      * Es para listar/obtener los estudiantes por profesor que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listStudentTeachers':
-        $datos = $studentTeacher->getStudentTeacher();
+        $datos = $studentTeacher->getStudentTeacher($idr);
         $data  = [];
         foreach ($datos as $row) {
             $studentData           = $user->getUserById($row['user_id']);
-            $teacherCourseData     = $teacherCourse->getTeacherCourseById($row['teacher_course_id']);
+            $teacherCourseData     = $teacherCourse->getTeacherCourseById($row['teacher_course_id'], $idr);
             $periodData            = $period->getPeriodsById($row['period_id']);
             $classroomData         = $classroom->getClassroomById($teacherCourseData['classroom_id'], $idr);
             $courseData            = $course->getCourseById($teacherCourseData['course_id'], $idr);
@@ -75,7 +75,7 @@ switch($_GET['op'])
      */
     case 'deleteStudentTeacherById':
         if(isset($_POST['id'])){
-            $studentTeacher->deleteStudentTeacherById($_POST['id']);
+            $studentTeacher->deleteStudentTeacherById($_POST['id'], $idr);
         }
         break;
     /*
@@ -83,7 +83,7 @@ switch($_GET['op'])
      * Pero debe mostrar el estudiante por profesor por medio de su identificador unico
      */
     case 'listStudentTeacherById':
-        $datos = $studentTeacher->getStudentTeacherById($_POST['id']);
+        $datos = $studentTeacher->getStudentTeacherById($_POST['id'], $idr);
         
         if(is_array($datos) == true AND count($datos)){
             foreach($datos as $row){

@@ -12,6 +12,8 @@ require_once("../../models/Periods.php");
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
         
+        $idr                = $_SESSION['idr'];
+
         $teacherCourse      = new TeacherCourses();
         $campuse            = new Campuses();
         $user               = new Users();
@@ -20,13 +22,13 @@ if(isset($_SESSION['id'])){
         $period             = new Periods();
         $course             = new Courses();
         
-        $teachercourseData  = $teacherCourse->getTeacherCourseById($_GET['id']);
+        $teachercourseData  = $teacherCourse->getTeacherCourseById($_GET['id'], $idr);
         $campuseData        = $campuse->getCampuseById($teachercourseData['idr']);
         $userData           = $user->getUserById($teachercourseData['user_id']);
         $periodData         = $period->getPeriodsById($teachercourseData['period_id']);
         $degreeData         = $degree->getDegreeById($teachercourseData['degree_id']);
-        $classroomData      = $classroom->getClassroomById($teachercourseData['classroom_id']);
-        $courseData         = $course->getCourseById($teachercourseData['course_id']);
+        $classroomData      = $classroom->getClassroomById($teachercourseData['classroom_id'], $idr);
+        $courseData         = $course->getCourseById($teachercourseData['course_id'], $idr);
 ?>
 <!DOCTYPE html>
 <html>

@@ -2,8 +2,12 @@
 // Importa la clase del modelo
 require_once("../config/database.php");
 require_once("../models/Periods.php");
+require_once("../models/Campuses.php");
 
-$period = new Periods();
+$period  = new Periods();
+$campuse = new Campuses();
+
+$idr     = $_SESSION['idr'];
 
 switch($_GET['op'])
 {
@@ -12,18 +16,22 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $period->insertOrUpdatePeriod($_POST['id'], $_POST['name']);
+        $period->insertOrUpdatePeriod($_POST['id'], $_POST['name'], $idr);
         break;
     /*
      * Es para listar/obtener los periodos academicos que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listPeriod':
-        $datos = $period->getPeriods();
+        $datos = $period->getPeriods($idr);
         $data  = [];
         foreach ($datos as $row) {
+
+            $campuseData    = $campuse->getCampuseById($row['idr']);
+
             $sub_array      = [];
             $sub_array[]    = $row['name'];
+            $sub_array[]    =  '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
             $sub_array[]    = $row['created'];
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
@@ -48,7 +56,7 @@ switch($_GET['op'])
      */
     case 'deletePeriodById':
         if(isset($_POST['id'])){
-            $period->deletePeriodById($_POST['id']);
+            $period->deletePeriodById($_POST['id'], $idr);
         }
         break;
     /*
@@ -56,22 +64,23 @@ switch($_GET['op'])
      * Pero debe mostrar el periodo por medio de su identificador unico
      */
     case 'listPeriodById':
-        $data = $period->getPeriodsById($_POST['id']);
-
-        
-        $output["id"]                       = $data['id'];
-        $output["name"]                     = $data['name'];
-        
-        echo json_encode($output);
+        $data = $period->getPeriodsById($_POST['id'], $idr); 
+        echo json_encode($data);
+        break;
+    /*
+     * El caso que sirve para actualizar la sede
+     */
+    case "updateAsignCampuse":
+        $period->updateAsignCampuse($_POST['xid'], $_POST['idr']);
         break;
     /*
      * Listar para comboBox
      */
     case 'combo':
-        $datos = $period->getPeriods();
+        $datos = $period->getPeriods($idr);
         if(is_array($datos) == true AND count($datos) > 0){
             $html = "";
-            $html.= "<option selected></option>";
+            $html.= "<option value='0' selected>Seleccionar</option>";
             foreach($datos as $row){
                 $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
             }

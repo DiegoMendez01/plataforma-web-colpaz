@@ -8,12 +8,13 @@ require_once("../../models/Users.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
+        $idr            = $_SESSION['idr'];
         $HeaderContent  = new HeaderContents();
         $teacherCourse  = new TeacherCourses();
         $user           = new Users();
         $campuse        = new Campuses();
         $headerData     = $HeaderContent->getHeaderContentById($_GET['id']);
-        $teacherCData   = $teacherCourse->getTeacherCourseById($headerData['teacher_course_id']);
+        $teacherCData   = $teacherCourse->getTeacherCourseById($headerData['teacher_course_id'], $idr);
         $userData       = $user->getUserById($teacherCData['user_id']);
         $campuseData    = $campuse->getCampuseById($headerData['idr']);
 ?>

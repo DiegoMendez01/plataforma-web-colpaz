@@ -190,7 +190,7 @@ function editCampuse(id)
 {
 	$.post("../../controllers/ZoneController.php?op=listZoneById", { id : id }, function(data){
 		data = JSON.parse(data);
-		$('#mdltitulo').html('Asignar sede');
+		$('#xmdltitulo').html('Asignar sede');
 		$('#campuse_form')[0].reset();
 		$('#xid').val(data.id);
 		$('#modalAsignCampuse').modal('show');

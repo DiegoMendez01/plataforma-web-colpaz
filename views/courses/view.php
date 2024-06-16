@@ -6,9 +6,10 @@ require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
+        $idr         = $_SESSION['idr'];
         $course      = new Courses();
         $campuse     = new Campuses();
-        $courseData  = $course->getCourseById($_GET['id'], $_SESSION['idr']);
+        $courseData  = $course->getCourseById($_GET['id'], $idr);
         if(!empty($courseData)){
             $campuseData = $campuse->getCampuseById($courseData['idr']);
 ?>

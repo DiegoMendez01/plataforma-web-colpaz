@@ -26,14 +26,14 @@ switch($_GET['op'])
      * se tomara un flujo.
      */
     case 'insertOrUpdate':
-        $teacherCourse->insertOrUpdateTeacherCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id']);
+        $teacherCourse->insertOrUpdateTeacherCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id'], $idr);
         break;
     /*
      * Es para listar/obtener los cursos por profesor que existen registrados en el sistema con una condicion que este activo.
      * Ademas, de dibujar una tabla para mostrar los registros.
      */
     case 'listTeacherCourses':
-        $datos = $teacherCourse->getTeacherCourses();
+        $datos = $teacherCourse->getTeacherCourses($idr);
         $data  = [];
         foreach ($datos as $row) {
             $userData      = $user->getUserById($row['user_id']);
@@ -73,7 +73,7 @@ switch($_GET['op'])
      */
     case 'deleteTeacherCourseById':
         if(isset($_POST['id'])){
-            $teacherCourse->deleteTeacherCourseById($_POST['id']);
+            $teacherCourse->deleteTeacherCourseById($_POST['id'], $idr);
         }
         break;
     /*
@@ -81,14 +81,14 @@ switch($_GET['op'])
      * Pero debe mostrar el curso por profesor por medio de su identificador unico
      */
     case 'listTeacherCourseById':
-        $datos = $teacherCourse->getTeacherCourseById($_POST['id']);
+        $datos = $teacherCourse->getTeacherCourseById($_POST['id'], $idr);
         echo json_encode($datos);
         break;
     /*
      * Es para listar/obtener los docentes por cursos con su otra data anexada que existen registrados en el sistema.
      */
     case 'getTeacherCourses':
-        $teacherCourse->getTeacherCoursesAllData();
+        $teacherCourse->getTeacherCoursesAllData($idr);
         break;
 }
 ?>

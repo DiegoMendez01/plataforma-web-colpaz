@@ -3,9 +3,20 @@
 class TeacherCourses extends Database
 {
     /*
+     * Función para obtener la condición adicional basada en $_SESSION['role_id']
+     */
+    private function getSessionCondition($idr)
+    {
+        if ($_SESSION['role_id'] == 1) {
+            return '';
+        } else {
+            return 'AND idr = '.$idr;
+        }
+    }
+    /*
      * Funcion para inscribir a un docente en un curso mediante un formulario
      */
-    public function insertOrUpdateTeacherCourse($id = null, $user_id, $course_id, $classroom_id, $period_id, $degree_id)
+    public function insertOrUpdateTeacherCourse($id = null, $user_id, $course_id, $classroom_id, $period_id, $degree_id, $idr)
     {
         if(empty($user_id) OR empty($course_id) OR empty($classroom_id) OR empty($period_id) OR empty($degree_id)){
             $answer = [
@@ -23,7 +34,7 @@ class TeacherCourses extends Database
             FROM
                 teacher_courses
             WHERE
-                user_id = ? AND course_id = ? AND classroom_id = ? AND period_id = ? AND degree_id = ? AND is_active != 0 AND id != ?
+                user_id = ? AND course_id = ? AND classroom_id = ? AND period_id = ? AND degree_id = ? AND is_active != 0 AND id != ? AND idr = ?
         ';
         
         $query  = $conectar->prepare($sql);
@@ -33,6 +44,7 @@ class TeacherCourses extends Database
         $query->bindValue(4, $period_id);
         $query->bindValue(5, $degree_id);
         $query->bindValue(6, $id);
+        $query->bindValue(7, $idr);
         $query->execute();
         $resultInsert = $query->fetch(PDO::FETCH_ASSOC);
         
@@ -45,8 +57,8 @@ class TeacherCourses extends Database
             if(empty($id)){
                 $sqlInsert = "
                     INSERT INTO
-                        teacher_courses (user_id, course_id, classroom_id, period_id, degree_id, created, is_active) 
-                    VALUES (?, ?, ?, ?, ?, now(), 1)
+                        teacher_courses (user_id, course_id, classroom_id, period_id, degree_id, idr, created, is_active) 
+                    VALUES (?, ?, ?, ?, ?, ?, now(), 1)
                 ";
                 
                 $stmtInsert = $conectar->prepare($sqlInsert);
@@ -55,6 +67,7 @@ class TeacherCourses extends Database
                 $stmtInsert->bindValue(3, $classroom_id);
                 $stmtInsert->bindValue(4, $period_id);
                 $stmtInsert->bindValue(5, $degree_id);
+                $stmtInsert->bindValue(6, $idr);
                 $request    = $stmtInsert->execute();
                 $action     = 1;
             }else{
@@ -65,7 +78,8 @@ class TeacherCourses extends Database
                         user_id   = ?,
                         course_id = ?,
                         classroom_id = ?,
-                        period_id = ?
+                        period_id = ?,
+                        idr = ?
                     WHERE
                         id = ?
                 ";
@@ -75,7 +89,8 @@ class TeacherCourses extends Database
                 $stmtUpdate->bindValue(2, $course_id);
                 $stmtUpdate->bindValue(3, $classroom_id);
                 $stmtUpdate->bindValue(4, $period_id);
-                $stmtUpdate->bindValue(5, $id);
+                $stmtUpdate->bindValue(5, $idr);
+                $stmtUpdate->bindValue(6, $id);
                 $request    = $stmtUpdate->execute();
                 $action     = 2;
             }
@@ -104,10 +119,13 @@ class TeacherCourses extends Database
     /*
      * Funcion para obtener todos los cursos en los que un usuario esta inscrito
      */
-    public function getTeacherCourses()
+    public function getTeacherCourses($idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+
+        // Determinar la condición basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
         
         $sql = "
             SELECT
@@ -115,8 +133,8 @@ class TeacherCourses extends Database
             FROM 
                 teacher_courses
             WHERE
-                is_active = 1
-        ";
+                is_active = 1 ".$condition;
+        
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
         
@@ -126,10 +144,13 @@ class TeacherCourses extends Database
     /*
      * Funcion para desinscribir a un usuario de un curso (eliminado logico)
      */
-    public function deleteTeacherCourseById($id)
+    public function deleteTeacherCourseById($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+
+        // Determinar la condicion basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
 
         $sql = "
             UPDATE
@@ -137,21 +158,23 @@ class TeacherCourses extends Database
             SET
                 is_active = 0
             WHERE
-                id = ?
-        ";
+                id = ? ".$condition;
+        
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
-        $stmt->execute();
 
-        return true;
+        return $stmt->execute();
     }
     /*
      * Funcion para obtener informacion de la inscripcion de un usuario en un curso mediante el ID de inscripcion
      */
-    public function getTeacherCourseById($id)
+    public function getTeacherCourseById($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+
+        // Determinar la condicion basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
         
         $sql = "
             SELECT
@@ -159,8 +182,8 @@ class TeacherCourses extends Database
             FROM
                 teacher_courses
             WHERE
-                id = ?
-        ";
+                id = ? ".$condition;
+        
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
@@ -170,10 +193,13 @@ class TeacherCourses extends Database
     /*
      * Funcion para obtener los usuarios por curso, si es rol docente por ID
      */
-    public function getTeacherCourseByIdUser($id_user)
+    public function getTeacherCourseByIdUser($id_user, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+
+        // Determinar la condicion basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
         
         $sql = '
             SELECT
@@ -192,12 +218,12 @@ class TeacherCourses extends Database
             INNER JOIN classrooms cs ON uc.classroom_id = cs.id
             INNER JOIN periods p ON uc.period_id = p.id
             WHERE
-                u.id = ? AND u.role_id = 3 AND uc.is_active = 1
-        ';
+                u.id = ? AND u.role_id = 3 AND uc.is_active = 1 '.$condition;
         
         $query = $conectar->prepare($sql);
         $query->bindValue(1, $id_user);
         $query->execute();
+
         return [
             'row'  => $query->rowCount(),
             'query' => $query
@@ -206,10 +232,13 @@ class TeacherCourses extends Database
     /*
      * Funcion para obtener los usuarios por curso, si es rol docente
      */
-    public function getTeacherCoursesAllData()
+    public function getTeacherCoursesAllData($idr)
     {
         $conectar = parent::connection();
         parent::set_names();
+
+        // Determinar la condicion basada en el valor de $_SESSION['role_id']
+        $condition = $this->getSessionCondition($idr);
         
         $sql = '
             SELECT
@@ -227,8 +256,7 @@ class TeacherCourses extends Database
             INNER JOIN classrooms cs ON uc.classroom_id = cs.id
             INNER JOIN periods p ON uc.period_id = p.id
             WHERE
-                uc.is_active = 1
-        ';
+                uc.is_active = 1 '.$condition;
         
         $query = $conectar->prepare($sql);
         $query->execute();

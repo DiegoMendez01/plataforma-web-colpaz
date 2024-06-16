@@ -6,9 +6,11 @@ require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
+        $idr = $_SESSION['idr'];
+
         $roles      = new Roles(); // Asegúrate de que la clase Campuses tenga un método getCampusById() definido
         $campuse    = new Campuses();
-        $roleData   = $roles->getRolesById($_GET['id'], $_SESSION['idr']);
+        $roleData   = $roles->getRolesById($_GET['id'], $idr);
         if(!empty($roleData)){
             $campuseData = $campuse->getCampuseById($roleData['idr']);
 ?>

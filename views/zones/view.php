@@ -5,8 +5,9 @@ require_once("../../models/Zones.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
-        $zone           = new Zones(); // Asegúrate de que la clase Zonas tenga un método getZoneById() definido
-        $zoneData       = $zone->getZoneById($_GET['id']);
+        $idr            = $_SESSION['idr'];
+        $zone           = new Zones();
+        $zoneData       = $zone->getZoneById($_GET['id'], $idr);
         ?>
 <!DOCTYPE html>
 <html>

@@ -6,10 +6,9 @@ require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
-        
-        $campuse     = new Campuses();
+        $campuse             = new Campuses();
         $studentteacherData  = $studentteacher->getStudentTeacherById($_GET['id']);
-        $campuseData = $campuse->getCampuseById($studentteacherData['idr']);
+        $campuseData         = $campuse->getCampuseById($studentteacherData['idr']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -39,10 +38,10 @@ if(isset($_SESSION['id'])){
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Alumno profesor <?= $studentteacherData['name'] ?> [ID: <?= studentteacherData['id'] ?>]</h3>
+							<h3>Alumno profesor <?= $studentteacherData['name'] ?> [ID: <?= $studentteacherData['id'] ?>]</h3>
 							<ol class="breadcrumb breadcrumb-simple">
 								<li><a href="../studentteacher/">Inicio</a></li>
-								<li class="active">Alumno profesor <?= studentteacherData['name'] ?> [ID: <?= studentteacherData['id'] ?>]</li>
+								<li class="active">Alumno profesor <?= $studentteacherData['name'] ?> [ID: <?= $studentteacherData['id'] ?>]</li>
 							</ol>
 						</div>
 					</div>
@@ -58,11 +57,11 @@ if(isset($_SESSION['id'])){
                         </tr>
                         <tr>
                             <th style="width: 30%;">Periodo</th>
-                            <td><?= studentteacherData['description'] ?></td>
+                            <td><?= $studentteacherData['description'] ?></td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
-                            <td><?= ((studentteacherData['is_active']) ?  '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Inactivo</span>') ?></td>
+                            <td><?= (($studentteacherData['is_active']) ?  '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Inactivo</span>') ?></td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
@@ -70,7 +69,7 @@ if(isset($_SESSION['id'])){
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Modificado</th>
-                            <td><?= studentteacherData['modified']?></td>
+                            <td><?= $studentteacherData['modified']?></td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Profesor</th>
