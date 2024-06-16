@@ -3,14 +3,18 @@
 class TeacherCourses extends Database
 {
     /*
-     * Función para obtener la condición adicional basada en $_SESSION['role_id']
-     */
-    private function getSessionCondition($idr)
+    * Función para obtener la condición adicional basada en $_SESSION['role_id']
+    */
+    private function getSessionCondition($idr, $alias = null)
     {
         if ($_SESSION['role_id'] == 1) {
             return '';
         } else {
-            return 'AND idr = '.$idr;
+            if ($alias) {
+                return ' AND ' . $alias . '.idr = ' . $idr;
+            } else {
+                return ' AND idr = ' . $idr;
+            }
         }
     }
     /*
@@ -199,7 +203,7 @@ class TeacherCourses extends Database
         parent::set_names();
 
         // Determinar la condicion basada en el valor de $_SESSION['role_id']
-        $condition = $this->getSessionCondition($idr);
+        $condition = $this->getSessionCondition($idr, 'uc');
         
         $sql = '
             SELECT

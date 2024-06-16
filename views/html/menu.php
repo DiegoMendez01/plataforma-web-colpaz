@@ -47,7 +47,7 @@ $menus = $menu->getMenusByRole($_SESSION['role_id'], $_SESSION['idr']);
             require_once("../../models/TeacherCourses.php");
         
             $teacherCourse = new TeacherCourses();
-            $dataAll = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id']);
+            $dataAll = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id'], $_SESSION['idr']);
             ?>
         
             <li class="blue-dirty with-sub">

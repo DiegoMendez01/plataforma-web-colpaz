@@ -23,12 +23,13 @@ if(isset($_SESSION['id'])){
         $course             = new Courses();
         
         $teachercourseData  = $teacherCourse->getTeacherCourseById($_GET['id'], $idr);
-        $campuseData        = $campuse->getCampuseById($teachercourseData['idr']);
-        $userData           = $user->getUserById($teachercourseData['user_id']);
-        $periodData         = $period->getPeriodsById($teachercourseData['period_id']);
-        $degreeData         = $degree->getDegreeById($teachercourseData['degree_id']);
-        $classroomData      = $classroom->getClassroomById($teachercourseData['classroom_id'], $idr);
-        $courseData         = $course->getCourseById($teachercourseData['course_id'], $idr);
+        if(!empty($teachercourseData)){
+            $campuseData        = $campuse->getCampuseById($teachercourseData['idr']);
+            $userData           = $user->getUserById($teachercourseData['user_id']);
+            $periodData         = $period->getPeriodsById($teachercourseData['period_id'], $idr);
+            $degreeData         = $degree->getDegreeById($teachercourseData['degree_id']);
+            $classroomData      = $classroom->getClassroomById($teachercourseData['classroom_id'], $idr);
+            $courseData         = $course->getCourseById($teachercourseData['course_id'], $idr);
 ?>
 <!DOCTYPE html>
 <html>
@@ -114,7 +115,7 @@ if(isset($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modalGestionTeacherCourse.php");
+    require_once("mantenimiento.php");
     ?>
     
     <?php
@@ -124,8 +125,12 @@ if(isset($_SESSION['id'])){
 </body>
 </html>
 <?php
+        }else{
+            header("Location:" . Database::route() . "views/teacherCourses/");
+            exit;
+        }
     }else{
-        header("Location:" . Database::route() . "views/teachercourse/");
+        header("Location:" . Database::route() . "views/teacherCourses/");
         exit;
     }
 }else{

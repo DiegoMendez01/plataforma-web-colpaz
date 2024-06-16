@@ -18,11 +18,12 @@ if(!empty($_SESSION['id'])){
         $classroom         = new Classrooms();
         $headerContent     = new HeaderContents();
         
-        $dataTeacherC      = $teacherCourse->getTeacherCourseById($courseId);
+        $dataTeacherC      = $teacherCourse->getTeacherCourseById($courseId, $idr);
         $dataCourse        = $course->getCourseById($dataTeacherC['course_id'], $idr);
-        $dataHeaderC       = $headerContent->getHeaderContentByTeacher($dataTeacherC['id']);
-        $dataClassroom     = $classroom->getClassroomById($dataTeacherC['classroom_id'], $idr);
-        $dataAllContent    = $content->getContentByTeacherCourseId($courseId, $dataHeaderC['id']);
+        if(!empty($dataCourse)){
+            $dataHeaderC       = $headerContent->getHeaderContentByTeacher($dataTeacherC['id']);
+            $dataClassroom     = $classroom->getClassroomById($dataTeacherC['classroom_id'], $idr);
+            $dataAllContent    = $content->getContentByTeacherCourseId($courseId, $dataHeaderC['id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -268,6 +269,10 @@ if(!empty($_SESSION['id'])){
 </body>
 </html>
 <?php
+        }else{
+            header("Location:" . Database::route() . "views/home/index.php?msg=2");
+            exit;
+        }
     }else{
         header("Location:" . Database::route() . "views/home/");
         exit;

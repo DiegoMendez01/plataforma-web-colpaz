@@ -39,7 +39,7 @@ switch($_GET['op'])
             $userData      = $user->getUserById($row['user_id']);
             $courseData    = $course->getCourseById($row['course_id'], $idr);
             $classroomData = $classroom->getClassroomById($row['classroom_id'], $idr);
-            $periodData    = $period->getPeriodsById($row['period_id']);
+            $periodData    = $period->getPeriodsById($row['period_id'], $idr);
             $degreeData    = $degree->getDegreeById($row['degree_id']);
             $campuseData   = $campuse->getCampuseById($row['idr']);
             

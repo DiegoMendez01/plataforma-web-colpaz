@@ -94,10 +94,28 @@ if($_SESSION['id']){
                 </div>
                 <?php 
                 }elseif($_SESSION['role_id'] == 3){
+
+                    if(isset($_GET['msg'])){
+                        switch($_GET['msg'])
+                        {
+                            case "2":
+                            ?>
+                                <div class="alert alert-danger alert-icon alert-close alert-dismissible fade in" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">X</span>
+                                    </button>
+                                    <i class="font-icon font-icon-warning"></i>
+                                    No tienes acceso por el momento al curso, comunicate con un administrador
+                                </div>
+                            <?php
+                            break;
+                        }
+                    }
+
                     require_once("../../models/TeacherCourses.php");
                     
                     $teacherCourse   = new TeacherCourses();
-                    $dataAll         = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id']);
+                    $dataAll         = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id'], $_SESSION['idr']);
                     
                     if($dataAll['row'] > 0){
                         while($data = $dataAll['query']->fetch(PDO::FETCH_ASSOC)){
