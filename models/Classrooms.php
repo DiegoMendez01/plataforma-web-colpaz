@@ -14,98 +14,92 @@ class Classrooms extends Database
         }
     }
     /*
-     * Funcion para insertar/registrar aulas academicas por medio de un formulario
+     * Funcion para insertar aulas academicas por medio de un formulario
      */
-    public function InsertOrupdateClassroom($id = null, $name, $degree_id, $idr)
+    public function createClassroom($name, $degree_id, $idr)
     {
-        if(empty($name)){
-            $answer = [
-                'status' => false,
-                'msg'    => 'Todos los campos son necesarios'
-            ];
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                classrooms
+            WHERE
+                name = ? AND degree_id = ? AND is_active != 0 AND idr = ?
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $degree_id);
+        $query->bindValue(3, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if($result){
+            return false;
         }else{
-            $conectar = parent::connection();
-            parent::set_names();
+            $sqlInsert = "
+                INSERT INTO
+                    classrooms (name, degree_id, idr, created)
+                VALUES
+                    (?, ?, ?, now())
+            ";
             
-            $sql = '
-                SELECT
-                    *
-                FROM
-                    classrooms
-                WHERE
-                    name = ? AND degree_id = ? AND id != ? AND is_active != 0 AND idr = ?
-            ';
-            
-            $query  = $conectar->prepare($sql);
-            $query->bindValue(1, $name);
-            $query->bindValue(2, $degree_id);
-            $query->bindValue(3, $id);
-            $query->bindValue(4, $idr);
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-            
-            if($result){
-                $answer = [
-                    'status' => false,
-                    'msg'    => 'El aula con el grado ya existe'
-                ];
-            }else{
-                if(empty($id)){
-                    $sqlInsert = "
-                        INSERT INTO
-                            classrooms (name, degree_id, idr, created)
-                        VALUES
-                            (?, ?, ?, now())
-                    ";
-                    
-                    $stmtInsert = $conectar->prepare($sqlInsert);
-                    $stmtInsert->bindValue(1, $name);
-                    $stmtInsert->bindValue(2, $degree_id);
-                    $stmtInsert->bindValue(3, $idr);
-                    $request    = $stmtInsert->execute();
-                    $action     = 1;
-                }else{
-                    $sqlUpdate = "
-                        UPDATE
-                            classrooms
-                        SET
-                            name      = ?,
-                            degree_id = ?,
-                            idr = ?
-                        WHERE
-                            id = ?
-                    ";
-                    
-                    $stmtUpdate = $conectar->prepare($sqlUpdate);
-                    $stmtUpdate->bindValue(1, $name);
-                    $stmtUpdate->bindValue(2, $degree_id);
-                    $stmtUpdate->bindValue(3, $idr);
-                    $stmtUpdate->bindValue(4, $id);
-                    $request    = $stmtUpdate->execute();
-                    $action     = 2;
-                }
-                
-                if($request){
-                    if($action == 1){
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Aula creada correctamente'
-                        ];
-                    }else{
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Aula actualizada correctamente'
-                        ];
-                    }
-                }else{
-                    $answer = [
-                        'status' => false,
-                        'msg'    => 'Error al crear el aula'
-                    ];
-                }
-            }
+            $stmtInsert = $conectar->prepare($sqlInsert);
+            $stmtInsert->bindValue(1, $name);
+            $stmtInsert->bindValue(2, $degree_id);
+            $stmtInsert->bindValue(3, $idr);
+            return $stmtInsert->execute();
         }
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+    /*
+     * Funcion para actualizar aulas academicas por medio de un formulario
+     */
+    public function updateClassroom($id, $name, $degree_id, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                classrooms
+            WHERE
+                name = ? AND degree_id = ? AND id != ? AND is_active != 0 AND idr = ?
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $degree_id);
+        $query->bindValue(3, $id);
+        $query->bindValue(4, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if($result){
+            return false;
+        }else{
+            $sqlUpdate = "
+                UPDATE
+                    classrooms
+                SET
+                    name      = ?,
+                    degree_id = ?,
+                    idr = ?
+                WHERE
+                    id = ?
+            ";
+            
+            $stmtUpdate = $conectar->prepare($sqlUpdate);
+            $stmtUpdate->bindValue(1, $name);
+            $stmtUpdate->bindValue(2, $degree_id);
+            $stmtUpdate->bindValue(3, $idr);
+            $stmtUpdate->bindValue(4, $id);
+            return $stmtUpdate->execute();
+        }
     }
     /*
      * Funcion para traer todos las aulas academicas registrados hasta el momento
@@ -207,7 +201,7 @@ class Classrooms extends Database
     /*
      *  Funcion para actualizar la sede
      */
-    public function updateAsignCampuse($id, $idr)
+    public function updateAssignedCampus($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -223,21 +217,6 @@ class Classrooms extends Database
         $sql    = $conectar->prepare($sql);
         $sql->bindValue(1, $idr);
         $sql->bindValue(2, $id);
-        $result = $sql->execute();
-        
-        if($result){
-            $answer = [
-                'status'      => true,
-                'msg'         => 'Registro actualizado correctamente'
-            ];
-        }else{
-            $answer = [
-                'status'  => false,
-                'msg'     => 'Fallo con la actualizacion de la sede',
-            ];
-        }
-        
-        // Devolver el rol antiguo y el nuevo
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+        return $sql->execute();
     }
 }
