@@ -1,5 +1,5 @@
 -- colpazdb.roles definition
-CREATE TABLE roles
+CREATE TABLE IF NOT EXISTS roles
 (
   `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único autoincremental',
   `name` VARCHAR(255) NOT NULL COMMENT 'Nombre del rol',
@@ -13,7 +13,7 @@ CREATE TABLE roles
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='Tabla que almacena información sobre roles de usuarios.';
 
 -- AVCONTROL.menus definition
-CREATE TABLE menus
+CREATE TABLE IF NOT EXISTS menus
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(100) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE menus
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- AVCONTROL.menu_roles definition
-CREATE TABLE menu_roles
+CREATE TABLE IF NOT EXISTS menu_roles
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
     `menu_id` INT(11) NOT NULL,
@@ -43,27 +43,8 @@ CREATE TABLE menu_roles
     INDEX idx_role_id (role_id) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
 
-
--- colpazdb.assessments definition
-CREATE TABLE assessments
-(
-  `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único autoincremental',
-  `title` VARCHAR(255) NOT NULL COMMENT 'Titulo de la evaluacion',
-  `comment` VARCHAR(255) NOT NULL COMMENT 'Comentarios de la evaluacion',
-  `date_limit` DATE NOT NULL COMMENT 'Fecha limite de la evaluacion',
-  `percentage` DECIMAL(18, 2) NOT NULL COMMENT 'Valor de porcentaje de la evaluacion',
-  `status` INT(11) NOT NULL COMMENT 'Estado de la evaluacion',
-  `file` LONGTEXT COMMENT 'Archivo relacionado con la actividad',
-  `created` DATETIME NOT NULL COMMENT 'Fecha y hora de creación del registro',
-  `modified` TIMESTAMP NOT NULL COMMENT 'Marca de tiempo que se actualiza al modificar el registro',
-  `is_active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Indicador de activación (1 para activo, 0 para inactivo)',
-  `idr` INT(11) NOT NULL DEFAULT 0 COMMENT 'Campo que almacena el id unico de la sede',
-  `custom_fields` LONGTEXT COMMENT 'Campo personalizado para almacenar información adicional' CHECK (json_valid(`custom_fields`)),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='Tabla que almacena información sobre actividades.';
-
 -- colpazdb.identification_types definition
-CREATE TABLE identification_types
+CREATE TABLE IF NOT EXISTS identification_types
 (
     `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único autoincremental',
     `name` VARCHAR(200) NOT NULL COMMENT 'Nombre del tipo de identificación',
@@ -76,7 +57,7 @@ CREATE TABLE identification_types
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='Tabla que almacena información sobre los tipos de identificación.';
 
 -- colpazdb.users definition
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único autoincremental',
     `name` VARCHAR(255) NOT NULL COMMENT 'Nombre del usuario',
@@ -113,7 +94,7 @@ CREATE TABLE users
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena información sobre los usuarios de la plataforma.';
 
 -- colpazdb.periods definition
-CREATE TABLE periods
+CREATE TABLE IF NOT EXISTS periods
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `name` VARCHAR(255) NOT NULL COMMENT 'Nombre o descripcion del periodo academico',
@@ -126,7 +107,7 @@ CREATE TABLE periods
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre las cabeceras del foro de la plataforma.';
 
 -- colpazdb.headers definition
-CREATE TABLE headers
+CREATE TABLE IF NOT EXISTS headers
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `classroom_id` INT(11) NOT NULL COMMENT 'Identificador del aula asociado a una cabecera',
@@ -140,7 +121,7 @@ CREATE TABLE headers
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre las cabeceras del foro de la plataforma.';
 
 -- colpazdb.user_headers definition
-CREATE TABLE user_headers
+CREATE TABLE IF NOT EXISTS user_headers
 (
     `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `user_id` INT(11) NOT NULL COMMENT 'Identificador del usuario asociado al encabezado',
@@ -158,7 +139,7 @@ CREATE TABLE user_headers
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que establece la relacion entre usuarios y encabezados.';
 
 -- colpazdb.course_forums definition
-CREATE TABLE course_forums
+CREATE TABLE IF NOT EXISTS course_forums
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `header_id` INT(11) NOT NULL COMMENT 'Identificador del encabezado asociado al foro del curso',
@@ -176,7 +157,7 @@ CREATE TABLE course_forums
 
 
 -- colpazdb.courses definition
-CREATE TABLE courses
+CREATE TABLE IF NOT EXISTS courses
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `name` VARCHAR(255) NOT NULL COMMENT 'Nombre del curso',
@@ -193,7 +174,7 @@ CREATE TABLE courses
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los cursos academicos.';
 
 -- colpazdb.degrees definition
-CREATE TABLE degrees
+CREATE TABLE IF NOT EXISTS degrees
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `name` VARCHAR(255) NOT NULL COMMENT 'Nombre del grado académico',
@@ -206,7 +187,7 @@ CREATE TABLE degrees
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los grados academicos.';
 
 -- colpazdb.classrooms definition
-CREATE TABLE classrooms
+CREATE TABLE IF NOT EXISTS classrooms
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `name` VARCHAR(255) NOT NULL COMMENT 'Nombre del aula académica',
@@ -222,7 +203,7 @@ CREATE TABLE classrooms
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los grados academicos.';
 
 -- colpazdb.user_courses definition
-CREATE TABLE teacher_courses
+CREATE TABLE IF NOT EXISTS teacher_courses
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `user_id` INT(11) NOT NULL COMMENT 'Identificador del usuario asociado al curso',
@@ -249,7 +230,7 @@ CREATE TABLE teacher_courses
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los cursos academicos.';
 
 -- colpazdb.student_teachers definition
-CREATE TABLE student_teachers
+CREATE TABLE IF NOT EXISTS student_teachers
 (
     `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `user_id` INT(11) NOT NULL COMMENT 'Identificador del usuario/estudiante asociado al curso',
@@ -270,7 +251,7 @@ CREATE TABLE student_teachers
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los cursos academicos.';
 
 -- colpazdb.header_contents definition
-CREATE TABLE header_contents
+CREATE TABLE IF NOT EXISTS header_contents
 (
     `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `supplementary_file` LONGTEXT COMMENT 'Archivo complementario con la cabecera del contenido',
@@ -289,7 +270,7 @@ CREATE TABLE header_contents
 
 
 -- colpazdb.contents definition
-CREATE TABLE contents
+CREATE TABLE IF NOT EXISTS contents
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `description` VARCHAR(500) COMMENT 'Descripcion del contenido',
@@ -308,8 +289,29 @@ CREATE TABLE contents
     INDEX `idx_header_content_id` (`header_content_id`) USING BTREE COMMENT 'indice para mejorar el rendimiento en búsquedas por header_content_id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre los contenidos de las evaluaciones.';
 
+-- colpazdb.assessments definition
+CREATE TABLE IF NOT EXISTS assessments
+(
+  `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador único autoincremental',
+  `title` VARCHAR(255) NOT NULL COMMENT 'Titulo de la evaluacion',
+  `comment` VARCHAR(255) NOT NULL COMMENT 'Comentarios de la evaluacion',
+  `date_limit` DATE NOT NULL COMMENT 'Fecha limite de la evaluacion',
+  `percentage` DECIMAL(18, 2) NOT NULL COMMENT 'Valor de porcentaje de la evaluacion',
+  `status` INT(11) NOT NULL COMMENT 'Estado de la evaluacion',
+  `file` LONGTEXT COMMENT 'Archivo relacionado con la actividad',
+  `content_id` INT(11) DEFAULT NULL COMMENT 'Identificador para la relacion entre evaluacion y contenido',
+  `created` DATETIME NOT NULL COMMENT 'Fecha y hora de creación del registro',
+  `modified` TIMESTAMP NOT NULL COMMENT 'Marca de tiempo que se actualiza al modificar el registro',
+  `is_active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Indicador de activación (1 para activo, 0 para inactivo)',
+  `idr` INT(11) NOT NULL DEFAULT 0 COMMENT 'Campo que almacena el id unico de la sede',
+  `custom_fields` LONGTEXT COMMENT 'Campo personalizado para almacenar información adicional' CHECK (json_valid(`custom_fields`)),
+  PRIMARY KEY (`id`) USING BTREE,
+  FOREIGN KEY (`content_id`) REFERENCES `contents` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  INDEX `idx_content_id` (`content_id`) USING BTREE COMMENT 'indice para mejorar el rendimiento en búsquedas por content_id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='Tabla que almacena información sobre actividades.';
+
 -- colpazdb.activities definition
-CREATE TABLE activities
+CREATE TABLE IF NOT EXISTS activities
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `title` VARCHAR(150) NOT NULL COMMENT 'Titulo de la evaluacion',
@@ -328,7 +330,7 @@ CREATE TABLE activities
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre las evaluaciones.';
 
 -- colpazdb.submitted_activities definition
-CREATE TABLE submitted_activities
+CREATE TABLE IF NOT EXISTS submitted_activities
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `comment` VARCHAR(500) COMMENT 'Comentario asociado a la evaluacion',
@@ -349,7 +351,7 @@ CREATE TABLE submitted_activities
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena las evaluaciones subidas por los usuarios.';
 
 -- colpazdb.marks definition
-CREATE TABLE marks
+CREATE TABLE IF NOT EXISTS marks
 (
     `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
 	`submitted_activity_id` INT(11) NOT NULL COMMENT 'Identificador de la actividad asociado a la nota',
@@ -365,7 +367,7 @@ CREATE TABLE marks
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que establece la relacion entre usuarios y evaluaciones.';
 
 -- colpazdb.auths definition
-CREATE TABLE auths
+CREATE TABLE IF NOT EXISTS auths
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `user_id` INT(11) NOT NULL COMMENT 'Identificador del usuario asociado a la autenticacion',
@@ -382,7 +384,7 @@ CREATE TABLE auths
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre las autenticaciones de usuarios.';
 
 -- colpazdb.audits definition
-CREATE TABLE audits
+CREATE TABLE IF NOT EXISTS audits
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `actions` INT(11) NOT NULL COMMENT 'Acciones que realice el usuario',
@@ -395,7 +397,7 @@ CREATE TABLE audits
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena informacion sobre auditorias realizadas.';
 
 -- colpazdb.user_audits definition
-CREATE TABLE user_audits
+CREATE TABLE IF NOT EXISTS user_audits
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
 	`user_id` INT(11) NOT NULL COMMENT 'Identificador del usuario asociado',
@@ -413,7 +415,7 @@ CREATE TABLE user_audits
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena las acciones de las auditorias de usuarios.';
 
 -- colpazdb.campuses definition
-CREATE TABLE campuses
+CREATE TABLE IF NOT EXISTS campuses
 (
 	`idr` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `name` VARCHAR(255) NOT NULL COMMENT 'Nombre de la sede',
@@ -426,7 +428,7 @@ CREATE TABLE campuses
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena las sedes que maneja el colegio.';
 
 -- colpazdb.zones definition
-CREATE TABLE zones
+CREATE TABLE IF NOT EXISTS zones
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `name` VARCHAR(255) NOT NULL COMMENT 'Nombre de la zona de la sede',
@@ -439,7 +441,7 @@ CREATE TABLE zones
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT 'Tabla que almacena las zonas que maneja cada sede.';
 
 -- colpazdb.user_zones definition
-CREATE TABLE user_zones
+CREATE TABLE IF NOT EXISTS user_zones
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificador unico autoincremental',
     `user_id` INT(11) NOT NULL,

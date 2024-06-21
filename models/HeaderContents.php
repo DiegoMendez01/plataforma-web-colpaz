@@ -20,7 +20,7 @@ class HeaderContents extends Database
             $material      = $_FILES['supplementary_file']['name'];
             $url_temp      = $_FILES['supplementary_file']['tmp_name'];
             
-            $dir         = '../uploads/'.rand(1000, 10000);
+            $dir         = '../docs/contents/'.rand(1000, 10000);
             if(!file_exists($dir)){
                 mkdir($dir, 0777, true);
             }
@@ -31,7 +31,7 @@ class HeaderContents extends Database
             $material2      = $_FILES['curriculum_file']['name'];
             $url_temp2      = $_FILES['curriculum_file']['tmp_name'];
             
-            $dir2         = '../uploads/'.rand(1000, 10000);
+            $dir2         = '../docs/contents/'.rand(1000, 10000);
             if(!file_exists($dir2)){
                 mkdir($dir2, 0777, true);
             }
@@ -94,10 +94,10 @@ class HeaderContents extends Database
                         $request     = $sqlUpdate->execute();
                         $action = 2;
                         
-                        $files = scandir('../uploads/');
+                        $files = scandir('../docs/contents/');
                         foreach ($files as $file) {
                             if ($file != '.' && $file != '..') {
-                                $path = '../uploads/' . $file; // Corregir la ruta del directorio
+                                $path = '../docs/contents/' . $file; // Corregir la ruta del directorio
                                 if (is_dir($path)) {
                                     // Elimina las carpetas vacías
                                     if (count(scandir($path)) == 2) {
@@ -153,10 +153,10 @@ class HeaderContents extends Database
                             move_uploaded_file($url_temp2, $destiny2);
                         }
                         
-                        $files = scandir('../uploads/');
+                        $files = scandir('../docs/contents/');
                         foreach ($files as $file) {
                             if ($file != '.' && $file != '..') {
-                                $path = '../uploads/' . $file; // Corregir la ruta del directorio
+                                $path = '../docs/contents/' . $file; // Corregir la ruta del directorio
                                 if (is_dir($path)) {
                                     // Elimina las carpetas vacías
                                     if (count(scandir($path)) == 2) {

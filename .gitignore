@@ -13,4 +13,5 @@ nbproject
 Thumbs.db
 
 # uploads
-uploads
+docs/contents
+docs/activities

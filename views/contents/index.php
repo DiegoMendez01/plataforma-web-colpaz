@@ -189,7 +189,7 @@ if(!empty($_SESSION['id'])){
                                         <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_recursos1.jpg" alt="Logo Recurso">
                                         <div class="d-flex flex-column flex-md-row w-100 align-items-start">
                                             <img src="../../assets/img/icon_file.png" alt="resource icon">
-                                            <a class="btn" href="#" target="_blank">
+                                            <a target="_blank" class="mr-2" href="BASE_URL<?= $data['file'] ?>" >
                                                 <i class="fa fa-download"></i> Material de Descarga
                                             </a>
                                             <?php
