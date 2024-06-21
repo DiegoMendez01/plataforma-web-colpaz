@@ -9,6 +9,8 @@ $headerContent = new HeaderContents();
 $teacherCourse = new TeacherCourses();
 $user          = new Users();
 
+$idr           = $_SESSION['idr'];
+
 switch($_GET['op'])
 {
     /*
@@ -35,7 +37,7 @@ switch($_GET['op'])
         $data  = [];
         foreach ($datos as $row) {
             
-            $dataTeacherCourse = $teacherCourse->getTeacherCourseById($row['teacher_course_id']);
+            $dataTeacherCourse = $teacherCourse->getTeacherCourseById($row['teacher_course_id'], $idr);
             $dataUser          = $user->getUserById($dataTeacherCourse['user_id']);
             
             $sub_array      = [];

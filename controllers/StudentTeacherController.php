@@ -17,7 +17,7 @@ $classroom      = new Classrooms();
 $studentTeacher = new StudentTeachers();
 $campuse        = new Campuses();
 
-$idr = $_SESSION['idr'];
+$idr            = $_SESSION['idr'];
 
 switch($_GET['op'])
 {
@@ -38,7 +38,7 @@ switch($_GET['op'])
         foreach ($datos as $row) {
             $studentData           = $user->getUserById($row['user_id']);
             $teacherCourseData     = $teacherCourse->getTeacherCourseById($row['teacher_course_id'], $idr);
-            $periodData            = $period->getPeriodsById($row['period_id']);
+            $periodData            = $period->getPeriodsById($row['period_id'], $idr);
             $classroomData         = $classroom->getClassroomById($teacherCourseData['classroom_id'], $idr);
             $courseData            = $course->getCourseById($teacherCourseData['course_id'], $idr);
             $teacherData           = $user->getUserById($teacherCourseData['user_id']);
