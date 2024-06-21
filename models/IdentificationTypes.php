@@ -3,90 +3,82 @@
 class IdentificationTypes extends Database
 {
     /*
-     * Funcion para insertar/registrar aulas academicas por medio de un formulario
+     * Funcion para insertar tipos de identificaciones por medio de un formulario
      */
-    public function InsertOrupdateIdentificationType($id = null, $name)
+    public function insertIdentificationType($name)
     {
-        if(empty($name)){
-            $answer = [
-                'status' => false,
-                'msg'    => 'Todos los campos son necesarios'
-            ];
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                identification_types
+            WHERE
+                name = ? AND is_active != 0
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($result){
+            return false;
         }else{
-            $conectar = parent::connection();
-            parent::set_names();
+            $sqlInsert = "
+                INSERT INTO
+                    identification_types (name, created)
+                VALUES
+                    (?, now())
+            ";
             
-            $sql = '
-                SELECT
-                    *
-                FROM
-                    identification_types
-                WHERE
-                    name = ? AND id != ? AND is_active != 0
-            ';
-            
-            $query  = $conectar->prepare($sql);
-            $query->bindValue(1, $name);
-            $query->bindValue(2, $id);
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-            
-            if($result){
-                $answer = [
-                    'status' => false,
-                    'msg'    => 'El tipo de identificacion ya existe'
-                ];
-            }else{
-                if(empty($id)){
-                    $sqlInsert = "
-                        INSERT INTO
-                            identification_types (name, created)
-                        VALUES
-                            (?, now())
-                    ";
-                    
-                    $stmtInsert = $conectar->prepare($sqlInsert);
-                    $stmtInsert->bindValue(1, $name);
-                    $request    = $stmtInsert->execute();
-                    $action     = 1;
-                }else{
-                    $sqlUpdate = "
-                        UPDATE
-                            identification_types
-                        SET
-                            name      = ?
-                        WHERE
-                            id = ?
-                    ";
-                    
-                    $stmtUpdate = $conectar->prepare($sqlUpdate);
-                    $stmtUpdate->bindValue(1, $name);
-                    $stmtUpdate->bindValue(2, $id);
-                    $request    = $stmtUpdate->execute();
-                    $action     = 2;
-                }
-                
-                if($request){
-                    if($action == 1){
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Tipo de Identificacion creado correctamente'
-                        ];
-                    }else{
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Tipo de Identificacion actualizado correctamente'
-                        ];
-                    }
-                }else{
-                    $answer = [
-                        'status' => false,
-                        'msg'    => 'Error al crear el Tipo de Identificacion'
-                    ];
-                }
-            }
+            $stmtInsert = $conectar->prepare($sqlInsert);
+            $stmtInsert->bindValue(1, $name);
+            return $stmtInsert->execute();
         }
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+    /*
+     * Funcion para actualizar tipos de identificaciones por medio de un formulario
+     */
+    public function updateIdentificationType($id, $name)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                identification_types
+            WHERE
+                name = ? AND id != ? AND is_active != 0
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $id);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($result){
+            return false;
+        }else{
+            $sqlUpdate = "
+                UPDATE
+                    identification_types
+                SET
+                    name      = ?
+                WHERE
+                    id = ?
+            ";
+            
+            $stmtUpdate = $conectar->prepare($sqlUpdate);
+            $stmtUpdate->bindValue(1, $name);
+            $stmtUpdate->bindValue(2, $id);
+            return $stmtUpdate->execute();
+        }
     }
     /*
      * Funcion para obtener todos los tipos de identificacion

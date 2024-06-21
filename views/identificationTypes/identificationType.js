@@ -29,7 +29,7 @@ function insertOrUpdate(e)
         return false;
     }
 	$.ajax({
-		url: "../../controllers/IdentificationTypeController.php?op=insertOrUpdate",
+		url: "../../controllers/IdentificationTypeController.php?op=createOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -68,7 +68,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/IdentificationTypeController.php?op=listIdentificationType',
+			url: '../../controllers/IdentificationTypeController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -110,7 +110,7 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/IdentificationTypeController.php?op=listIdentificationTypeById", { id : id}, function(data) {
+	$.post("../../controllers/IdentificationTypeController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
@@ -138,7 +138,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/IdentificationTypeController.php?op=deleteIdentificationTypeById", { id : id}, function(data) {
+			$.post("../../controllers/IdentificationTypeController.php?op=delete", { id : id}, function(data) {
         	});
         	
         	$('#table_data').DataTable().ajax.reload();
