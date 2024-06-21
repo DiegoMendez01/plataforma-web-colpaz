@@ -104,7 +104,7 @@ class ZoneController
 
             $subArray   = [];
             $subArray[] = $zone['name'];
-            $subArray[] = '<a onClick="editCampuse('.$zone['id'].')"; id="'.$zone['id'].'"><span class="label label-pill label-primary">'.$campusData['name'].'</span></a>';
+            $subArray[] = '<a onClick="editCampus('.$zone['id'].')"; id="'.$zone['id'].'"><span class="label label-pill label-primary">'.$campusData['name'].'</span></a>';
             $subArray[] = $zone['created'];
             if($zone['is_active'] == 1){
                 $subArray[] = '<span class="label label-success">Activo</span>';

@@ -7,7 +7,7 @@ function init()
 	});
 
 	$('#campuse_form').on("submit", function(e){
-		updateAsignCampuse(e);
+		updateAsignCampus(e);
 	});
 }
 
@@ -57,12 +57,12 @@ function insertOrUpdate(e)
 	});
 }
 
-function updateAsignCampuse(e)
+function updateAsignCampus(e)
 {
 	e.preventDefault();
 	var formData = new FormData($('#campuse_form')[0]);
 	$.ajax({
-		url: "../../controllers/ZoneController.php?op=updateAsignCampuse",
+		url: "../../controllers/ZoneController.php?op=updateAsignCampus",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -186,7 +186,7 @@ function eliminar(id){
 	});
 }
 
-function editCampuse(id)
+function editCampus(id)
 {
 	$.post("../../controllers/ZoneController.php?op=show", { id : id }, function(data){
 		data = JSON.parse(data);
