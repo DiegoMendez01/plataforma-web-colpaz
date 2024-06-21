@@ -30,7 +30,7 @@ function insertOrUpdate(e)
     }
     
 	$.ajax({
-		url: "../../controllers/DegreeController.php?op=insertOrUpdate",
+		url: "../../controllers/DegreeController.php?op=createOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -69,7 +69,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/DegreeController.php?op=listDegree',
+			url: '../../controllers/DegreeController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -111,7 +111,7 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/DegreeController.php?op=listDegreeById", { id : id}, function(data) {
+	$.post("../../controllers/DegreeController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
@@ -134,7 +134,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/DegreeController.php?op=deleteDegreeById", { id : id}, function(data) {
+			$.post("../../controllers/DegreeController.php?op=delete", { id : id}, function(data) {
         	});
         	
         	$('#degree_data').DataTable().ajax.reload();
