@@ -58,6 +58,55 @@ function insertOrUpdate(e)
     });
 }
 
+function editAssessment(id){
+	$('#mdltitulo').html('Editar Registro');
+	
+	$.post("../../controllers/AssessmentController.php?op=listAssessmentById", { id : id}, function(data) {
+    	data = JSON.parse(data);
+    	$('#id').val(data.id);
+    	$('#title').val(data.title);
+        $('#date_limit').val(data.date_limit);
+        $('#percentage').val(data.percentage);
+    	$('#comment').val(data.comment);
+    });
+	
+	$('#modalAssessment').modal('show');
+}
+
+function deleteAssessment(id){
+	swal({
+    	title: "ColPaz Quipama",
+    	text: "¿Esta seguro de eliminar la actividad?",
+    	type: "error",
+    	showCancelButton: true,
+    	confirmButtonClass: "btn-danger",
+    	confirmButtonText: "Si",
+    	cancelButtonText: "No",
+    	closeOnConfirm: false
+	},
+	function(isConfirm)
+	{
+		if(isConfirm){
+			$.post("../../controllers/AssessmentController.php?op=deleteAssessmentById", { id : id}, function(data) {
+        		swal({
+			    	title: "ColPaz Quipama",
+			    	text: "Registro eliminado",
+			    	type: "success",
+			    	confirmButtonClass: "btn-success",
+			    	confirmButtonText: "Aceptar",
+			    	closeOnConfirm: false
+				},
+				function(isConfirm)
+				{
+					if(isConfirm){
+						location.reload();
+					}
+				});
+        	});
+		}
+	});
+}
+
 $(document).on("click", "#btnnuevo", function(){
 	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');

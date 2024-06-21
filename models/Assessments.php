@@ -202,4 +202,52 @@ class Assessments extends Database
         
         return $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    /*
+     * Funcion para obtener informacion de un contenido mediante su ID.
+     */
+    public function getAssessmentById($id, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+
+        $condition = $this->getSessionCondition($idr);
+        
+        $sql = "
+            SELECT
+                *
+            FROM
+                assessments
+            WHERE
+                id = ? AND is_active = 1 ".$condition;
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    /*
+     * Funcion para eliminar una actividad (eliminado logico).
+     */
+    public function deleteAssessmentById($id, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+
+        $condition = $this->getSessionCondition($idr);
+        
+        $sql = "
+            UPDATE
+                assessments
+            SET
+                is_active = 0
+            WHERE
+                id = ? ".$condition;
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
