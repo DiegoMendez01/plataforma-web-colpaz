@@ -14,92 +14,85 @@ class Periods extends Database
         }
     }
     /*
-     * Funcion para insertar/actualizar un nuevo periodo
+     * Funcion para insertar un nuevo periodo por formulario
      */
-    public function insertOrUpdatePeriod($id = null, $name, $idr)
+    public function createPeriod($name, $idr)
     {
-        if(empty($name)){
-            $answer = [
-                'status' => false,
-                'msg'    => 'Todos los campos son necesarios'
-            ];
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                periods
+            WHERE
+                name = ? AND is_active != 0 AND idr = ?
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($result){
+            return false;
         }else{
-            $conectar = parent::connection();
-            parent::set_names();
-            
-            $sql = '
-                SELECT
-                    *
-                FROM
-                    periods
-                WHERE
-                    name = ? AND id != ? AND is_active != 0 AND idr = ?
-            ';
-            
-            $query  = $conectar->prepare($sql);
-            $query->bindValue(1, $name);
-            $query->bindValue(2, $id);
-            $query->bindValue(3, $idr);
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-            
-            if($result){
-                $answer = [
-                    'status' => false,
-                    'msg'    => 'El periodo academico ya existe'
-                ];
-            }else{
-                if(empty($id)){
-                    $sqlInsert = "
-                        INSERT INTO
-                            periods (name, idr, created)
-                        VALUES (?, ?, now())
-                    ";
-                    $stmtInsert = $conectar->prepare($sqlInsert);
-                    $stmtInsert->bindValue(1, $name);
-                    $stmtInsert->bindValue(2, $idr);
-                    $request    = $stmtInsert->execute();
-                    $action     = 1;
-                }else{
-                    $sqlUpdate = "
-                        UPDATE
-                            periods
-                        SET
-                            name = ?,
-                            idr = ?
-                        WHERE
-                            id = ?
-                    ";
-                    
-                    $stmtUpdate = $conectar->prepare($sqlUpdate);
-                    $stmtUpdate->bindValue(1, $name);
-                    $stmtUpdate->bindValue(2, $idr);
-                    $stmtUpdate->bindValue(3, $id);
-                    $request    = $stmtUpdate->execute();
-                    $action     = 2;
-                }
-                
-                if($request){
-                    if($action == 1){
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Periodo creado correctamente'
-                        ];
-                    }else{
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Periodo actualizado correctamente'
-                        ];
-                    }
-                }else{
-                    $answer = [
-                        'status' => false,
-                        'msg'    => 'Error al crear el periodo'
-                    ];
-                }
-            }
+            $sqlInsert = "
+                INSERT INTO
+                    periods (name, idr, created)
+                VALUES (?, ?, now())
+            ";
+            $stmtInsert = $conectar->prepare($sqlInsert);
+            $stmtInsert->bindValue(1, $name);
+            $stmtInsert->bindValue(2, $idr);
+            return $stmtInsert->execute();
         }
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+    /*
+     * Funcion para actualizar un nuevo periodo por formulario
+     */
+    public function updatePeriod($id, $name, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                periods
+            WHERE
+                name = ? AND id != ? AND is_active != 0 AND idr = ?
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $id);
+        $query->bindValue(3, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($result){
+            return false;
+        }else{
+            $sqlUpdate = "
+                UPDATE
+                    periods
+                SET
+                    name = ?,
+                    idr = ?
+                WHERE
+                    id = ?
+            ";
+            
+            $stmtUpdate = $conectar->prepare($sqlUpdate);
+            $stmtUpdate->bindValue(1, $name);
+            $stmtUpdate->bindValue(2, $idr);
+            $stmtUpdate->bindValue(3, $id);
+            return $stmtUpdate->execute();
+        }
     }
     /*
      * Funcion para obtener todos los periodos
@@ -179,7 +172,7 @@ class Periods extends Database
     /*
      *  Funcion para actualizar la sede
      */
-    public function updateAsignCampuse($id, $idr)
+    public function updateAssignedCampus($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -195,21 +188,6 @@ class Periods extends Database
         $sql    = $conectar->prepare($sql);
         $sql->bindValue(1, $idr);
         $sql->bindValue(2, $id);
-        $result = $sql->execute();
-        
-        if($result){
-            $answer = [
-                'status'      => true,
-                'msg'         => 'Registro actualizado correctamente'
-            ];
-        }else{
-            $answer = [
-                'status'  => false,
-                'msg'     => 'Fallo con la actualizacion de la sede',
-            ];
-        }
-        
-        // Devolver el rol antiguo y el nuevo
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+        return $sql->execute();
     }
 }

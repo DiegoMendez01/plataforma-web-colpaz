@@ -33,7 +33,7 @@ function insertOrUpdate(e)
         return false;
     }
 	$.ajax({
-		url: "../../controllers/PeriodController.php?op=insertOrUpdate",
+		url: "../../controllers/PeriodController.php?op=createOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -62,7 +62,7 @@ function updateAsignCampuse(e)
 	e.preventDefault();
 	var formData = new FormData($('#campuse_form')[0]);
 	$.ajax({
-		url: "../../controllers/PeriodController.php?op=updateAsignCampuse",
+		url: "../../controllers/PeriodController.php?op=updateAsignCampus",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -106,7 +106,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/PeriodController.php?op=listPeriod',
+			url: '../../controllers/PeriodController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -148,7 +148,7 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/PeriodController.php?op=listPeriodById", { id : id}, function(data) {
+	$.post("../../controllers/PeriodController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
@@ -176,7 +176,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/PeriodController.php?op=deletePeriodById", { id : id}, function(data) {
+			$.post("../../controllers/PeriodController.php?op=delete", { id : id}, function(data) {
         	});
         	
         	$('#period_data').DataTable().ajax.reload();
@@ -193,7 +193,7 @@ function eliminar(id){
 
 function editCampuse(id)
 {
-	$.post("../../controllers/PeriodController.php?op=listPeriodById", { id : id }, function(data){
+	$.post("../../controllers/PeriodController.php?op=show", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#xmdltitulo').html('Asignar sede');
 		$('#campuse_form')[0].reset();
