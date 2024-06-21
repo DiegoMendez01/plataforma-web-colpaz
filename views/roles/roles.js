@@ -155,7 +155,7 @@ function permiso(id)
             'csvHtml5',
         ],
         "ajax":{
-            url:"../../controllers/MenuController.php?op=listMenu",
+            url:"../../controllers/MenuController.php?op=index",
             type:"post",
             data: {role_id : id }
         },

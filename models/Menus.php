@@ -33,7 +33,7 @@ Class Menus extends Database
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
     /* TODO Habilitar menus del sistema */
-    public function updateMenuEnable($id)
+    public function enabled($id)
     {
         $conectar = parent::connection();
         
@@ -53,7 +53,7 @@ Class Menus extends Database
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
     /* TODO Deshabilitar menus del sistema */
-    public function updateMenuDisabled($id)
+    public function disabled($id)
     {
         $conectar = parent::connection();
         
