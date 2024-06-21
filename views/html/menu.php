@@ -52,7 +52,7 @@ $menus = $menu->getMenusByRole($_SESSION['role_id'], $_SESSION['idr']);
         
             <li class="blue-dirty with-sub">
                 <span>
-                    <i class="font-icon font-icon-notebook"></i>
+                    <i class="font-icon font-icon-user"></i>
                     <span class="lbl">Mis Cursos</span>
                 </span>
                 <?php if ($dataAll['row'] > 0) { ?>

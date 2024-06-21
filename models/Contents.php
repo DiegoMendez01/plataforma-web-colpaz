@@ -296,10 +296,8 @@ class Contents extends Database
         $stmt->bindValue(1, $teacher_course_id);
         $stmt->bindValue(2, $header_content_id);
         $stmt->execute();
-        return [
-            'rowContent'   => $stmt->rowCount(),
-            'queryContent' => $stmt
-        ];
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 

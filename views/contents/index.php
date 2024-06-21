@@ -21,9 +21,9 @@ if(!empty($_SESSION['id'])){
         $dataTeacherC      = $teacherCourse->getTeacherCourseById($courseId, $idr);
         $dataCourse        = $course->getCourseById($dataTeacherC['course_id'], $idr);
         if(!empty($dataCourse)){
-            $dataHeaderC       = $headerContent->getHeaderContentByTeacher($dataTeacherC['id']);
-            $dataClassroom     = $classroom->getClassroomById($dataTeacherC['classroom_id'], $idr);
-            $dataAllContent    = $content->getContentByTeacherCourseId($courseId, $dataHeaderC['id']);
+            $dataHeaderC    = $headerContent->getHeaderContentByTeacher($dataTeacherC['id']);
+            $dataClassroom  = $classroom->getClassroomById($dataTeacherC['classroom_id'], $idr);
+            $contents       = $content->getContentByTeacherCourseId($courseId, $dataHeaderC['id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -141,115 +141,113 @@ if(!empty($_SESSION['id'])){
         				<button type="button" id="btnnuevocontenido" class="btn btn-inline btn-primary">Agregar Contenido</button>
         			</div>
         			<?php
-        			if ($dataAllContent['rowContent'] > 0) {
-        			    while ($data = $dataAllContent['queryContent']->fetch(PDO::FETCH_ASSOC)) {
-        			        ?>
-                            <section style="margin-top: 2rem;">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span style="font-size: 2rem;" data-toggle="collapse" data-target="#infoCollapse<?= $data['id'] ?>" aria-expanded="false" aria-controls="infoCollapse<?= $data['id'] ?>"><?= $data['title'] ?> </span>
-                                    <?php
-                                    if($data['status'] == 1){
-                                    ?>
-                                        <span class="label label-primary">Disponible</span>
-                                    <?php
-                                    }else{
-                                    ?>
-                                        <span class="label label-danger">No Disponible</span>
-                                    <?php
-                                    }
-                                    ?>
+        			foreach($contents as $data){
+                    ?>
+                        <section style="margin-top: 2rem;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span style="font-size: 2rem;" data-toggle="collapse" data-target="#infoCollapse<?= $data['id'] ?>" aria-expanded="false" aria-controls="infoCollapse<?= $data['id'] ?>"><?= $data['title'] ?> </span>
+                                <?php
+                                if($data['status'] == 1){
+                                ?>
+                                    <span class="label label-primary">Disponible</span>
+                                <?php
+                                }else{
+                                ?>
+                                    <span class="label label-danger">No Disponible</span>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                            <div class="collapse" id="infoCollapse<?= $data['id'] ?>">
+                                <?php 
+                                if($data['status'] == 1){
+                                ?>
+                                <div class="row align-items-center" style="margin-top: 2rem;">
+                                    <!-- Columna para el título -->
+                                    <div class="col-md-10">
+                                        <h4>
+                                            <?= $data['description'] ?>
+                                        </h4>
+                                    </div>
+                                    <!-- Columna para los botones -->
+                                    <div class="col-md-2">
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-warning icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger icon-btn widget-header-btn" onclick="eliminar(<?= $data['id']; ?>)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                            <button class="btn btn-danger icon-btn widget-header-btn" onclick="bloquear(<?= $data['id']; ?>)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="collapse" id="infoCollapse<?= $data['id'] ?>">
-                                    <?php 
-                                    if($data['status'] == 1){
-                                    ?>
-                                    <div class="row align-items-center" style="margin-top: 2rem;">
-                                        <!-- Columna para el título -->
-                                        <div class="col-md-10">
-                                            <h4>
-                                                <?= $data['description'] ?>
-                                            </h4>
+                                <div class="card card-body">
+                                    <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_recursos1.jpg" alt="Logo Recurso">
+                                    <div class="d-flex flex-column flex-md-row w-100 align-items-start">
+                                        <img src="../../assets/img/icon_file.png" alt="resource icon">
+                                        <a target="_blank" class="mr-2" href="BASE_URL<?= $data['file'] ?>" >
+                                            <i class="fa fa-download"></i> Material de Descarga
+                                        </a>
+                                        <?php
+                                        if(!empty($data['video'])){
+                                        // Obtener el ID del video de la URL
+                                        $url = $data['video'];
+                                        parse_str(parse_url($url, PHP_URL_QUERY), $params);
+                                        $video_id = $params['v'];
+                                        
+                                        // Construir la URL de incrustación
+                                        $embed_url = "https://www.youtube.com/embed/" . $video_id;
+                                        ?>
+                                        <!-- Video de YouTube incrustado -->
+                                        <div style="margin-top: 2rem;" class="text-center">
+                                            <iframe width="560" height="315" src="<?= $embed_url ?>" frameborder="0" allowfullscreen></iframe>
                                         </div>
-                                        <!-- Columna para los botones -->
-                                        <div class="col-md-2">
-                                            <div class="d-flex justify-content-end">
-                                                <button class="btn btn-warning icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-danger icon-btn widget-header-btn" onclick="eliminar(<?= $data['id']; ?>)">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                                <button class="btn btn-danger icon-btn widget-header-btn" onclick="bloquear(<?= $data['id']; ?>)">
-                                                    <i class="fa fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <?php
+                                            }
+                                        ?>
                                     </div>
-                                    <div class="card card-body">
-                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_recursos1.jpg" alt="Logo Recurso">
-                                        <div class="d-flex flex-column flex-md-row w-100 align-items-start">
-                                            <img src="../../assets/img/icon_file.png" alt="resource icon">
-                                            <a target="_blank" class="mr-2" href="BASE_URL<?= $data['file'] ?>" >
-                                                <i class="fa fa-download"></i> Material de Descarga
-                                            </a>
-                                            <?php
-                                            if(!empty($data['video'])){
-                                            // Obtener el ID del video de la URL
-                                            $url = $data['video'];
-                                            parse_str(parse_url($url, PHP_URL_QUERY), $params);
-                                            $video_id = $params['v'];
-                                            
-                                            // Construir la URL de incrustación
-                                            $embed_url = "https://www.youtube.com/embed/" . $video_id;
-                                            ?>
-                                            <!-- Video de YouTube incrustado -->
-                                           <div style="margin-top: 2rem;" class="text-center">
-                                                <iframe width="560" height="315" src="<?= $embed_url ?>" frameborder="0" allowfullscreen></iframe>
-                                            </div>
-                                            <?php
-        			                         }
-                                            ?>
-                                        </div>
-                                        <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_actividades1.png" alt="Logo Recurso">
-                                        <div class="d-flex flex-column flex-md-row w-100 align-items-start">
-                                            <img src="../../assets/img/icon_submitted.png" alt="resource icon">
-                                            <a class="btn" href="../assessments/index?course=<?= $data['idTeacherCourse']; ?>&content=<?= $data['id']; ?>" target="_blank">
-                                                <i class="fa fa-paper-plane"></i> Asignar Evaluacion
-                                            </a>
-                                        </div>
+                                    <img style="width: 30rem; height: 4rem; margin-bottom: 2rem; margin-top: 2rem;" src="../../assets/img/banner_actividades1.png" alt="Logo Recurso">
+                                    <div class="d-flex flex-column flex-md-row w-100 align-items-start">
+                                        <img src="../../assets/img/icon_submitted.png" alt="resource icon">
+                                        <a class="btn" href="../assessments/index?course=<?= $data['idTeacherCourse']; ?>&content=<?= $data['id']; ?>" target="_blank">
+                                            <i class="fa fa-paper-plane"></i> Asignar Evaluacion
+                                        </a>
                                     </div>
-                                    <?php
-                                    }else{
-                                    ?>
-                                    <div class="row align-items-center" style="margin-top: 2rem;">
-                                        <!-- Columna para el título -->
-                                        <div class="col-md-10">
-                                        </div>
-                                        <!-- Columna para los botones -->
-                                        <div class="col-md-2">
-                                            <div class="d-flex justify-content-end">
-                                                <button class="btn btn-warning icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-danger icon-btn widget-header-btn" onclick="eliminar(<?= $data['id']; ?>)">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                                <button class="btn btn-success icon-btn widget-header-btn" onclick="desbloquear(<?= $data['id']; ?>)">
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card card-body text-center">
-                                    	<h2 style="margin-top: 2rem;">El docente ha cerrado la actividad para su visualización.</h2>
-                                    </div>
-                                    <?php
-                                    }
-                                    ?>
                                 </div>
-                            </section>
-                            <?php
-        			     }
+                                <?php
+                                }else{
+                                ?>
+                                <div class="row align-items-center" style="margin-top: 2rem;">
+                                    <!-- Columna para el título -->
+                                    <div class="col-md-10">
+                                    </div>
+                                    <!-- Columna para los botones -->
+                                    <div class="col-md-2">
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-warning icon-btn widget-header-btn mr-2" onclick="editar(<?= $data['id']; ?>)">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-danger icon-btn widget-header-btn" onclick="eliminar(<?= $data['id']; ?>)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                            <button class="btn btn-success icon-btn widget-header-btn" onclick="desbloquear(<?= $data['id']; ?>)">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card card-body text-center">
+                                    <h2 style="margin-top: 2rem;">El docente ha cerrado la actividad para su visualización.</h2>
+                                </div>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                        </section>
+                    <?php
         			}
                 }
                 ?>
