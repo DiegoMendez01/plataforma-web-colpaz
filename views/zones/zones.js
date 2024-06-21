@@ -33,7 +33,7 @@ function insertOrUpdate(e)
         return false;
     }
 	$.ajax({
-		url: "../../controllers/ZoneController.php?op=insertOrUpdate",
+		url: "../../controllers/ZoneController.php?op=createOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -106,7 +106,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/ZoneController.php?op=listZone',
+			url: '../../controllers/ZoneController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -148,7 +148,7 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/ZoneController.php?op=listZoneById", { id : id}, function(data) {
+	$.post("../../controllers/ZoneController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
@@ -171,7 +171,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/ZoneController.php?op=deleteZoneById", { id : id}, function(data) {
+			$.post("../../controllers/ZoneController.php?op=delete", { id : id}, function(data) {
         	});
         	
         	$('#zone_data').DataTable().ajax.reload();
@@ -188,7 +188,7 @@ function eliminar(id){
 
 function editCampuse(id)
 {
-	$.post("../../controllers/ZoneController.php?op=listZoneById", { id : id }, function(data){
+	$.post("../../controllers/ZoneController.php?op=show", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#xmdltitulo').html('Asignar sede');
 		$('#campuse_form')[0].reset();
@@ -203,6 +203,7 @@ function ver(id)
 }
 
 $(document).on("click", "#btnnuevo", function(){
+	document.querySelector('#id').value = '';
 	$('#mdltitulo').html('Nuevo Registro');
 	$('#zones_form')[0].reset();
 	$('#modalGestionZones').modal('show');
