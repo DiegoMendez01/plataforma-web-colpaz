@@ -26,7 +26,7 @@ $('#submitted_email').on("submit", function(e){
     
 	var email = formData.get('email');
 	
-	$.post("../../controllers/EmailController.php?op=confirmed_email", { email : email}, function(data) {
+	$.post("../../controllers/EmailController.php?op=confirmedEmail", { email : email}, function(data) {
 		data = JSON.parse(data);
 		if(data.status){
 			$('#submitted_email')[0].reset();

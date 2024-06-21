@@ -30,7 +30,7 @@ function updateAsignRole(e)
 		success: function(data){
 			data = JSON.parse(data);
 			if(data.status){
-				$.post("../../controllers/emailController.php?op=change_role", { user_id : data.user_id, role_name : data.role_name}, function(data) {
+				$.post("../../controllers/emailController.php?op=changeRole", { user_id : data.user_id, role_name : data.role_name}, function(data) {
 	        	});
 	        	
 	        	$('#userRol_form')[0].reset();

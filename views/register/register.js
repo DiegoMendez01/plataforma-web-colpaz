@@ -46,7 +46,7 @@ $('#user_register').on("submit", function(e){
 						data = JSON.parse(data);
 						if(data.status){
 							$('#user_register')[0].reset();
-							$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.id}, function(data) {
+							$.post("../../controllers/EmailController.php?op=confirmedEmail", { id : data.id}, function(data) {
         					
         					});
 							swal({
@@ -62,7 +62,7 @@ $('#user_register').on("submit", function(e){
 							function(isConfirm)
 							{
 								if(isConfirm){
-									$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.id}, function(data) {
+									$.post("../../controllers/EmailController.php?op=confirmedEmail", { id : data.id}, function(data) {
         								window.open('http://localhost/plataforma-web-colpaz/views/site/submitted-email.php?msg=1');
         							});
 								}
@@ -94,7 +94,7 @@ $('#user_register').on("submit", function(e){
 					data = JSON.parse(data);
 					if(data.status){
 						$('#user_register')[0].reset();
-						$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.id}, function(data) {
+						$.post("../../controllers/EmailController.php?op=confirmedEmail", { id : data.id}, function(data) {
     					
     					});
 						swal({
@@ -110,7 +110,7 @@ $('#user_register').on("submit", function(e){
 						function(isConfirm)
 						{
 							if(isConfirm){
-								$.post("../../controllers/EmailController.php?op=confirmed_email", { id : data.id}, function(data) {
+								$.post("../../controllers/EmailController.php?op=confirmedEmail", { id : data.id}, function(data) {
     								window.open('http://localhost/plataforma-web-colpaz/views/site/submitted-email.php?msg=1');
     							});
 							}
