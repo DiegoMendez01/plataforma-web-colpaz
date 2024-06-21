@@ -29,7 +29,7 @@ function insertOrUpdate(e)
         return false;
     }
 	$.ajax({
-		url: "../../controllers/CampuseController.php?op=insertOrUpdate",
+		url: "../../controllers/CampuseController.php?op=createOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -68,7 +68,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/CampuseController.php?op=listCampuse',
+			url: '../../controllers/CampuseController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -110,7 +110,7 @@ $(document).ready(function(){
 function editar(idr){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/CampuseController.php?op=listCampuseByIdr", { idr : idr}, function(data) {
+	$.post("../../controllers/CampuseController.php?op=show", { idr : idr}, function(data) {
     	data = JSON.parse(data);
     	$('#idr').val(data.idr);
     	$('#name').val(data.name);
@@ -139,7 +139,7 @@ function eliminar(idr){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/CampuseController.php?op=deleteCampuseByIdr", { idr : idr}, function(data) {
+			$.post("../../controllers/CampuseController.php?op=delete", { idr : idr}, function(data) {
         	});
         	
         	$('#campuse_data').DataTable().ajax.reload();

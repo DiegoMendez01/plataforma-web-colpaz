@@ -1,39 +1,109 @@
 <?php
-// Importa la clase del modelo
+
 require_once("../config/database.php");
 require_once("../models/Campuses.php");
 
-$campuse = new Campuses();
-
-switch($_GET['op'])
+class CampuseController
 {
-    /*
-     * Insertar o actualizar el registro de una sede. Dependiendo si existe o no la sede,
-     * se tomara un flujo.
-     */
-    case 'insertOrUpdate':
-        $campuse->insertOrUpdateCampuse($_POST['idr'], $_POST['name'], $_POST['description']);
-        break;
-    /*
-     * Es para listar/obtener las sedes que existen registrados en el sistema con una condicion que este activo.
-     * Ademas, de dibujar una tabla para mostrar los registros.
-     */
-    case 'listCampuse':
-        $datos = $campuse->getCampuses();
-        $data  = [];
-        foreach ($datos as $row) {
-            $sub_array      = [];
-            $sub_array[]    = $row['name'];
-            $sub_array[]    = $row['created'];
-            if($row['is_active'] == 1){
-                $sub_array[] = '<span class="label label-success">Activo</span>';
+    private $campuseModel;
+
+    public function __construct()
+    {
+        $this->campuseModel = new Campuses();
+    }
+
+    public function handleRequest()
+    {
+        switch($_GET['op'])
+        {
+            case "createOrUpdate":
+                if(empty($_POST['idr'])){
+                    $this->create($_POST['name'], $_POST['description']);
+                }else{
+                    $this->update($_POST['idr'], $_POST['name'], $_POST['description']);
+                }
+                break;
+            case "index":
+                $this->index();
+                break;
+            case "delete":
+                $this->delete($_POST['idr']);
+                break;
+            case "show":
+                $this->show($_POST['idr']);
+                break;
+            case "combo":
+                $this->combo();
+                break;
+        }
+    }
+
+    private function create($name, $description)
+    {
+        if(empty($name) OR empty($description)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            $status = $this->campuseModel->createCampuse($name, $description);
+            if($status){
+                $answer = [
+                    'status' => true,
+                    'msg'    => 'Se ha creado correctamente la sede'
+                ];
+            }else{
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'Error al crear la sede y/o duplicada'
+                ];
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function update($idr, $name, $description)
+    {
+        if(empty($name) OR empty($description)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            $status = $this->campuseModel->updateCampuse($idr, $name, $description);
+            if($status){
+                $answer = [
+                    'status' => true,
+                    'msg'    => 'Se ha actualizado correctamente la sede'
+                ];
+            }else{
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'Error al actualizar la sede y/o duplicados'
+                ];
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function index()
+    {
+        $campuses = $this->campuseModel->getCampuses();
+        $data     = [];
+
+        foreach($campuses as $campus){
+            $subArray   = [];
+            $subArray[] = $campus['name'];
+            $subArray[] = $campus['created'];
+            if($campus['is_active'] == 1){
+                $subArray[] = '<span class="label label-success">Activo</span>';
             }
             
-            $sub_array[] = '<button type="button" onClick="editar('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
-            $sub_array[] = '<button type="button" onClick="eliminar('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
-            $sub_array[] = '<button type="button" onClick="ver('.$row["idr"].')"; id="'.$row['idr'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
+            $subArray[] = '<button type="button" onClick="editar('.$campus["idr"].')"; id="'.$campus['idr'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
+            $subArray[] = '<button type="button" onClick="eliminar('.$campus["idr"].')"; id="'.$campus['idr'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
+            $subArray[] = '<button type="button" onClick="ver('.$campus["idr"].')"; id="'.$campus['idr'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
             
-            $data[] = $sub_array;
+            $data[] = $subArray;
         }
         $results = [
             "sEcho"                 => 1,
@@ -42,40 +112,32 @@ switch($_GET['op'])
             "aaData"                => $data
         ];
         echo json_encode($results);
-        break;
-    /*
-     * Eliminar totalmente registros de sedes existentes por su ID (eliminado logico).
-     */
-    case 'deleteCampuseByIdr':
-        if(isset($_POST['idr'])){
-            $campuse->deleteCampuseById($_POST['idr']);
-        }
-        break;
-    /*
-     * Es para listar/obtener las sedes que existen registrados en el sistema.
-     */
-    case 'listCampuseByIdr':
-        $data = $campuse->getCampuseById($_POST['idr']);
-        
-        $output["idr"]          = $data['idr'];
-        $output["name"]         = $data['name'];
-        $output["description"]  = $data['description'];
-        
-        echo json_encode($output);
-        break;
-    /*
-     * Listar para comboBox
-     */
-    case 'combo':
-        $datos = $campuse->getCampuses();
-        if(is_array($datos) == true AND count($datos) > 0){
+    }
+
+    private function delete($idr)
+    {
+        $this->campuseModel->deleteCampuseById($idr);
+    }
+
+    private function show($idr)
+    {
+        $campuse = $this->campuseModel->getCampuseById($idr);
+        echo json_encode($campuse);
+    }
+
+    private function combo()
+    {
+        $campuses = $this->campuseModel->getCampuses();
+        if(is_array($campuses) == true AND count($campuses) > 0){
             $html = "";
             $html.= "<option value='0' selected>Seleccionar</option>";
-            foreach($datos as $row){
-                $html.= "<option value='".$row['idr']."'>".$row['name']."</option>";
+            foreach($campuses as $campuse){
+                $html.= "<option value='".$campuse['idr']."'>".$campuse['name']."</option>";
             }
             echo $html;
         }
-        break;
+    }
 }
-?>
+
+$controller = new CampuseController();
+$controller->handleRequest();
