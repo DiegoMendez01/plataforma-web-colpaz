@@ -87,7 +87,7 @@ class ZoneController
             }else{
                 $answer = [
                     'status' => false,
-                    'msg'    => 'Error al actualizar la zona'
+                    'msg'    => 'Error al actualizar la zona y/o duplicados'
                 ];
             }
         }

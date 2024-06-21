@@ -85,7 +85,7 @@ if(isset($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modalGestionCurso.php");
+    require_once("mantenimiento.php");
     ?>
     
     <?php

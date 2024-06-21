@@ -14,100 +14,90 @@ class Courses extends Database
         }
     }
     /*
-     * Funcion para insertar/registrar cursos por medio de un formulario
-     */
-    public function insertOrUpdateCourse($id = null, $name, $description = null, $idr)
+    * Metodo para crear un curso por el ID e IDR
+    */
+    public function insertCourse($name, $description, $idr)
     {
-        if(empty($name)){
-            $answer = [
-                'status' => false,
-                'msg'    => 'Todos los campos son necesarios'
-            ];
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                courses
+            WHERE
+                name = ? AND is_active != 0 AND idr = ?
+        ';
+
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        if($result){
+            return false;
         }else{
-            $conectar = parent::connection();
-            parent::set_names();
+            $token = sprintf("%s-%s-%s-%s-%s", substr(md5($name), 0, 8), substr(md5($name), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 8));
+
+            $sqlInsert = "
+                INSERT INTO
+                    courses (name, description, token, created, idr)
+                VALUES
+                    (?, ?, ?, now(), ?)
+            ";
             
-            $sql = '
-                SELECT
-                    *
-                FROM
-                    courses
-                WHERE
-                    name = ? AND id != ? AND is_active != 0 AND idr = ?
-            ';
-            
-            $query  = $conectar->prepare($sql);
-            $query->bindValue(1, $name);
-            $query->bindValue(2, $id);
-            $query->bindValue(3, $idr);
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-            
-            if($result){
-                $answer = [
-                    'status' => false,
-                    'msg'    => 'El curso academico ya existe'
-                ];
-            }else{
-                if(empty($id)){
-                    // Concatenar y formatear las credenciales para generar el token
-                    $token = sprintf("%s-%s-%s-%s-%s", substr(md5($name), 0, 8), substr(md5($name), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 4), substr(md5(uniqid()), 0, 8));
-                    
-                    $sqlInsert = "
-                        INSERT INTO
-                            courses (name, description, token, created, idr)
-                        VALUES
-                            (?, ?, ?, now(), ?)
-                    ";
-                    
-                    $stmtInsert = $conectar->prepare($sqlInsert);
-                    $stmtInsert->bindValue(1, $name);
-                    $stmtInsert->bindValue(2, $description);
-                    $stmtInsert->bindValue(3, $token);
-                    $stmtInsert->bindValue(4, $idr);
-                    $request    = $stmtInsert->execute();
-                    $action     = 1;
-                }else{
-                    $sqlUpdate = "
-                        UPDATE
-                            courses
-                        SET
-                            name = ?,
-                            description = ?
-                        WHERE
-                            id = ? AND idr = ?
-                    ";
-                    
-                    $stmtUpdate = $conectar->prepare($sqlUpdate);
-                    $stmtUpdate->bindValue(1, $name);
-                    $stmtUpdate->bindValue(2, $description);
-                    $stmtUpdate->bindValue(3, $id);
-                    $stmtUpdate->bindValue(4, $idr);
-                    $request    = $stmtUpdate->execute();
-                    $action     = 2;
-                }
-                
-                if($request){
-                    if($action == 1){
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Curso creado correctamente'
-                        ];
-                    }else{
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Curso actualizado correctamente'
-                        ];
-                    }
-                }else{
-                    $answer = [
-                        'status' => false,
-                        'msg'    => 'Error al crear el curso'
-                    ];
-                }
-            }
+            $stmtInsert = $conectar->prepare($sqlInsert);
+            $stmtInsert->bindValue(1, $name);
+            $stmtInsert->bindValue(2, $description);
+            $stmtInsert->bindValue(3, $token);
+            $stmtInsert->bindValue(4, $idr);
+            return $stmtInsert->execute();
         }
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+    /*
+    * Metodo para actualizar un curso por el ID e IDR
+    */
+    public function updateCourse($id, $name, $description, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                courses
+            WHERE
+                name = ? AND id != ? AND is_active != 0 AND idr = ?
+        ';
+
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $id);
+        $query->bindValue(3, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        if($result){
+            return false;
+        }else{
+            $sqlUpdate = "
+                UPDATE
+                    courses
+                SET
+                    name = ?,
+                    description = ?
+                WHERE
+                    id = ? AND idr = ?
+            ";
+            
+            $stmtUpdate = $conectar->prepare($sqlUpdate);
+            $stmtUpdate->bindValue(1, $name);
+            $stmtUpdate->bindValue(2, $description);
+            $stmtUpdate->bindValue(3, $id);
+            $stmtUpdate->bindValue(4, $idr);
+            return $stmtUpdate->execute();
+        }
     }
     /*
      * Funcion para traer todos los cursos registrados hasta el momento
@@ -184,7 +174,7 @@ class Courses extends Database
     /*
      *  Funcion para actualizar la sede
      */
-    public function updateAsignCampuse($id, $idr)
+    public function updateAssignedCampus($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -200,22 +190,7 @@ class Courses extends Database
         $sql    = $conectar->prepare($sql);
         $sql->bindValue(1, $idr);
         $sql->bindValue(2, $id);
-        $result = $sql->execute();
-        
-        if($result){
-            $answer = [
-                'status'      => true,
-                'msg'         => 'Registro actualizado correctamente'
-            ];
-        }else{
-            $answer = [
-                'status'  => false,
-                'msg'     => 'Fallo con la actualizacion de la sede',
-            ];
-        }
-        
-        // Devolver el rol antiguo y el nuevo
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+        return $sql->execute();
     }
 }
 

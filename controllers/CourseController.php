@@ -4,43 +4,115 @@ require_once("../config/database.php");
 require_once("../models/Courses.php");
 require_once("../models/Campuses.php");
 
-$course  = new Courses();
-$campuse = new Campuses();
+class CourseController
+{
+    private $courseModel;
+    private $campuseModel;
 
-$idr = $_SESSION['idr'];
+    public function __construct()
+    {
+        $this->courseModel  = new Courses();
+        $this->campuseModel = new Campuses();
+    }
 
-switch($_GET['op']){
-    /*
-     * Insertar o actualizar el registro de un curso. Dependiendo si existe o no el curso
-     * se tomara un flujo
-     */
-    case 'insertOrUpdate':
-        $course->InsertOrupdateCourse($_POST['id'], $_POST['name'], $_POST['description'], $idr);
-        break;
-    /*
-     * Es para listar/obtener los cursos que existen registrados en el sistema con una condicion que este activo.
-     * Ademas, de dibujar una tabla para mostrar los registros
-     */
-    case 'listCourse':
-        $datos = $course->getCourses($idr);
-        $data  = [];
-        foreach($datos as $row){
-            
-            $campuseData = $campuse->getCampuseById($row['idr']);
-            
-            $sub_array   = [];
-            $sub_array[] = $row['name'];
-            $sub_array[] = $row['description'];
-            $sub_array[] =  '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
-            if($row['is_active'] == 1){
-                $sub_array[] = '<span class="label label-success">Activo</span>';
+    public function handleRequest()
+    {
+        $idr = $_SESSION['idr'];
+        switch($_GET['op'])
+        {
+            case 'createOrUpdate':
+                if(empty($_POST['id'])){
+                    $this->create($_POST['name'], $_POST['description'], $idr);
+                }else{
+                    $this->update($_POST['id'], $_POST['name'], $_POST['description'], $idr);
+                }
+                break;
+            case 'index':
+                $this->index($idr);
+                break;
+            case 'updateAsignCampus':
+                $this->updateAssignedCampus($_POST['xid'], $_POST['idr']);
+                break;
+            case 'delete':
+                $this->delete($_POST['id'], $idr);
+                break;
+            case 'show':
+                $this->show($_POST['id'], $idr);
+                break;
+            case 'combo':
+                $this->combo($idr);
+                break;
+        }
+    }
+
+    private function create($name, $description = null, $idr)
+    {
+        if(empty($name)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            $status = $this->courseModel->insertCourse($name, $description, $idr);
+            if($status){
+                $answer = [
+                    'status' => true,
+                    'msg'    => 'Se ha creado correctamente el curso'
+                ];
+            }else{
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'Error al crear un curso y/o duplicada'
+                ];
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function update($id, $name, $description = null, $idr)
+    {
+        if(empty($name)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            $status = $this->courseModel->updateCourse($id, $name, $description, $idr);
+            if($status){
+                $answer = [
+                    'status' => true,
+                    'msg'    => 'Se ha actualizado correctamente el curso'
+                ];
+            }else{
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'Error al actualizar el curso y/o duplicados'
+                ];
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function index($idr)
+    {
+        $courses = $this->courseModel->getCourses($idr);
+        $data    = [];
+        foreach($courses as $course){
+            $campuseData = $this->campuseModel->getCampuseById($course['idr']);
+
+            $subArray   = [];
+            $subArray[] = $course['name'];
+            $subArray[] = $course['description'];
+            $subArray[] =  '<a onClick="editCampuse('.$course['id'].')"; id="'.$course['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
+            if($course['is_active'] == 1){
+                $subArray[] = '<span class="label label-success">Activo</span>';
             }
             
-            $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
-            $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
-            $sub_array[] = '<button type="button" onClick="ver('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
+            $subArray[] = '<button type="button" onClick="editar('.$course["id"].')"; id="'.$course['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
+            $subArray[] = '<button type="button" onClick="eliminar('.$course["id"].')"; id="'.$course['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
+            $subArray[] = '<button type="button" onClick="ver('.$course["id"].')"; id="'.$course['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
             
-            $data[] = $sub_array;
+            $data[] = $subArray;
         }
         $results = [
             "sEcho"                 => 1,
@@ -49,45 +121,49 @@ switch($_GET['op']){
             "aaData"                => $data
         ];
         echo json_encode($results);
-        break;
-    /*
-     * El caso que sirve para actualizar la sede
-     */
-    case "updateAsignCampuse":
-        $course->updateAsignCampuse($_POST['xid'], $_POST['idr']);
-        break;
-    /*
-     * Eliminar un usuario por medio de su identificador
-     */
-    case 'deleteCourseById':
-        $course->deleteCourseById($_POST['id'], $idr);
-        break;
-    /*
-     * Es para listar/obtener los cursos que existen registrados en el sistema.
-     * Pero debe mostrar el curso por medio de su identificador unico
-     */
-    case 'listCourseById':
-        $data = $course->getCourseById($_POST['id'], $idr);
-        
-        $output["id"]           = $data['id'];
-        $output["name"]         = $data['name'];
-        $output["description"]  = $data['description'];
-        
-        echo json_encode($output);
-        break;
-    /*
-     * Listar para comboBox
-     */
-    case 'combo':
-        $datos = $course->getCourses($idr);
-        if(is_array($datos) == true AND count($datos) > 0){
+    }
+
+    private function updateAssignedCampus($xid, $idr)
+    {
+        $status = $this->courseModel->updateAssignedCampus($xid, $idr);
+        if($status){
+            $answer = [
+                'status'      => true,
+                'msg'         => 'Registro actualizado correctamente'
+            ];
+        }else{
+            $answer = [
+                'status'  => false,
+                'msg'     => 'Fallo con la actualizacion de la sede',
+            ];
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function delete($id, $idr)
+    {
+        $this->courseModel->deleteCourseById($id, $idr);
+    }
+
+    private function show($id, $idr)
+    {
+        $course = $this->courseModel->getCourseById($id, $idr);
+        echo json_encode($course);
+    }
+
+    private function combo($idr)
+    {
+        $courses = $this->courseModel->getCourses($idr);
+        if(is_array($courses) == true AND count($courses) > 0){
             $html = "";
             $html.= "<option value='0' selected>Seleccionar</option>";
-            foreach($datos as $row){
-                $html.= "<option value='".$row['id']."'>".$row['name']."</option>";
+            foreach($courses as $course){
+                $html.= "<option value='".$course['id']."'>".$course['name']."</option>";
             }
             echo $html;
         }
-        break;
+    }
 }
-?>
+
+$controller = new CourseController();
+$controller->handleRequest();

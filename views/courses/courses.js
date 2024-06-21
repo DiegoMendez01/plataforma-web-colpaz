@@ -33,7 +33,7 @@ function insertOrUpdate(e)
         return false;
     }
 	$.ajax({
-		url: "../../controllers/CourseController.php?op=insertOrUpdate",
+		url: "../../controllers/CourseController.php?op=createOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -62,7 +62,7 @@ function updateAsignCampuse(e)
 	e.preventDefault();
 	var formData = new FormData($('#campuse_form')[0]);
 	$.ajax({
-		url: "../../controllers/CourseController.php?op=updateAsignCampuse",
+		url: "../../controllers/CourseController.php?op=updateAsignCampus",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -106,7 +106,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/CourseController.php?op=listCourse',
+			url: '../../controllers/CourseController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -148,7 +148,7 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/CourseController.php?op=listCourseById", { id : id}, function(data) {
+	$.post("../../controllers/CourseController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
@@ -172,7 +172,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/CourseController.php?op=deleteCourseById", { id : id}, function(data) {
+			$.post("../../controllers/CourseController.php?op=delete", { id : id}, function(data) {
         	});
         	
         	$('#course_data').DataTable().ajax.reload();
@@ -189,7 +189,7 @@ function eliminar(id){
 
 function editCampuse(id)
 {
-	$.post("../../controllers/CourseController.php?op=listCourseById", { id : id }, function(data){
+	$.post("../../controllers/CourseController.php?op=show", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#xmdltitulo').html('Asignar sede');
 		$('#campuse_form')[0].reset();

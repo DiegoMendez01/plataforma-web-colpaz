@@ -59,22 +59,41 @@ class Zones extends Database
     {
         $conectar = parent::connection();
         parent::set_names();
-
-        $sql = "
-            UPDATE
-                zones
-            SET
-                name = ?,
-                idr = ?
-            WHERE
-                id = ?
-        ";
         
-        $stmt = $conectar->prepare($sql);
-        $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $idr);
-        $stmt->bindValue(3, $id);
-        return $stmt->execute();
+        $sql = '
+            SELECT
+                *
+            FROM
+                zones
+            WHERE
+                name = ? AND id != ? AND is_active != 0 AND idr = ?
+        ';
+
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $id);
+        $query->bindValue(3, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        if($result){
+            return false;
+        }else{
+            $sql = "
+                UPDATE
+                    zones
+                SET
+                    name = ?,
+                    idr = ?
+                WHERE
+                    id = ?
+            ";
+            
+            $stmt = $conectar->prepare($sql);
+            $stmt->bindValue(1, $name);
+            $stmt->bindValue(2, $idr);
+            $stmt->bindValue(3, $id);
+            return $stmt->execute();
+        }
     }
     /*
      * Funcion para traer todas las zonas registradas hasta el momento
