@@ -35,7 +35,6 @@ $('#submitted_email').on("submit", function(e){
 		    	text: "El correo ha sido enviado a tu bandeja de entrada. Por favor verifica.",
 		    	type: "success",
 		    	showCancelButton: true,
-		    	cancelButtonText: "Salir",
 		    	closeOnConfirm: false
 			},
 			function(isConfirm)
