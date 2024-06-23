@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="type" class="col-sm-2 form-control-label">Carga Archivo <b>*</b></label>
+                        <label for="file" class="col-sm-2 form-control-label">Carga Archivo <b>*</b></label>
                         <div class="col-sm-10">
                             <input type="file" class="form-control" id="file" name="file" />
                         </div>

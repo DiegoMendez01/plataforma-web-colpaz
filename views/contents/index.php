@@ -100,7 +100,7 @@ if(!empty($_SESSION['id'])){
         			?>
             			<div class="col-md-12" style="margin-top: 2rem;">
             				<img src="../../assets/img/icon_file.png" alt="resource icon">
-                            <a href="#" target="_blank">
+                            <a href="../<?= $dataHeaderC['curriculum_file'] ?>" target="_blank">
                                 <i class="fa fa-download"></i> Plan de Estudios
                             </a>
             			</div>
@@ -115,7 +115,7 @@ if(!empty($_SESSION['id'])){
         			?>
             			<div class="col-md-12" style="margin-top: 1rem; <?= $style ?>">
             				<img src="../../assets/img/icon_file.png" alt="resource icon">
-                            <a href="#" target="_blank">
+                            <a href="../<?= $dataHeaderC['supplementary_file'] ?>" target="_blank">
                                 <i class="fa fa-download"></i> Informacion Adicional del Curso
                             </a>
             			</div>

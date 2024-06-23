@@ -70,20 +70,24 @@ function insertOrUpdate(e)
 	var camposVacios = false;
 	
     formData.forEach(function(value, key) {
-	    // Excluir id del chequeo de campos vacios
 	    if (key !== 'id' && key !== 'video') {
-	        if (value === "") {
-	            camposVacios = true;
-	            return false;  // Para salir del bucle si se encuentra un campo vacio
-	        }
+	        if (key === 'file') {
+				if ($('#file')[0].files.length === 0) {
+					camposVacios = true;
+					return false;
+				}
+			} else if (value === "") {
+				camposVacios = true;
+				return false;
+			}
 	    }
 	});
-    
+	
     if (camposVacios) {
-        swal("Error!", "Campos vacios", "error");
+        swal("Advertencia", "Todos los campos son necesarios", "error");
     } else {
     	$.ajax({
-			url: "../../controllers/ContentController.php?op=insertOrUpdate",
+			url: "../../controllers/ContentController.php?op=createOrUpdate",
 			type: "POST",
 			data: formData,
 			contentType: false,
@@ -118,7 +122,7 @@ function insertOrUpdate(e)
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/ContentController.php?op=listContentById", { id : id}, function(data) {
+	$.post("../../controllers/ContentController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#title').val(data.title);
@@ -156,7 +160,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/ContentController.php?op=deleteContentById", { id : id}, function(data) {
+			$.post("../../controllers/ContentController.php?op=delete", { id : id}, function(data) {
         		swal({
 			    	title: "ColPaz Quipama",
 			    	text: "Registro eliminado",
@@ -190,7 +194,7 @@ function bloquear(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/ContentController.php?op=statusBloqContentById", { id : id}, function(data) {
+			$.post("../../controllers/ContentController.php?op=disabled", { id : id}, function(data) {
         		swal({
 			    	title: "ColPaz Quipama",
 			    	text: "Contenido bloqueado",
@@ -224,7 +228,7 @@ function desbloquear(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/ContentController.php?op=statusDesbloqContentById", { id : id}, function(data) {
+			$.post("../../controllers/ContentController.php?op=enabled", { id : id}, function(data) {
         		swal({
 			    	title: "ColPaz Quipama",
 			    	text: "Contenido desbloqueado",

@@ -5,158 +5,125 @@ class Contents extends Database
     /*
      * Funcion para insertar un nuevo contenido.
      */
-    public function insertOrUpdateContent($id = null, $title, $description, $header_content_id, $file, $video)
+    public function insertContent($title, $description, $header_content_id, $file, $video, $destiny, $url_temp)
     {
-        if(empty($title) OR empty($description) OR empty($file) OR empty($header_content_id)){
-            $answer = [
-                'status' => false,
-                'msg'    => 'Todos los campos son necesarios'
-            ];
-        }else{
-            $conectar = parent::connection();
-            parent::set_names();
-            
-            // Files
-            $material      = $_FILES['file']['name'];
-            $url_temp      = $_FILES['file']['tmp_name'];
-            
-            $dir         = '../docs/contents/'.rand(1000, 10000);
-            if(!file_exists($dir)){
-                mkdir($dir, 0777, true);
-            }
-            
-            $destiny     = $dir.'/'.$material;
-            
-            $sql = '
-                SELECT
-                    *
-                FROM
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            INSERT INTO
+                contents (title, description, file, header_content_id, video, created)
+            VALUES
+                (?, ?, ?, ?, ?, now())
+        ';
+        
+        $query    = $conectar->prepare($sql);
+        $query->bindValue(1, $title);
+        $query->bindValue(2, $description);
+        $query->bindValue(3, $destiny);
+        $query->bindValue(4, $header_content_id);
+        $query->bindValue(5, $video);
+        $request  = $query->execute();
+        move_uploaded_file($url_temp, $destiny);
+        return $request;
+    }
+    /*
+     * Funcion para actualizar un nuevo contenido.
+     */
+    public function updateContent($id, $title, $description, $header_content_id, $file, $video, $destiny, $url_temp)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                contents
+            WHERE
+                id = ?
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $id);
+        $query->execute();
+        $data   = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if(empty($_FILES['file']['name'])){
+            $sqlUpdate = '
+                UPDATE
                     contents
+                SET
+                    title = ?,
+                    description = ?,
+                    header_content_id = ?,
+                    video = ?
                 WHERE
                     id = ?
             ';
             
-            $query  = $conectar->prepare($sql);
-            $query->bindValue(1, $id);
-            $query->execute();
-            $data   = $query->fetch(PDO::FETCH_ASSOC);
+            $queryUpdate = $conectar->prepare($sqlUpdate);
+            $queryUpdate->bindValue(1, $title);
+            $queryUpdate->bindValue(2, $description);
+            $queryUpdate->bindValue(3, $header_content_id);
+            $queryUpdate->bindValue(4, $video);
+            $queryUpdate->bindValue(5, $id);
+            $request     = $queryUpdate->execute();
             
-            if($_FILES['file']['size'] > 15000000){
-                $answer = [
-                    'status' => false,
-                    'msg'    => 'Solo se permiten archivos hasta 15MB'
-                ];
-            }else{
-                if(empty($id)){
-                    $sqlInsert = '
-                        INSERT INTO
-                            contents (title, description, file, header_content_id, video, created)
-                        VALUES
-                            (?, ?, ?, ?, ?, now())
-                    ';
-                    
-                    $queryInsert = $conectar->prepare($sqlInsert);
-                    $queryInsert->bindValue(1, $title);
-                    $queryInsert->bindValue(2, $description);
-                    $queryInsert->bindValue(3, $destiny);
-                    $queryInsert->bindValue(4, $header_content_id);
-                    $queryInsert->bindValue(5, $video);
-                    $request     = $queryInsert->execute();
-                    move_uploaded_file($url_temp, $destiny);
-                    $action = 1;
-                }else{
-                    if(empty($_FILES['file']['name'])){
-                        $sqlUpdate = '
-                            UPDATE
-                                contents
-                            SET
-                                title = ?,
-                                description = ?,
-                                header_content_id = ?,
-                                video = ?
-                            WHERE
-                                id = ?
-                        ';
-                        
-                        $queryUpdate = $conectar->prepare($sqlUpdate);
-                        $queryUpdate->bindValue(1, $title);
-                        $queryUpdate->bindValue(2, $description);
-                        $queryUpdate->bindValue(3, $header_content_id);
-                        $queryUpdate->bindValue(4, $video);
-                        $queryUpdate->bindValue(5, $id);
-                        $request     = $queryUpdate->execute();
-                        $action = 2;
-                        
-                        $files = scandir('../docs/contents/');
-                        foreach ($files as $file) {
-                            if ($file != '.' && $file != '..') {
-                                $path = '../docs/contents/' . $file; // Corregir la ruta del directorio
-                                if (is_dir($path)) {
-                                    // Elimina las carpetas vacías
-                                    if (count(scandir($path)) == 2) {
-                                        rmdir($path);
-                                    }
-                                }
-                            }
+            $files = scandir('../docs/contents/');
+            foreach ($files as $file) {
+                if ($file != '.' && $file != '..') {
+                    $path = '../docs/contents/' . $file; // Corregir la ruta del directorio
+                    if (is_dir($path)) {
+                        // Elimina las carpetas vacías
+                        if (count(scandir($path)) == 2) {
+                            rmdir($path);
                         }
-                    }else{
-                        $sqlUpdate = '
-                            UPDATE
-                                contents
-                            SET
-                                title = ?,
-                                description = ?,
-                                file = ?,
-                                header_content_id = ?,
-                                video = ?
-                            WHERE
-                                id = ?
-                        ';
-                        
-                        $queryUpdate = $conectar->prepare($sqlUpdate);
-                        $queryUpdate->bindValue(1, $title);
-                        $queryUpdate->bindValue(2, $description);
-                        $queryUpdate->bindValue(3, $destiny);
-                        $queryUpdate->bindValue(4, $header_content_id);
-                        $queryUpdate->bindValue(5, $video);
-                        $queryUpdate->bindValue(6, $id);
-                        $request     = $queryUpdate->execute();
-                        if($data['file'] != ''){
-                            unlink($data['file']);
-                        }
-                        move_uploaded_file($url_temp, $destiny);
-                        $action = 3;
-                        
-                        $files = scandir('../docs/contents/');
-                        foreach ($files as $file) {
-                            if ($file != '.' && $file != '..') {
-                                $path = '../docs/contents/' . $file; // Corregir la ruta del directorio
-                                if (is_dir($path)) {
-                                    // Elimina las carpetas vacías
-                                    if (count(scandir($path)) == 2) {
-                                        rmdir($path);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if($request > 0){
-                    if($action == 1){
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Contenido creado correctamente'
-                        ];
-                    }else{
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Contenido actualizado correctamente'
-                        ];
                     }
                 }
             }
+            return $request;
+        }else{
+            $sqlUpdate = '
+                UPDATE
+                    contents
+                SET
+                    title = ?,
+                    description = ?,
+                    file = ?,
+                    header_content_id = ?,
+                    video = ?
+                WHERE
+                    id = ?
+            ';
+            
+            $queryUpdate = $conectar->prepare($sqlUpdate);
+            $queryUpdate->bindValue(1, $title);
+            $queryUpdate->bindValue(2, $description);
+            $queryUpdate->bindValue(3, $destiny);
+            $queryUpdate->bindValue(4, $header_content_id);
+            $queryUpdate->bindValue(5, $video);
+            $queryUpdate->bindValue(6, $id);
+            $request     = $queryUpdate->execute();
+            if($data['file'] != ''){
+                unlink($data['file']);
+            }
+            move_uploaded_file($url_temp, $destiny);
+            
+            $files = scandir('../docs/contents/');
+            foreach ($files as $file) {
+                if ($file != '.' && $file != '..') {
+                    $path = '../docs/contents/' . $file; // Corregir la ruta del directorio
+                    if (is_dir($path)) {
+                        // Elimina las carpetas vacías
+                        if (count(scandir($path)) == 2) {
+                            rmdir($path);
+                        }
+                    }
+                }
+            }
+            return $request;
         }
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
     }
     /*
      * Funcion para obtener todos los contenidos activos.
@@ -204,7 +171,7 @@ class Contents extends Database
     /*
      * Funcion para cambiar el estado de un contenido (eliminado visual).
      */
-    public function statusBloqContentById($id)
+    public function disabledContent($id)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -226,7 +193,7 @@ class Contents extends Database
     /*
      * Funcion para cambiar el estado de un contenido (mostrar visual).
      */
-    public function statusDesbloqContentById($id)
+    public function enabledContent($id)
     {
         $conectar = parent::connection();
         parent::set_names();

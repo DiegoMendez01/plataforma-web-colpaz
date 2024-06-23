@@ -109,7 +109,7 @@ class HeaderContents extends Database
                     }else{
                         $sqlUpdate = '
                             UPDATE
-                                contents
+                                header_contents
                             SET
                                 teacher_course_id = ?,
                                 header_video = ?';
