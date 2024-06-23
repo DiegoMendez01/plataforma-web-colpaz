@@ -3,33 +3,121 @@
 require_once("../config/database.php");
 require_once("../models/Assessments.php");
 
-$assessment = new Assessments();
-
-$idr        = $_SESSION['idr'];
-
-switch($_GET['op'])
+class AssesmentController
 {
-    /*
-     * Insertar o actualizar el registro de un contenido de curso. Dependiendo si existe o no el contenido,
-     * se tomara un flujo.
-     */
-    case 'insertOrUpdate':
-        $assessment->insertOrUpdate($_POST['id'], $_POST['title'], $_POST['comment'], $_POST['percentage'], $_POST['content_id'], $_FILES['file'], $_POST['date_limit'], $idr);
-        break;
-    /*
-     * Eliminar totalmente registros de actividades existentes por su ID (eliminado logico).
-     */
-    case 'deleteAssessmentById':
-        if(isset($_POST['id'])){
-            $assessment->deleteAssessmentById($_POST['id'], $idr);
+    private $assessmentModel;
+
+    public function __construct()
+    {
+        $this->assessmentModel = new Assessments();
+    }
+
+    public function handleRequest()
+    {
+        $idr = $_SESSION['idr'];
+        switch($_GET['op'])
+        {
+            case "createOrUpdate":
+                if(empty($_POST['id'])){
+                    $this->create($_POST['title'], $_POST['comment'], $_POST['percentage'], $_POST['content_id'], $_FILES['file'], $_POST['date_limit'], $idr);
+                }else{
+                    $this->update($_POST['id'], $_POST['title'], $_POST['comment'], $_POST['percentage'], $_POST['content_id'], $_FILES['file'], $_POST['date_limit'], $idr);
+                }
+                break;
+            case "delete":
+                $this->delete($_POST['id'], $idr);
+                break;
+            case "show":
+                $this->show($_POST['id'], $idr);
+                break;
         }
-        break;
-    /*
-     * Es para listar/obtener las actividades de contenido que existen registrados en el sistema.
-     */
-    case 'listAssessmentById':
-        $data = $assessment->getAssessmentById($_POST['id'], $idr);
-        echo json_encode($data);
-        break;
+    }
+
+    private function create($title, $comment, $percentage, $content_id, $file, $date_limit, $idr)
+    {
+        if(empty($title) OR empty($comment) OR empty($percentage) OR empty($file) OR empty($content_id) OR empty($date_limit)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            // Files
+            $material      = $_FILES['file']['name'];
+            $url_temp      = $_FILES['file']['tmp_name'];
+            
+            $dir         = '../docs/activities/'.rand(1000, 10000);
+            if(!file_exists($dir)){
+                mkdir($dir, 0777, true);
+            }
+            
+            $destiny     = $dir.'/'.$material;
+
+            if($_FILES['file']['size'] > 15000000){
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'Solo se permiten archivos hasta 15MB'
+                ];
+            }else{
+                $status = $this->assessmentModel->insertAssessment($title, $comment, $percentage, $content_id, $file, $date_limit, $url_temp, $destiny, $idr);
+                if($status){
+                    $answer = [
+                        'status' => true,
+                        'msg'    => 'Se ha creado correctamente la actividad'
+                    ];
+                }
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function update($id, $title, $comment, $percentage, $content_id, $file, $date_limit, $idr)
+    {
+        if(empty($title) OR empty($comment) OR empty($percentage) OR empty($file) OR empty($content_id) OR empty($date_limit)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            // Files
+            $material      = $_FILES['file']['name'];
+            $url_temp      = $_FILES['file']['tmp_name'];
+            
+            $dir         = '../docs/activities/'.rand(1000, 10000);
+            if(!file_exists($dir)){
+                mkdir($dir, 0777, true);
+            }
+            
+            $destiny     = $dir.'/'.$material;
+
+            if($_FILES['file']['size'] > 15000000){
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'Solo se permiten archivos hasta 15MB'
+                ];
+            }else{
+                $status = $this->assessmentModel->updateAssessment($id, $title, $comment, $percentage, $content_id, $file, $date_limit, $url_temp, $destiny, $idr);
+                if($status){
+                    $answer = [
+                        'status' => true,
+                        'msg'    => 'Se ha actualizado correctamente la actividad'
+                    ];
+                }
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function delete($id, $idr)
+    {
+        $this->assessmentModel->deleteAssessmentById($id, $idr);
+    }
+
+    private function show($id, $idr)
+    {
+        $assessment = $this->assessmentModel->getAssessmentById($id, $idr);
+        echo json_encode($assessment);
+    }
 }
-?>
+
+$controller = new AssesmentController();
+$controller->handleRequest();

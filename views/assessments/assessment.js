@@ -27,7 +27,7 @@ function insertOrUpdate(e)
         return false;
     }
     $.ajax({
-        url: "../../controllers/AssessmentController.php?op=insertOrUpdate",
+        url: "../../controllers/AssessmentController.php?op=createOrUpdate",
         type: "POST",
         data: formData,
         contentType: false,
@@ -61,7 +61,7 @@ function insertOrUpdate(e)
 function editAssessment(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/AssessmentController.php?op=listAssessmentById", { id : id}, function(data) {
+	$.post("../../controllers/AssessmentController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#title').val(data.title);
@@ -87,7 +87,7 @@ function deleteAssessment(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/AssessmentController.php?op=deleteAssessmentById", { id : id}, function(data) {
+			$.post("../../controllers/AssessmentController.php?op=delete", { id : id}, function(data) {
         		swal({
 			    	title: "ColPaz Quipama",
 			    	text: "Registro eliminado",
