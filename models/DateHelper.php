@@ -37,11 +37,9 @@ class DateHelper {
         $year = $date->format('Y');
         $time = $date->format('H:i');
 
-        if(empty($time)){
-            return "{$dayOfWeek}, {$day} de {$month} de {$year}";
-        }else{
-            return "{$dayOfWeek}, {$day} de {$month} de {$year}, {$time}";
-        }
+        $time = $date->format('H:i') !== '00:00' ? $date->format('H:i') : "23:59";
+        
+        return "{$dayOfWeek}, {$day} de {$month} de {$year}, {$time}";
     }
 }
 ?>
