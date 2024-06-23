@@ -18,95 +18,90 @@ class Roles extends Database
         }
     }
     /*
-     * Funcion para insertar/registrar un nuevo rol
+     * Funcion para insertar un rol
      */
-    public function updateOrInsertRole($id = null, $name, $functions, $idr)
+    public function insertRole($name, $functions, $idr)
     {
-        if(empty($name) OR empty($functions)){
-            $answer = [
-                'status' => false,
-                'msg'    => 'Todos los campos son necesarios'
-            ];
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                roles
+            WHERE
+                name = ? AND functions = ? AND is_active != 0 AND idr = ?
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $functions);
+        $query->bindValue(3, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($result){
+            return false;
         }else{
-            $conectar = parent::connection();
-            parent::set_names();
+            $sqlInsert = "
+                INSERT INTO
+                    roles (name, functions, created, idr)
+                VALUES
+                    (?, ?, now(), ?)
+            ";
             
-            $sql = '
-                SELECT
-                    *
-                FROM
-                    roles
-                WHERE
-                    name = ? AND id != ? AND is_active != 0 AND idr = ?
-            ';
-            
-            $query  = $conectar->prepare($sql);
-            $query->bindValue(1, $name);
-            $query->bindValue(2, $id);
-            $query->bindValue(3, $idr);
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-            
-            if($result){
-                $answer = [
-                    'status' => false,
-                    'msg'    => 'El rol ya existe'
-                ];
-            }else{
-                if(empty($id)){
-                    $sqlInsert = "
-                        INSERT INTO
-                            roles (name, functions, created, idr)
-                        VALUES
-                            (?, ?, now(), ?)
-                    ";
-                    
-                    $stmtInsert = $conectar->prepare($sqlInsert);
-                    $stmtInsert->bindValue(1, $name);
-                    $stmtInsert->bindValue(2, $functions);
-                    $stmtInsert->bindValue(3, $idr);
-                    $request    = $stmtInsert->execute();
-                    $action     = 1;
-                }else{
-                    $sqlUpdate = "
-                        UPDATE
-                            roles
-                        SET
-                            name      = ?,
-                            functions = ?
-                        WHERE
-                            id = ?
-                    ";
-                    
-                    $stmtUpdate = $conectar->prepare($sqlUpdate);
-                    $stmtUpdate->bindValue(1, $name);
-                    $stmtUpdate->bindValue(2, $functions);
-                    $stmtUpdate->bindValue(3, $id);
-                    $request    = $stmtUpdate->execute();
-                    $action     = 2;
-                }
-                
-                if($request){
-                    if($action == 1){
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Rol creado correctamente'
-                        ];
-                    }else{
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Rol actualizado correctamente'
-                        ];
-                    }
-                }else{
-                    $answer = [
-                        'status' => false,
-                        'msg'    => 'Error al crear el rol'
-                    ];
-                }
-            }
+            $stmtInsert = $conectar->prepare($sqlInsert);
+            $stmtInsert->bindValue(1, $name);
+            $stmtInsert->bindValue(2, $functions);
+            $stmtInsert->bindValue(3, $idr);
+            return $stmtInsert->execute();
         }
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+    /*
+     * Funcion para actualizar un rol
+     */
+    public function updateRole($id, $name, $functions, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = '
+            SELECT
+                *
+            FROM
+                roles
+            WHERE
+                name = ? AND functions = ? AND id != ? AND is_active != 0 AND idr = ?
+        ';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $name);
+        $query->bindValue(2, $functions);
+        $query->bindValue(3, $id);
+        $query->bindValue(4, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($result){
+            return false;
+        }else{
+            $sqlUpdate = "
+                UPDATE
+                    roles
+                SET
+                    name      = ?,
+                    functions = ?
+                WHERE
+                    id = ?
+            ";
+            
+            $stmtUpdate = $conectar->prepare($sqlUpdate);
+            $stmtUpdate->bindValue(1, $name);
+            $stmtUpdate->bindValue(2, $functions);
+            $stmtUpdate->bindValue(3, $id);
+            return $stmtUpdate->execute();
+        }
     }
     /*
      * Funcion para obtener todos los roles
@@ -188,7 +183,7 @@ class Roles extends Database
     /*
      *  Funcion para actualizar la sede del rol
      */
-    public function updateAsignCampuse($id, $idr)
+    public function updateAssignedCampus($id, $idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -204,22 +199,7 @@ class Roles extends Database
         $sql    = $conectar->prepare($sql);
         $sql->bindValue(1, $idr);
         $sql->bindValue(2, $id);
-        $result = $sql->execute();
-        
-        if($result){
-            $answer = [
-                'status'      => true,
-                'msg'         => 'Registro actualizado correctamente'
-            ];
-        }else{
-            $answer = [
-                'status'  => false,
-                'msg'     => 'Fallo con la actualizacion de la sede',
-            ];
-        }
-        
-        // Devolver el rol antiguo y el nuevo
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+        return $sql->execute();
     }
 }
 

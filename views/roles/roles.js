@@ -6,7 +6,7 @@ function init()
 		insertOrUpdate(e);
 	});
 	
-	$('#updateCampuse_form').on("submit", function(e){
+	$('#campuse_form').on("submit", function(e){
 		updateAsignCampuse(e);
 	});
 }
@@ -14,9 +14,9 @@ function init()
 function updateAsignCampuse(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#updateCampuse_form')[0]);
+	var formData = new FormData($('#campuse_form')[0]);
 	$.ajax({
-		url: "../../controllers/RoleController.php?op=updateAsignCampuse",
+		url: "../../controllers/RoleController.php?op=updateAsignCampus",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -24,7 +24,7 @@ function updateAsignCampuse(e)
 		success: function(data){
 			data = JSON.parse(data);
 			if(data.status){
-	        	$('#updateCampuse_form')[0].reset();
+	        	$('#campuse_form')[0].reset();
 				$('#modalAsignCampuse').modal('hide');
 				$('#role_data').DataTable().ajax.reload();
 				swal({
@@ -62,7 +62,7 @@ function insertOrUpdate(e)
         return false;
     }
 	$.ajax({
-		url: "../../controllers/RoleController.php?op=insertOrUpdate",
+		url: "../../controllers/RoleController.php?op=createOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -104,7 +104,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/RoleController.php?op=listRole',
+			url: '../../controllers/RoleController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -209,14 +209,14 @@ function deshabilitar(id)
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/RoleController.php?op=listRoleById", { id : id}, function(data) {
+	$.post("../../controllers/RoleController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
     	$('#functions').val(data.functions);
     });
 	
-	$('#modalGestionRoles').modal('show');
+	$('#modalmantenimiento').modal('show');
 }
 
 function eliminar(id){
@@ -233,7 +233,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/RoleController.php?op=deleteRoleById", { id : id}, function(data) {
+			$.post("../../controllers/RoleController.php?op=delete", { id : id}, function(data) {
         	});
         	
         	$('#role_data').DataTable().ajax.reload();
@@ -250,10 +250,11 @@ function eliminar(id){
 
 function editCampuse(id)
 {
-	$.post("../../controllers/RoleController.php?op=listRoleById", { id : id }, function(data){
+	$.post("../../controllers/RoleController.php?op=show", { id : id }, function(data){
 		data = JSON.parse(data);
-		$('#userx_id').val(data.id);
-		$('#xmdltitulo').html('Asignar sede de Usuario');
+		$('#xid').val(data.id);
+		$('#xmdltitulo').html('Asignar sede');
+		$('#campuse_form')[0].reset();
 		$('#modalAsignCampuse').modal('show');
 	});
 }

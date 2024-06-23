@@ -37,13 +37,13 @@ require_once("../../config/database.php");
 
 				<div class="mobile-menu-right-overlay"></div>
 				
-				<input type="hidden" id="user_idx" value="<?php echo $_SESSION['id']; ?>"> <!-- ID del usuario  -->
-				<input type="hidden" id="rol_idx" value="<?php echo $_SESSION['role_id']; ?>"> <!-- ID del rol del usuario  -->
+				<input type="hidden" id="user_idx" value="<?= $_SESSION['id']; ?>"> <!-- ID del usuario  -->
+				<input type="hidden" id="rol_idx" value="<?= $_SESSION['role_id']; ?>"> <!-- ID del rol del usuario  -->
 				
 				<div class="dropdown dropdown-typical">
 					<a href="../perfil/" class="dropdown-toggle no-arr">
 						<span class="font-icon font-icon-user bg-dark"></span>
-						<span class="lblcontactonomx"><?php echo $_SESSION['name'].' '.$_SESSION['lastname'].' ('.$_SESSION['role_name'].')'; ?></span>
+						<span class="lblcontactonomx"><?= $_SESSION['name'].' '.$_SESSION['lastname'].' ('.$_SESSION['role_name'].')'; ?></span>
 					</a>
 				</div>
 				<!--.site-header-collapsed-->

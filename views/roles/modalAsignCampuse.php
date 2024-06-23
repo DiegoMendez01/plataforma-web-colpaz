@@ -7,9 +7,9 @@
 				</button>
 				<h4 class="modal-title" id="xmdltitulo"></h4>
 			</div>
-			<form method="post" id="updateCampuse_form">
+			<form method="post" id="campuse_form">
     			<div class="modal-body">
-    				<input type="hidden" id="userx_id" name="userx_id">
+    				<input type="hidden" id="xid" name="xid">
     				<div class="form-group row">
         				<label for="idr" class="col-sm-2 form-control-label">Sede <b>*</b></label>
                         <div class="col-sm-10">
