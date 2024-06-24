@@ -10,7 +10,7 @@ $(document).ready(function(){
 		$('#identification_type_id').html(data)
 	})
 	
-	$.post("../../controllers/UserController.php?op=listUserById", { id : id}, function(data) {
+	$.post("../../controllers/UserController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
@@ -50,21 +50,21 @@ $('#user_perfil').on("submit", function(e){
         	if(phone2 !== ""){
 				if(phone2 !== phone){
 	            	$.ajax({
-						url: "../../controllers/UserController.php?op=updateUserPerfilById",
+						url: "../../controllers/UserController.php?op=perfil",
 						type: "POST",
 						data: formData,
 						contentType: false,
 						processData: false,
 						success: function(data){
-							if(data !== ''){
-								jsonData = JSON.parse(data);
+							data = JSON.parse(data);
+							if(data.status){
+								location.reload();
+							}else{
 						        var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
-						        jsonData.message.forEach(function (duplicateInfo) {
+						        data.message.forEach(function (duplicateInfo) {
 						            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
 						        });
 						        swal("Error", errorMessage, "error");
-							}else{
-								location.reload();
 				        	}
 						}
 					});
@@ -73,21 +73,21 @@ $('#user_perfil').on("submit", function(e){
 				}
 			}else{
 				$.ajax({
-					url: "../../controllers/UserController.php?op=updateUserPerfilById",
+					url: "../../controllers/UserController.php?op=perfil",
 					type: "POST",
 					data: formData,
 					contentType: false,
 					processData: false,
 					success: function(data){
-						if(data !== ''){
-							jsonData = JSON.parse(data);
+						data = JSON.parse(data);
+						if(data.status){
+							location.reload();
+						}else{
 					        var errorMessage = "Ya existen datos registrados. Los campos afectados son:\n";
-					        jsonData.message.forEach(function (duplicateInfo) {
+					        data.message.forEach(function (duplicateInfo) {
 					            errorMessage += duplicateInfo.type + ': ' + duplicateInfo.value + '\n';
 					        });
 					        swal("Error", errorMessage, "error");
-						}else{
-							location.reload();
 			        	}
 					}
 				});

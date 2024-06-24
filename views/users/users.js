@@ -12,7 +12,7 @@ function init()
 		updateAsignRole(e);
 	});
 	
-	$('#userCampuse_form').on("submit", function(e){
+	$('#campuse_form').on("submit", function(e){
 		updateAsignCampuse(e);
 	});
 }
@@ -52,9 +52,9 @@ function updateAsignRole(e)
 function updateAsignCampuse(e)
 {
 	e.preventDefault();
-	var formData = new FormData($('#userCampuse_form')[0]);
+	var formData = new FormData($('#campuse_form')[0]);
 	$.ajax({
-		url: "../../controllers/UserController.php?op=updateAsignCampuse",
+		url: "../../controllers/UserController.php?op=updateAsignCampus",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -62,7 +62,7 @@ function updateAsignCampuse(e)
 		success: function(data){
 			data = JSON.parse(data);
 			if(data.status){
-	        	$('#userCampuse_form')[0].reset();
+	        	$('#campuse_form')[0].reset();
 				$('#modalAsignCampuse').modal('hide');
 				$('#user_data').DataTable().ajax.reload();
 				swal({
@@ -90,6 +90,7 @@ function insertOrUpdate(e)
 	    var isEditing    = idFieldValue !== null && idFieldValue !== undefined && idFieldValue !== '';
 	
 	    if (isEditing){
+			console.log(key, value);
 	        if(key !== "phone2" && key !== 'password_hash' && key !== 'repeatPass'){
 	            if(value === ""){
 	                camposVacios = true;
@@ -121,7 +122,7 @@ function insertOrUpdate(e)
     	if(phone2 !== ""){
 			if(phone2 !== phone){
             	$.ajax({
-					url: "../../controllers/UserController.php?op=insertOrUpdate",
+					url: "../../controllers/UserController.php?op=createOrUpdate",
 					type: "POST",
 					data: formData,
 					contentType: false,
@@ -157,7 +158,7 @@ function insertOrUpdate(e)
 			}
 		}else{
 			$.ajax({
-				url: "../../controllers/UserController.php?op=insertOrUpdate",
+				url: "../../controllers/UserController.php?op=createOrUpdate",
 				type: "POST",
 				data: formData,
 				contentType: false,
@@ -217,7 +218,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/UserController.php?op=listUser',
+			url: '../../controllers/UserController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			data: {
@@ -262,7 +263,7 @@ $(document).ready(function(){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/UserController.php?op=listUserById", { id : id}, function(data) {
+	$.post("../../controllers/UserController.php?op=show", { id : id}, function(data) {
     	data = JSON.parse(data);
     	$('#id').val(data.id);
     	$('#name').val(data.name);
@@ -294,7 +295,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/UserController.php?op=deleteUserById", { id : id}, function(data) {
+			$.post("../../controllers/UserController.php?op=delete", { id : id}, function(data) {
         	});
         	
         	$('#user_data').DataTable().ajax.reload();
@@ -311,7 +312,7 @@ function eliminar(id){
 
 function editarRol(id)
 {
-	$.post("../../controllers/UserController.php?op=listUserById", { id : id }, function(data){
+	$.post("../../controllers/UserController.php?op=show", { id : id }, function(data){
 		data = JSON.parse(data);
 		$('#user_id').val(data.id);
 		$('#mdltitulo').html('Asignar rol de Usuario');
@@ -321,10 +322,10 @@ function editarRol(id)
 
 function editCampuse(id)
 {
-	$.post("../../controllers/UserController.php?op=listUserById", { id : id }, function(data){
+	$.post("../../controllers/UserController.php?op=show", { id : id }, function(data){
 		data = JSON.parse(data);
-		$('#userx_id').val(data.id);
-		$('#mdltitulo').html('Asignar sede de Usuario');
+		$('#xid').val(data.id);
+		$('#xmdltitulo').html('Asignar sede');
 		$('#modalAsignCampuse').modal('show');
 	});
 }

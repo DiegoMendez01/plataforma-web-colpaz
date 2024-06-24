@@ -37,7 +37,7 @@ $('#user_register').on("submit", function(e){
     	if(phone !== ""  && phone2 !== ""){
 			if(phone2 !== phone){
             	$.ajax({
-					url: "../../controllers/userController.php?op=insertOrUpdate",
+					url: "../../controllers/userController.php?op=createOrUpdate",
 					type: "POST",
 					data: formData,
 					contentType: false,
@@ -85,7 +85,7 @@ $('#user_register').on("submit", function(e){
 			}
 		}else{
 			$.ajax({
-				url: "../../controllers/userController.php?op=insertOrUpdate",
+				url: "../../controllers/userController.php?op=createOrUpdate",
 				type: "POST",
 				data: formData,
 				contentType: false,

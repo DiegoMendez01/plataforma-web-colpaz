@@ -13,7 +13,7 @@ function handleCredentialResponse(response)
 {
 	$.ajax({
 		type: 'POST',
-		url: '../../controllers/UserController.php?op=registerGoogle',
+		url: '../../controllers/UserController.php?op=google',
 		contentType: 'application/json',
 		headers: {
 			"ContentType": "application/json"
