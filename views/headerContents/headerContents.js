@@ -30,7 +30,7 @@ function insertOrUpdate(e)
     }
     
 	$.ajax({
-		url: "../../controllers/HeaderContentController.php?op=insertOrUpdate",
+		url: "../../controllers/HeaderContentController.php?op=createOrUpdate",
 		type: "POST",
 		data: formData,
 		contentType: false,
@@ -69,7 +69,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/HeaderContentController.php?op=listHeaderContent',
+			url: '../../controllers/HeaderContentController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -122,7 +122,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/HeaderContentController.php?op=deleteHeaderContentById", { idHeader : id}, function(data) {
+			$.post("../../controllers/HeaderContentController.php?op=delete", { idHeader : id}, function(data) {
         	});
         	
         	$('#header_content_data').DataTable().ajax.reload();
@@ -140,7 +140,7 @@ function eliminar(id){
 function editar(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/HeaderContentController.php?op=listHeaderContentById", { idHeader : id}, function(data) {
+	$.post("../../controllers/HeaderContentController.php?op=show", { idHeader : id}, function(data) {
     	data = JSON.parse(data);
     	$('#idHeader').val(data.id);
     	$('#header_content_id').val(data.header_content_id);

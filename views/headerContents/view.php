@@ -13,7 +13,7 @@ if(isset($_SESSION['id'])){
         $teacherCourse  = new TeacherCourses();
         $user           = new Users();
         $campuse        = new Campuses();
-        $headerData     = $HeaderContent->getHeaderContentById($_GET['id']);
+        $headerData     = $HeaderContent->getHeaderContentById($_GET['id'], $idr);
         $teacherCData   = $teacherCourse->getTeacherCourseById($headerData['teacher_course_id'], $idr);
         $userData       = $user->getUserById($teacherCData['user_id']);
         $campuseData    = $campuse->getCampuseById($headerData['idr']);

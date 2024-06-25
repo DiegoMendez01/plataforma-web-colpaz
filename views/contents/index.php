@@ -21,7 +21,7 @@ if(!empty($_SESSION['id'])){
         $dataTeacherC      = $teacherCourse->getTeacherCourseById($courseId, $idr);
         $dataCourse        = $course->getCourseById($dataTeacherC['course_id'], $idr);
         if(!empty($dataCourse)){
-            $dataHeaderC    = $headerContent->getHeaderContentByTeacher($dataTeacherC['id']);
+            $dataHeaderC    = $headerContent->getHeaderContentByTeacher($dataTeacherC['id'], $idr);
             $dataClassroom  = $classroom->getClassroomById($dataTeacherC['classroom_id'], $idr);
             $contents       = $content->getContentByTeacherCourseId($courseId, $dataHeaderC['id']);
 ?>

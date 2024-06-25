@@ -30,7 +30,7 @@ function insertOrUpdateHeader(e)
         swal("Error!", "Campos vacios", "error");
     } else {
     	$.ajax({
-			url: "../../controllers/HeaderContentController.php?op=insertOrUpdate",
+			url: "../../controllers/HeaderContentController.php?op=createOrUpdate",
 			type: "POST",
 			data: formData,
 			contentType: false,
@@ -136,7 +136,7 @@ function editar(id){
 function editarHeader(id){
 	$('#mdltitulo').html('Editar Registro');
 	
-	$.post("../../controllers/HeaderContentController.php?op=listHeaderContentById", { idHeader : id}, function(data) {
+	$.post("../../controllers/HeaderContentController.php?op=show", { idHeader : id}, function(data) {
     	data = JSON.parse(data);
     	$('#idHeader').val(data.id);
     	$('#header_content_id').val(data.header_content_id);
