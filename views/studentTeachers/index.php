@@ -64,7 +64,7 @@ if (isset($_SESSION['id'])) {
     
     <?php require_once ("../html/js.php"); ?>
     
-    <script src="studentteachers.js" type="text/javascript"></script>
+    <script src="studentTeachers.js" type="text/javascript"></script>
 </body>
 </html>
 

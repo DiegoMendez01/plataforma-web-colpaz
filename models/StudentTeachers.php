@@ -16,103 +16,96 @@ class StudentTeachers extends Database
     /*
      * Funcion para inscribir a un estudiante en un curso mediante un formulario
      */
-    public function insertOrUpdateStudentTeacher($id = null, $user_id, $teacher_course_id, $period_id, $idr)
+    public function insertStudentTeacher($user_id, $teacher_course_id, $period_id, $idr)
     {
-        if(empty($user_id) OR empty($teacher_course_id) OR empty($period_id)){
-            $answer = [
-                'status' => false,
-                'msg'    => 'Todos los campos son necesarios'
-            ];
+        $conectar = parent::connection();
+        parent::set_names();
+
+        $sql = '
+            SELECT
+                *
+            FROM
+                student_teachers
+            WHERE
+                user_id = ? AND teacher_course_id = ? AND period_id = ? AND is_active != 0 AND idr = ?';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $user_id);
+        $query->bindValue(2, $teacher_course_id);
+        $query->bindValue(3, $period_id);
+        $query->bindValue(4, $idr);
+        $query->execute();
+        $resultInsert = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($resultInsert > 0){
+            return false;
         }else{
-            $conectar = parent::connection();
-            parent::set_names();
-            
-            // Consulta para insertar
-            $sql = '
-                SELECT
-                    *
-                FROM
-                    student_teachers
-                WHERE
-                    user_id = ? AND teacher_course_id = ? AND period_id = ? AND is_active != 0 AND id != ? AND idr = ?';
-            
-            $query  = $conectar->prepare($sql);
-            $query->bindValue(1, $user_id);
-            $query->bindValue(2, $teacher_course_id);
-            $query->bindValue(3, $period_id);
-            $query->bindValue(4, $id);
-            $query->bindValue(5, $idr);
-            $query->execute();
-            $resultInsert = $query->fetch(PDO::FETCH_ASSOC);
-            
-            if($resultInsert > 0){
-                $answer = [
-                    'status' => false,
-                    'msg'    => 'El grado, profesor materia y periodo existen, seleccione otro'
-                ];
-            }else{
-                if(empty($id)){
-                    $sqlInsert = "
-                        INSERT INTO
-                            student_teachers (user_id, teacher_course_id, period_id, idr, created, is_active) 
-                        VALUES (?, ?, ?, now(), 1)
-                    ";
-                    $stmtInsert = $conectar->prepare($sqlInsert);
-                    $stmtInsert->bindValue(1, $user_id);
-                    $stmtInsert->bindValue(2, $teacher_course_id);
-                    $stmtInsert->bindValue(3, $period_id);
-                    $stmtInsert->bindValue(4, $idr);
-                    $request    = $stmtInsert->execute();
-                    $action     = 1;
-                }else{
-                    $sqlUpdate = "
-                        UPDATE
-                            student_teachers
-                        SET
-                            user_id   = ?,
-                            teacher_course_id = ?,
-                            period_id = ?,
-                            idr = ?
-                        WHERE
-                            id = ?
-                    ";
-                    
-                    $stmtUpdate = $conectar->prepare($sqlUpdate);
-                    $stmtUpdate->bindValue(1, $user_id);
-                    $stmtUpdate->bindValue(2, $teacher_course_id);
-                    $stmtUpdate->bindValue(3, $period_id);
-                    $stmtUpdate->bindValue(4, $idr);
-                    $stmtUpdate->bindValue(5, $id);
-                    $request    = $stmtUpdate->execute();
-                    $action     = 2;
-                }
-                
-                if($request){
-                    if($action == 1){
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Estudiante Profesor creada correctamente'
-                        ];
-                    }else{
-                        $answer = [
-                            'status' => true,
-                            'msg'    => 'Estudiante Profesor actualizada correctamente'
-                        ];
-                    }
-                }else{
-                    $answer = [
-                        'status' => false,
-                        'msg'    => 'Error al crear el estudiante profesor'
-                    ];
-                }
-            }
+            $sqlInsert = "
+                INSERT INTO
+                    student_teachers (user_id, teacher_course_id, period_id, idr, created, is_active) 
+                VALUES (?, ?, ?, ?, now(), 1)
+            ";
+            $stmtInsert = $conectar->prepare($sqlInsert);
+            $stmtInsert->bindValue(1, $user_id);
+            $stmtInsert->bindValue(2, $teacher_course_id);
+            $stmtInsert->bindValue(3, $period_id);
+            $stmtInsert->bindValue(4, $idr);
+            return $stmtInsert->execute();
         }
-        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+    /*
+     * Funcion para actualizar a un estudiante en un curso mediante un formulario
+     */
+    public function updateStudentTeacher($id, $user_id, $teacher_course_id, $period_id, $idr)
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+
+        $sql = '
+            SELECT
+                *
+            FROM
+                student_teachers
+            WHERE
+                user_id = ? AND teacher_course_id = ? AND period_id = ? AND is_active != 0 AND id != ? AND idr = ?';
+        
+        $query  = $conectar->prepare($sql);
+        $query->bindValue(1, $user_id);
+        $query->bindValue(2, $teacher_course_id);
+        $query->bindValue(3, $period_id);
+        $query->bindValue(4, $id);
+        $query->bindValue(5, $idr);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($result > 0){
+            return false;
+        }else{
+            $sqlUpdate = "
+                UPDATE
+                    student_teachers
+                SET
+                    user_id   = ?,
+                    teacher_course_id = ?,
+                    period_id = ?,
+                    idr = ?
+                WHERE
+                    id = ?
+            ";
+            
+            $stmtUpdate = $conectar->prepare($sqlUpdate);
+            $stmtUpdate->bindValue(1, $user_id);
+            $stmtUpdate->bindValue(2, $teacher_course_id);
+            $stmtUpdate->bindValue(3, $period_id);
+            $stmtUpdate->bindValue(4, $idr);
+            $stmtUpdate->bindValue(5, $id);
+            return $stmtUpdate->execute();
+        } 
     }
     /*
      * Funcion para obtener todos los cursos en los que un usuario esta inscrito
      */
-    public function getStudentTeacher($idr)
+    public function getStudentTeachers($idr)
     {
         $conectar = parent::connection();
         parent::set_names();
@@ -131,7 +124,7 @@ class StudentTeachers extends Database
         $stmt = $conectar->prepare($sql);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     /*
      * Funcion para desinscribir a un usuario de un curso (eliminado logico)
@@ -154,9 +147,8 @@ class StudentTeachers extends Database
         
         $stmt = $conectar->prepare($sql);
         $stmt->bindValue(1, $id);
-        $stmt->execute();
         
-        return true;
+        return $stmt->execute();
     }
     /*
      * Funcion para obtener informacion de la inscripcion de un usuario en un curso mediante el ID de inscripcion
@@ -181,7 +173,7 @@ class StudentTeachers extends Database
         $stmt->bindValue(1, $id);
         $stmt->execute();
         
-        return $result = $stmt->fetchAll();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 ?>

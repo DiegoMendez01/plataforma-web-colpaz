@@ -62,6 +62,9 @@ class UserController
             case "google":
                 $this->google();
                 break;
+            case "comboStudent":
+                $this->comboStudent();
+                break;
         }
     }
 
@@ -322,6 +325,19 @@ class UserController
     private function comboTeacher()
     {
         $users = $this->userModel->getUsersTeacher();
+        if(is_array($users) == true AND count($users) > 0){
+            $html = "";
+            $html.= "<option value='0' selected>Seleccionar</option>";
+            foreach($users as $user){
+                $html.= "<option value='".$user['id']."'>".$user['name']." ".$user['lastname']."</option>";
+            }
+            echo $html;
+        }
+    }
+
+    private function comboStudent()
+    {
+        $users = $this->userModel->getUsersStudent();
         if(is_array($users) == true AND count($users) > 0){
             $html = "";
             $html.= "<option value='0' selected>Seleccionar</option>";

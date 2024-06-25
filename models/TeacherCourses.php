@@ -129,15 +129,28 @@ class TeacherCourses extends Database
         parent::set_names();
 
         // Determinar la condición basada en el valor de $_SESSION['role_id']
-        $condition = $this->getSessionCondition($idr);
+        $condition = $this->getSessionCondition($idr, 'tc');
         
         $sql = "
             SELECT
-                * 
+                tc.id,
+                u.name as nameTeacher,
+                u.lastname,
+                cr.name as nameClassroom,
+                c.name as nameCourse,
+                d.name as nameDegree,
+                p.name as namePeriod,
+                tc.idr,
+                tc.is_active
             FROM 
-                teacher_courses
+                teacher_courses tc
+            INNER JOIN users u ON tc.user_id = u.id
+            INNER JOIN courses c ON tc.course_id = c.id
+            INNER JOIN classrooms cr ON tc.classroom_id = cr.id
+            INNER JOIN periods p ON tc.period_id = p.id
+            INNER JOIN degrees d ON tc.degree_id = d.id
             WHERE
-                is_active = 1 ".$condition;
+                tc.is_active = 1 ".$condition;
         
         $stmt = $conectar->prepare($sql);
         $stmt->execute();

@@ -44,7 +44,7 @@ if (isset($_SESSION['id'])) {
                             <th>Aula</th>
                             <th>Grado</th>
                             <th>Periodo</th>
-                            <th>Usuario</th>
+                            <th>Profesor</th>
                             <th>Sede</th>
                             <th class="d-none d-sm-table-cell">Estado</th>
                             <th class="text-center"></th>

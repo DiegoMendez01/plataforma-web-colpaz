@@ -1,14 +1,25 @@
 <?php
 
 require_once("../../config/database.php");
-require_once("../../models/Studentteacher.php");
+require_once("../../models/Studentteachers.php");
+require_once("../../models/Users.php");
+require_once("../../models/Periods.php");
 require_once("../../models/Campuses.php");
 
 if(isset($_SESSION['id'])){
     if(!empty($_GET['id'])){
+        $idr                 = $_SESSION['idr'];
+
         $campuse             = new Campuses();
-        $studentteacherData  = $studentteacher->getStudentTeacherById($_GET['id']);
-        $campuseData         = $campuse->getCampuseById($studentteacherData['idr']);
+        $studentTeachers     = new StudentTeachers();
+        $users               = new Users();
+        $periods             = new Periods();
+
+        $studentTeacher      = $studentTeachers->getStudentTeacherById($_GET['id'], $idr);
+        $student             = $users->getUserById($studentTeacher['user_id']);
+        $teacher             = $users->getUserById($studentTeacher['teacher_course_id']);
+        $period              = $periods->getPeriodsById($studentTeacher['period_id'], $idr);
+        $campuseData         = $campuse->getCampuseById($studentTeacher['idr']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,7 +27,7 @@ if(isset($_SESSION['id'])){
 	<?php
     require_once ("../html/head.php");
     ?>
-    <title>Aula Virtual::Alumnos y profesores <?= $studentteacherData['name'] ?></title>
+    <title>Aula Virtual::Alumno  <?= $student['name'] ?></title>
 </head>
 <body class="with-side-menu">
 	
@@ -38,10 +49,10 @@ if(isset($_SESSION['id'])){
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Alumno profesor <?= $studentteacherData['name'] ?> [ID: <?= $studentteacherData['id'] ?>]</h3>
+							<h3>Alumno <?= $student['name'] ?> [ID: <?= $studentTeacher['id'] ?>]</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="../studentteacher/">Inicio</a></li>
-								<li class="active">Alumno profesor <?= $studentteacherData['name'] ?> [ID: <?= $studentteacherData['id'] ?>]</li>
+								<li><a href="../studentTeachers/">Inicio</a></li>
+								<li class="active">Alumno <?= $student['name'] ?> [ID: <?= $studentTeacher['id'] ?>]</li>
 							</ol>
 						</div>
 					</div>
@@ -52,27 +63,31 @@ if(isset($_SESSION['id'])){
 				<table id="studentteacher_view_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <tbody>
                         <tr>
-                            <th style="width: 30%;">Nombre</th>
-                            <td><?= $studentteacherData['name'] ?></td>
-                        </tr>
-                        <tr>
-                            <th style="width: 30%;">Periodo</th>
-                            <td><?= $studentteacherData['description'] ?></td>
-                        </tr>
-                        <tr>
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
-                            <td><?= (($studentteacherData['is_active']) ?  '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Inactivo</span>') ?></td>
-                        </tr>
-                        <tr>
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
-                            <td><?= $studentteacherData['created']?></td>
-                        </tr>
-                        <tr>
-                            <th class="d-none d-sm-table-cell" style="width: 25%;">Modificado</th>
-                            <td><?= $studentteacherData['modified']?></td>
+                            <th style="width: 30%;">Estudiante</th>
+                            <td><?= $student['name'].' '.$student['lastname'] ?></td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Profesor</th>
+                            <td><?= $teacher['name'].' '.$teacher['lastname'] ?></td>
+                        </tr>
+                        <tr>
+                            <th style="width: 30%;">Periodo</th>
+                            <td><?= $period['name'] ?></td>
+                        </tr>
+                        <tr>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
+                            <td><?= (($studentTeacher['is_active']) ?  '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Inactivo</span>') ?></td>
+                        </tr>
+                        <tr>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Creado</th>
+                            <td><?= $studentTeacher['created']?></td>
+                        </tr>
+                        <tr>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Modificado</th>
+                            <td><?= $studentTeacher['modified']?></td>
+                        </tr>
+                        <tr>
+                            <th class="d-none d-sm-table-cell" style="width: 25%;">Sede</th>
                             <td><span class="label label-primary"><?= $campuseData['name'] ?></span></td>
                         </tr>
                     </tbody>
@@ -82,7 +97,7 @@ if(isset($_SESSION['id'])){
 	</div>
     
     <?php
-    require_once("modalGestionStudentTeacher.php");
+    require_once("mantenimiento.php");
     ?>
     
     <?php

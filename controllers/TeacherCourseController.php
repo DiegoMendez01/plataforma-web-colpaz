@@ -36,19 +36,14 @@ switch($_GET['op'])
         $datos = $teacherCourse->getTeacherCourses($idr);
         $data  = [];
         foreach ($datos as $row) {
-            $userData      = $user->getUserById($row['user_id']);
-            $courseData    = $course->getCourseById($row['course_id'], $idr);
-            $classroomData = $classroom->getClassroomById($row['classroom_id'], $idr);
-            $periodData    = $period->getPeriodsById($row['period_id'], $idr);
-            $degreeData    = $degree->getDegreeById($row['degree_id']);
             $campuseData   = $campuse->getCampuseById($row['idr']);
             
             $sub_array      = [];
-            $sub_array[]    = $courseData['name'];
-            $sub_array[]    = $classroomData['name'];
-            $sub_array[]    = $degreeData['name'];
-            $sub_array[]    = $periodData['name'];
-            $sub_array[]    = $userData['name'].' '.$userData['lastname'];
+            $sub_array[]    = $row['nameCourse'];
+            $sub_array[]    = $row['nameClassroom'];
+            $sub_array[]    = $row['nameDegree'];
+            $sub_array[]    = $row['namePeriod'];
+            $sub_array[]    = $row['nameTeacher'].' '.$row['lastname'];
             $sub_array[]    =  '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
             if($row['is_active'] == 1){
                 $sub_array[] = '<span class="label label-success">Activo</span>';
@@ -89,6 +84,17 @@ switch($_GET['op'])
      */
     case 'getTeacherCourses':
         $teacherCourse->getTeacherCoursesAllData($idr);
+        break;
+    case "combo":
+        $teacherCourses = $teacherCourse->getTeacherCourses($idr);
+        if(is_array($teacherCourses) == true AND count($teacherCourses) > 0){
+            $html = "";
+            $html.= "<option value='0' selected>Seleccionar</option>";
+            foreach($teacherCourses as $data){
+                $html.= "<option value='".$data['id']."'>".$data['name']." | ".$data['nameCourse']." | ".$data['nameClassroom']."</option>";
+            }
+            echo $html;
+        }
         break;
 }
 ?>

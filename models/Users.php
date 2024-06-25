@@ -386,6 +386,29 @@ class Users extends Database
         return $result = $stmt->fetchAll();
     }
     /*
+     * Funcion para traer todos los estudiantes registrados hasta el momento
+     */
+    public function getUsersStudent()
+    {
+        $conectar = parent::connection();
+        parent::set_names();
+        
+        $sql = "
+            SELECT
+                users.*
+            FROM
+                users
+            INNER JOIN roles ON users.role_id = roles.id
+            WHERE
+                users.is_active = 1 AND roles.id <> 1 AND users.role_id = 4
+        ";
+        
+        $stmt = $conectar->prepare($sql);
+        $stmt->execute();
+        
+        return $result = $stmt->fetchAll();
+    }
+    /*
      * Funcion para eliminar totalmente registros de usuarios existentes
      */
     public function deleteUserById($id)
