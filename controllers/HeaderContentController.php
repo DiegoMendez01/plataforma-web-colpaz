@@ -151,7 +151,7 @@ class HeaderContentController
             $subArray[]    = $dataUser['name'].' '.$dataUser['lastname'];
             $subArray[]    = $headerContent['created'];
             if($headerContent['is_active'] == 1){
-                $sub_array[] = '<span class="label label-success">Activo</span>';
+                $subArray[] = '<span class="label label-success">Activo</span>';
             }
             
             $subArray[] = '<button type="button" onClick="editar('.$headerContent["id"].')"; id="'.$headerContent['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';

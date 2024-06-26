@@ -46,10 +46,10 @@ if(isset($_SESSION['id'])){
 				<div class="tbl">
 					<div class="tbl-row">
 						<div class="tbl-cell">
-							<h3>Encabezado de Contenido de <?= $userData[0]['name'].' '.$userData[0]['lastname'] ?> [ID: <?= $headerData['id'] ?>]</h3>
+							<h3>Encabezado de Contenido de <?= $userData['name'].' '.$userData['lastname'] ?> [ID: <?= $headerData['id'] ?>]</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="../courses/">Inicio</a></li>
-								<li class="active">Encabezado de Contenido de <?= $userData[0]['name'].' '.$userData[0]['lastname'] ?> [ID: <?= $headerData['id'] ?>]</li>
+								<li><a href="../headerContents/">Inicio</a></li>
+								<li class="active">Encabezado de Contenido de <?= $userData['name'].' '.$userData['lastname'] ?> [ID: <?= $headerData['id'] ?>]</li>
 							</ol>
 						</div>
 					</div>
@@ -61,19 +61,29 @@ if(isset($_SESSION['id'])){
                     <tbody>
                         <tr>
                             <th style="width: 30%;">Profesor</th>
-                            <td><?= $userData[0]['name'].' '.$userData[0]['lastname'] ?></td>
+                            <td><?= $userData['name'].' '.$userData['lastname'] ?></td>
                         </tr>
                         <tr>
                             <th style="width: 30%;">Video</th>
-                            <td><?= $headerData['header_video'] ?></td>
+                            <td>
+                                <?php if (empty($headerData['header_video'])): ?>
+                                    No Disponible
+                                <?php else: ?>
+                                    <a href="<?= $headerData['header_video'] ?>" class="btn btn-primary" target="_blank">Ver Video</a>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Archivo Plan Estudios</th>
-                            <td><?= $headerData['curriculum_file'] ?></td>
+                            <td>
+                                <a href="../<?= $headerData['curriculum_file'] ?>" class="btn btn-primary" download>Descargar Plan de Estudios</a>
+                            </td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Archivo Informacion Extra</th>
-                            <td><?= $headerData['supplementary_file'] ?></td>
+                            <td>
+                                <a href="../<?= $headerData['supplementary_file'] ?>" class="btn btn-primary" download>Descargar Información Extra</a>
+                            </td>
                         </tr>
                         <tr>
                             <th class="d-none d-sm-table-cell" style="width: 25%;">Estado</th>
