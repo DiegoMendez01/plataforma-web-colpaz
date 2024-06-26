@@ -31,7 +31,7 @@ function insertOrUpdate(e)
         swal("Error!", "Campos vacios", "error");
     } else {
     	$.ajax({
-			url: "../../controllers/TeacherCourseController.php?op=insertOrUpdate",
+			url: "../../controllers/TeacherCourseController.php?op=createOrUpdate",
 			type: "POST",
 			data: formData,
 			contentType: false,
@@ -71,7 +71,7 @@ $(document).ready(function(){
                 'pdfHtml5'
         ],
 		"ajax":{
-			url: '../../controllers/TeacherCourseController.php?op=listTeacherCourses',
+			url: '../../controllers/TeacherCourseController.php?op=index',
 			type: 'POST',
 			dataType: 'JSON',
 			error: function(e){
@@ -120,7 +120,7 @@ function editar(id){
     
     generarCombos()
     
-    $.post("../../controllers/TeacherCourseController.php?op=listTeacherCourseById", { id : id}, function(data) {
+    $.post("../../controllers/TeacherCourseController.php?op=show", { id : id}, function(data) {
         data = JSON.parse(data);
         $('#id').val(data.id);
         $('#degree_id').val(data.degree_id);
@@ -147,7 +147,7 @@ function eliminar(id){
 	function(isConfirm)
 	{
 		if(isConfirm){
-			$.post("../../controllers/TeacherCourseController.php?op=deleteTeacherCourseById", { id : id}, function(data) {
+			$.post("../../controllers/TeacherCourseController.php?op=delete", { id : id}, function(data) {
         	});
         	
         	$('#teachercourse_data').DataTable().ajax.reload();

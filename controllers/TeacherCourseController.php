@@ -1,5 +1,5 @@
 <?php
-// Importa la clase del modelo
+
 require_once("../config/database.php");
 require_once("../models/TeacherCourses.php");
 require_once("../models/Users.php");
@@ -9,51 +9,129 @@ require_once("../models/Classrooms.php");
 require_once("../models/Degrees.php");
 require_once("../models/Campuses.php");
 
-$teacherCourse = new TeacherCourses();
-$user          = new Users();
-$course        = new Courses();
-$classroom     = new Classrooms();
-$period        = new Periods();
-$degree        = new Degrees();
-$campuse       = new Campuses();
-
-$idr = $_SESSION['idr'];
-
-switch($_GET['op'])
+class TeacherCourseController
 {
-    /*
-     * Insertar o actualizar el registro de un curso por profesor. Dependiendo si existe o no el curso por profesor,
-     * se tomara un flujo.
-     */
-    case 'insertOrUpdate':
-        $teacherCourse->insertOrUpdateTeacherCourse($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id'], $idr);
-        break;
-    /*
-     * Es para listar/obtener los cursos por profesor que existen registrados en el sistema con una condicion que este activo.
-     * Ademas, de dibujar una tabla para mostrar los registros.
-     */
-    case 'listTeacherCourses':
-        $datos = $teacherCourse->getTeacherCourses($idr);
-        $data  = [];
-        foreach ($datos as $row) {
-            $campuseData   = $campuse->getCampuseById($row['idr']);
+    private $teacherCourseModel;
+    private $userModel;
+    private $courseModel;
+    private $classroomModel;
+    private $periodModel;
+    private $degreeModel;
+    private $campuseModel;
+
+    public function __construct()
+    {
+        $this->teacherCourseModel = new TeacherCourses();
+        $this->userModel          = new Users();
+        $this->courseModel        = new Courses();
+        $this->classroomModel     = new Classrooms();
+        $this->periodModel        = new Periods();
+        $this->degreeModel        = new Degrees();
+        $this->campuseModel       = new Campuses();
+    }
+
+    public function handleRequest()
+    {
+        $idr = $_SESSION['idr'];
+
+        switch($_GET['op'])
+        {
+            case "createOrUpdate":
+                if(empty($_POST['id'])){
+                    $this->create($_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id'], $idr);
+                }else{
+                    $this->update($_POST['id'], $_POST['user_id'], $_POST['course_id'], $_POST['classroom_id'], $_POST['period_id'], $_POST['degree_id'], $idr);
+                }
+                break;
+            case "index":
+                $this->index($idr);
+                break;
+            case "delete":
+                $this->delete($_POST['id'], $idr);
+                break;
+            case "show":
+                $this->show($_POST['id'], $idr);
+                break;
+            case "getTeacherCourses":
+                $this->getTeacherCourses($idr);
+                break;
+            case "combo":
+                $this->combo($idr);
+                break;
+        }
+    }
+
+    private function create($user_id, $course_id, $classroom_id, $period_id, $degree_id, $idr)
+    {
+        if(empty($user_id) OR empty($course_id) OR empty($classroom_id) OR empty($period_id) OR empty($degree_id)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            $status = $this->teacherCourseModel->insertTeacherCourse($user_id, $course_id, $classroom_id, $period_id, $degree_id, $idr);
+            if($status){
+                $answer = [
+                    'status' => true,
+                    'msg'    => 'Curso Profesor creado correctamente'
+                ];
+            }else{
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'El grado, curso, materia y profesor existen, seleccione otro'
+                ];
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function update($id, $user_id, $course_id, $classroom_id, $period_id, $degree_id, $idr)
+    {
+        if(empty($user_id) OR empty($course_id) OR empty($classroom_id) OR empty($period_id) OR empty($degree_id)){
+            $answer = [
+                'status' => false,
+                'msg'    => 'Todos los campos son necesarios'
+            ];
+        }else{
+            $status = $this->teacherCourseModel->updateTeacherCourse($id, $user_id, $course_id, $classroom_id, $period_id, $degree_id, $idr);
+            if($status){
+                $answer = [
+                    'status' => true,
+                    'msg'    => 'Curso Profesor actualizado correctamente'
+                ];
+            }else{
+                $answer = [
+                    'status' => false,
+                    'msg'    => 'El grado, curso, materia y profesor existen, seleccione otro'
+                ];
+            }
+        }
+        echo json_encode($answer, JSON_UNESCAPED_UNICODE);
+    }
+
+    private function index($idr)
+    {
+        $teacherCourses = $this->teacherCourseModel->getTeacherCourses($idr);
+        $data           = [];
+        foreach ($teacherCourses as $teacherCourse) {
+            $campuseData   = $this->campuseModel->getCampuseById($teacherCourse['idr']);
             
-            $sub_array      = [];
-            $sub_array[]    = $row['nameCourse'];
-            $sub_array[]    = $row['nameClassroom'];
-            $sub_array[]    = $row['nameDegree'];
-            $sub_array[]    = $row['namePeriod'];
-            $sub_array[]    = $row['nameTeacher'].' '.$row['lastname'];
-            $sub_array[]    =  '<a onClick="editCampuse('.$row['id'].')"; id="'.$row['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
-            if($row['is_active'] == 1){
-                $sub_array[] = '<span class="label label-success">Activo</span>';
+            $subArray      = [];
+            $subArray[]    = $teacherCourse['nameCourse'];
+            $subArray[]    = $teacherCourse['nameClassroom'];
+            $subArray[]    = $teacherCourse['nameDegree'];
+            $subArray[]    = $teacherCourse['namePeriod'];
+            $subArray[]    = $teacherCourse['nameTeacher'].' '.$teacherCourse['lastname'];
+            $subArray[]    =  '<a onClick="editCampuse('.$teacherCourse['id'].')"; id="'.$teacherCourse['id'].'"><span class="label label-pill label-primary">'.$campuseData['name'].'</span></a>';
+            if($teacherCourse['is_active'] == 1){
+                $subArray[] = '<span class="label label-success">Activo</span>';
             }
             
-            $sub_array[] = '<button type="button" onClick="editar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
-            $sub_array[] = '<button type="button" onClick="eliminar('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
-            $sub_array[] = '<button type="button" onClick="ver('.$row["id"].')"; id="'.$row['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
+            $subArray[] = '<button type="button" onClick="editar('.$teacherCourse["id"].')"; id="'.$teacherCourse['id'].'" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
+            $subArray[] = '<button type="button" onClick="eliminar('.$teacherCourse["id"].')"; id="'.$teacherCourse['id'].'" class="btn btn-inline btn-danger btn-sm ladda-button"><i class="fa fa-trash"></i></button>';
+            $subArray[] = '<button type="button" onClick="ver('.$teacherCourse["id"].')"; id="'.$teacherCourse['id'].'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
             
-            $data[] = $sub_array;
+            $data[] = $subArray;
         }
         $results = [
             "sEcho"                 => 1,
@@ -62,31 +140,27 @@ switch($_GET['op'])
             "aaData"                => $data
         ];
         echo json_encode($results);
-        break;
-    /*
-     * Eliminar totalmente registros de cursos por profesor existentes por su ID (eliminado logico).
-     */
-    case 'deleteTeacherCourseById':
-        if(isset($_POST['id'])){
-            $teacherCourse->deleteTeacherCourseById($_POST['id'], $idr);
-        }
-        break;
-    /*
-     * Es para listar/obtener los cursos por profesor que existen registrados en el sistema.
-     * Pero debe mostrar el curso por profesor por medio de su identificador unico
-     */
-    case 'listTeacherCourseById':
-        $datos = $teacherCourse->getTeacherCourseById($_POST['id'], $idr);
-        echo json_encode($datos);
-        break;
-    /*
-     * Es para listar/obtener los docentes por cursos con su otra data anexada que existen registrados en el sistema.
-     */
-    case 'getTeacherCourses':
-        $teacherCourse->getTeacherCoursesAllData($idr);
-        break;
-    case "combo":
-        $teacherCourses = $teacherCourse->getTeacherCourses($idr);
+    }
+
+    private function delete($id, $idr)
+    {
+        $this->teacherCourseModel->deleteTeacherCourseById($id, $idr);
+    }
+
+    private function show($id, $idr)
+    {
+        $teacherCourse = $this->teacherCourseModel->getTeacherCourseById($id, $idr);
+        echo json_encode($teacherCourse);
+    }
+
+    private function getTeacherCourses($idr)
+    {
+        $this->teacherCourseModel->getTeacherCoursesAllData($idr);
+    }
+
+    private function combo($idr)
+    {
+        $teacherCourses = $this->teacherCourseModel->getTeacherCourses($idr);
         if(is_array($teacherCourses) == true AND count($teacherCourses) > 0){
             $html = "";
             $html.= "<option value='0' selected>Seleccionar</option>";
@@ -95,6 +169,8 @@ switch($_GET['op'])
             }
             echo $html;
         }
-        break;
+    }
 }
-?>
+
+$controller = new TeacherCourseController();
+$controller->handleRequest();
