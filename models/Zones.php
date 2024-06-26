@@ -1,5 +1,7 @@
 <?php
 
+require_once (__DIR__."/../config/database.php");
+
 class Zones extends Database
 {
     /*

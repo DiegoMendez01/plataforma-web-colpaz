@@ -1,6 +1,6 @@
 <?php
 
-require_once("../config/database.php");
+require_once("../docs/Session.php");
 require_once("../models/TeacherCourses.php");
 require_once("../models/Users.php");
 require_once("../models/Periods.php");
@@ -18,6 +18,7 @@ class StudentTeacherController
     private $classroomModel;
     private $studentTeacherModel;
     private $campuseModel;
+    private $session;
 
     public function __construct()
     {
@@ -28,11 +29,12 @@ class StudentTeacherController
         $this->classroomModel       = new Classrooms();
         $this->studentTeacherModel  = new StudentTeachers();
         $this->campuseModel         = new Campuses();
+        $this->session              = Session::getInstance();
     }
 
     public function handleRequest()
     {
-        $idr = $_SESSION['idr'];
+        $idr = $this->session->get('idr');
 
         switch($_GET['op'])
         {

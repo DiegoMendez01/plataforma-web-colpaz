@@ -1,4 +1,7 @@
 <?php
+
+require_once (__DIR__."/../config/database.php");
+
 class DateHelper {
     public static function formatDate($dateString) {
         $date = new DateTime($dateString);

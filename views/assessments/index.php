@@ -1,16 +1,19 @@
 <?php
 
-require_once("../../config/database.php");
+require_once("../../docs/Session.php");
+require_once("../../docs/Route.php");
 require_once("../../models/Assessments.php");
 require_once("../../models/DateHelper.php");
 require_once("../../models/TeacherCourses.php");
 require_once("../../models/Users.php");
 
-if(!empty($_SESSION['id'])){
+$session = Session::getInstance();
+
+if($session->has('id')){
     if(!empty($_GET['content']) AND !empty($_GET['course'])){
         $courseId    = $_GET['course'];
         $contentId   = $_GET['content'];
-        $idr         = $_SESSION['idr'];
+        $idr         = $session->get('idr');
 
         $assessment     = new Assessments();
         $teacherCourse  = new TeacherCourses();
@@ -123,11 +126,11 @@ if(!empty($_SESSION['id'])){
 </html>
 <?php
     }else{
-        header("Location:" . Database::route() . "views/home/");
+        header("Location:" . Route::route() . "views/home/");
         exit;
     }
 }else{
-    header("Location:" . Database::route() . "views/404/");
+    header("Location:" . Route::route() . "views/404/");
     exit;
 }
 ?>

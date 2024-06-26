@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-require_once ("../../config/database.php");
+require_once("../../docs/Route.php");
 
 if(!empty($_GET['token'])){
     $token    = $_GET['token'];
@@ -59,15 +59,15 @@ if(!empty($_GET['token'])){
 </html>
 <?php
         }else{
-            header("Location:".Database::route()."views/site/submitted-email.php?msg=4");
+            header("Location:".Route::route()."views/site/submitted-email.php?msg=4");
             exit;
         }
     }else{
-        header("Location:".Database::route()."views/site/submitted-email.php?msg=3");
+        header("Location:".Route::route()."views/site/submitted-email.php?msg=3");
         exit;
     }
 }else{
-    header("Location:".Database::route()."views/site/submitted-email.php?msg=2");
+    header("Location:".Route::route()."views/site/submitted-email.php?msg=2");
     exit;
 }
 ?>

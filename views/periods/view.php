@@ -1,11 +1,14 @@
 <?php
 
-require_once("../../config/database.php");
 require_once("../../models/Periods.php");
+require_once("../../docs/Route.php");
+require_once("../../docs/Session.php");
 
-if(isset($_SESSION['id'])){
+$session = Session::getInstance();
+
+if($session->has('id')){
     if(!empty($_GET['id'])){
-        $idr            = $_SESSION['idr'];
+        $idr            = $session->get('idr');
         $periods        = new Periods();
         $periodsData    = $periods->getPeriodsById($_GET['id'], $idr);
 ?>
@@ -80,11 +83,11 @@ if(isset($_SESSION['id'])){
 </html>
 <?php
     } else {
-        header("Location:" . Database::route() . "views/periods/");
+        header("Location:" . Route::route() . "views/periods/");
         exit;
     }
 } else {
-    header("Location:" . Database::route() . "views/404/");
+    header("Location:" . Route::route() . "views/404/");
     exit;
 }
 ?>

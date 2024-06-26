@@ -1,6 +1,6 @@
 <?php
 
-require_once("../config/database.php");
+require_once("../docs/Session.php");
 require_once("../models/Roles.php");
 require_once("../models/Campuses.php");
 
@@ -8,16 +8,19 @@ class RoleController
 {
     private $roleModel;
     private $campuseModel;
+    private $session;
 
     public function __construct()
     {
         $this->roleModel    = new Roles();
         $this->campuseModel = new Campuses();
+        $this->session      = Session::getInstance();
     }
 
     public function handleRequest()
     {
-        $idr = $_SESSION['idr'];
+        $idr = $this->session->get('idr');
+
         switch($_GET['op'])
         {
             case "createOrUpdate":

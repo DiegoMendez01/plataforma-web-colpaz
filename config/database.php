@@ -1,6 +1,4 @@
-<?php 
-
-session_start();
+<?php
 
 class Database
 {
@@ -20,11 +18,6 @@ class Database
     public function set_names()
     {
         return $this->dbh->query("SET NAMES 'utf8'");
-    }
-    
-    public static function route()
-    {
-        return "http://localhost/plataforma-web-colpaz/";
     }
 }
 

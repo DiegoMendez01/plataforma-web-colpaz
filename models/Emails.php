@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Libreria para incluir el PHPmailer del composer
 require '../includes/vendor/autoload.php';
@@ -6,8 +6,7 @@ require '../includes/vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Llamada de las clases necesarias que se usaran en el envio del Email
-require_once("../config/database.php");
+require_once (__DIR__."/../config/database.php");
 
 Class Emails extends PHPMailer
 {

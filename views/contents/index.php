@@ -1,16 +1,19 @@
 <?php
 
-require_once("../../config/database.php");
 require_once("../../models/Contents.php");
 require_once("../../models/Courses.php");
 require_once("../../models/TeacherCourses.php");
 require_once("../../models/Classrooms.php");
 require_once("../../models/HeaderContents.php");
+require_once("../../docs/Route.php");
+require_once("../../docs/Session.php");
 
-if(!empty($_SESSION['id'])){
+$session = Session::getInstance();
+
+if($session->has('id')){
     if(!empty($_GET['course'])){
         $courseId          = $_GET['course'];
-        $idr               = $_SESSION['idr'];
+        $idr               = $session->get('idr');
         
         $content           = new Contents();
         $teacherCourse     = new TeacherCourses();
@@ -268,15 +271,15 @@ if(!empty($_SESSION['id'])){
 </html>
 <?php
         }else{
-            header("Location:" . Database::route() . "views/home/index.php?msg=2");
+            header("Location:" . Route::route() . "views/home/index.php?msg=2");
             exit;
         }
     }else{
-        header("Location:" . Database::route() . "views/home/");
+        header("Location:" . Route::route() . "views/home/");
         exit;
     }
 }else{
-    header("Location:" . Database::route() . "views/404/");
+    header("Location:" . Route::route() . "views/404/");
     exit;
 }
 ?>

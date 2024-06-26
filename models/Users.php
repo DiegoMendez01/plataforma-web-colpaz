@@ -1,13 +1,20 @@
 <?php
 
+require_once(__DIR__ . "/../docs/Route.php");
+require_once(__DIR__ . "/../docs/Session.php");
+require_once (__DIR__ . "/../config/database.php");
+
 class Users extends Database
 {
+
+    private $session;
+
+    public function __construct()
+    {
+        $this->session = Session::getInstance();
+    }
     /*
-     * Funcion para guardar los datos del usuario en variables de SESSION que servira
-     * para mantener esa data mientras el usuario se encuentra logeado y nos ayude a realizar
-     * funciones correspondientes a lo largo de su uso. Por medio de los metodos $_POST recibimos
-     * la data que viene del formulario de login para guardarlos en variables y validar la consulta
-     * para luego guardarlas en las variables de session.
+     * Funcion para autenticar un usuario al iniciar sesion
      */
     public function login()
     {
@@ -20,7 +27,7 @@ class Users extends Database
             $password_hash      = $_POST['password_hash'];
             
             if(empty($identification) AND empty($password_hash)){
-                header("Location:".Database::route()."views/site/index?msg=2");
+                header("Location:".Route::route()."views/site/index?msg=2");
                 exit;
             }else{
                 $sql = "
@@ -45,31 +52,29 @@ class Users extends Database
                 if(is_array($result) AND count($result) > 0){
                     if(password_verify($password_hash, $result['password_hash'])){
                         if($result['validate'] == 1){
-                            $_SESSION['id']             = $result['id'];
-                            $_SESSION['name']           = $result['name'];
-                            $_SESSION['lastname']       = $result['lastname'];
-                            $_SESSION['email']          = $result['email'];
-                            $_SESSION['identification'] = $result['identification'];
-                            $_SESSION['password_hash']  = $result['password_hash'];
-                            $_SESSION['is_active']      = $result['is_active'];
-                            $_SESSION['created']        = $result['created'];
-                            $_SESSION['role_id']        = $result['role_id'];
-                            $_SESSION['role_name']      = $result['role_name'];
-                            $_SESSION['is_google']      = $result['is_update_google'];
-                            $_SESSION['campuse']        = $result['campuse'];
-                            $_SESSION['idr']            = $result['idr'];
-                            header("Location:".Database::route()."views/home/");
+                            $this->session->put('id', $result['id']);
+                            $this->session->put('name', $result['name']);
+                            $this->session->put('lastname', $result['lastname']);
+                            $this->session->put('email', $result['email']);
+                            $this->session->put('identification', $result['identification']);
+                            $this->session->put('created', $result['created']);
+                            $this->session->put('role_id', $result['role_id']);
+                            $this->session->put('role_name', $result['role_name']);
+                            $this->session->put('is_google', $result['is_google']);
+                            $this->session->put('campuse', $result['campuse']);
+                            $this->session->put('idr', $result['idr']);
+                            header("Location:".Route::route()."views/home/");
                             exit;
                         }else{
-                            header("Location:".Database::route()."views/site/index?msg=3");
+                            header("Location:".Route::route()."views/site/index?msg=3");
                             exit;
                         }
                     }else{
-                        header("Location:".Database::route()."views/site/index?msg=4");
+                        header("Location:".Route::route()."views/site/index?msg=4");
                         exit;
                     }
                 }else{
-                    header("Location:".Database::route()."views/site/index?msg=1");
+                    header("Location:".Route::route()."views/site/index?msg=1");
                     exit;
                 }
             }

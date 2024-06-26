@@ -1,28 +1,30 @@
 <?php 
 
-require_once("../config/database.php");
 require_once("../models/Users.php");
 require_once("../models/Auths.php");
 require_once("../models/Roles.php");
 require_once("../models/Campuses.php");
+require_once("../docs/Session.php");
 
 class UserController
 {
     private $userModel;
     private $roleModel;
     private $campuseModel;
+    private $session;
 
     public function __construct()
     {
         $this->userModel    = new Users();
         $this->roleModel    = new Roles();
         $this->campuseModel = new Campuses();
+        $this->session      = Session::getInstance();
     }
 
     public function handleRequest()
     {
-        if(!empty($_SESSION['idr'])){
-            $idr = $_SESSION['idr'];
+        if($this->session->has('idr')){
+            $idr = $this->session->get('idr');
         }
 
         switch($_GET['op'])

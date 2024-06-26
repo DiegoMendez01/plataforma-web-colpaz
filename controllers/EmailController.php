@@ -1,6 +1,5 @@
 <?php
 
-require_once("../config/database.php");
 require_once("../models/Emails.php");
 require_once("../models/Users.php");
 require_once("../models/Roles.php");

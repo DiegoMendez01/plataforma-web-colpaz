@@ -1,6 +1,5 @@
 <?php
 
-require_once("../config/database.php");
 require_once("../models/Campuses.php");
 
 class CampuseController

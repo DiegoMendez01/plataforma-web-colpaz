@@ -1,6 +1,5 @@
 <?php
 
-require_once("../config/database.php");
 require_once("../models/Degrees.php");
 
 class DegreeController

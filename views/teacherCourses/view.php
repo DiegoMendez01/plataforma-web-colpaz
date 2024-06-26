@@ -1,6 +1,5 @@
 <?php
 
-require_once("../../config/database.php");
 require_once("../../models/TeacherCourses.php");
 require_once("../../models/Campuses.php");
 require_once("../../models/Users.php");
@@ -8,11 +7,15 @@ require_once("../../models/Courses.php");
 require_once("../../models/Classrooms.php");
 require_once("../../models/Degrees.php");
 require_once("../../models/Periods.php");
+require_once("../../docs/Route.php");
+require_once("../../docs/Session.php");
 
-if(isset($_SESSION['id'])){
+$session = Session::getInstance();
+
+if($session->has('id')){
     if(!empty($_GET['id'])){
         
-        $idr                = $_SESSION['idr'];
+        $idr                = $session->get('idr');
 
         $teacherCourse      = new TeacherCourses();
         $campuse            = new Campuses();
@@ -126,15 +129,15 @@ if(isset($_SESSION['id'])){
 </html>
 <?php
         }else{
-            header("Location:" . Database::route() . "views/teacherCourses/");
+            header("Location:" . Route::route() . "views/teacherCourses/");
             exit;
         }
     }else{
-        header("Location:" . Database::route() . "views/teacherCourses/");
+        header("Location:" . Route::route() . "views/teacherCourses/");
         exit;
     }
 }else{
-    header("Location:" . Database::route() . "views/404/");
+    header("Location:" . Route::route() . "views/404/");
     exit;
 }
 ?>

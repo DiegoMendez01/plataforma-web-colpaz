@@ -1,6 +1,6 @@
 <?php
 
-require_once("../config/database.php");
+require_once("../docs/Session.php");
 require_once("../models/HeaderContents.php");
 require_once("../models/TeacherCourses.php");
 require_once("../models/Users.php");
@@ -10,17 +10,20 @@ class HeaderContentController
     private $headerContentModel;
     private $teacherCourseModel;
     private $userModel;
+    private $session;
 
     public function __construct()
     {
         $this->headerContentModel = new HeaderContents();
         $this->teacherCourseModel = new TeacherCourses();
         $this->userModel          = new Users();
+        $this->session            = Session::getInstance();
     }
 
     public function handleRequest()
     {
-        $idr = $_SESSION['idr'];
+        $idr = $this->session->get('idr');
+
         switch($_GET['op'])
         {
             case "createOrUpdate":

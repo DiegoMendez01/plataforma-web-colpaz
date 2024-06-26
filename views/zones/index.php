@@ -1,9 +1,11 @@
 <?php
 
-require_once("../../config/database.php");
+require_once("../../docs/Route.php");
+require_once("../../docs/Session.php");
 
+$session = Session::getInstance();
 
-if (isset($_SESSION['id'])) {
+if($session->has('id')){
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +71,7 @@ if (isset($_SESSION['id'])) {
 
 <?php
 } else {
-    header("Location:" . Database::route() . "views/404/");
+    header("Location:" . Route::route() . "views/404/");
     exit;
 }
 ?>

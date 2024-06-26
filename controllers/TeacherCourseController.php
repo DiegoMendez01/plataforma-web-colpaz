@@ -1,38 +1,25 @@
 <?php
 
-require_once("../config/database.php");
+require_once("../docs/Session.php");
 require_once("../models/TeacherCourses.php");
-require_once("../models/Users.php");
-require_once("../models/Courses.php");
-require_once("../models/Periods.php");
-require_once("../models/Classrooms.php");
-require_once("../models/Degrees.php");
 require_once("../models/Campuses.php");
 
 class TeacherCourseController
 {
     private $teacherCourseModel;
-    private $userModel;
-    private $courseModel;
-    private $classroomModel;
-    private $periodModel;
-    private $degreeModel;
     private $campuseModel;
+    private $session;
 
     public function __construct()
     {
         $this->teacherCourseModel = new TeacherCourses();
-        $this->userModel          = new Users();
-        $this->courseModel        = new Courses();
-        $this->classroomModel     = new Classrooms();
-        $this->periodModel        = new Periods();
-        $this->degreeModel        = new Degrees();
         $this->campuseModel       = new Campuses();
+        $this->session            = Session::getInstance();
     }
 
     public function handleRequest()
     {
-        $idr = $_SESSION['idr'];
+        $idr = $this->session->get('idr');
 
         switch($_GET['op'])
         {

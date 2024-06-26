@@ -1,10 +1,13 @@
 <?php
 
-require_once("../../config/database.php");
 require_once("../../models/IdentificationTypes.php");
 require_once("../../models/Campuses.php");
+require_once("../../docs/Route.php");
+require_once("../../docs/Session.php");
 
-if(isset($_SESSION['id'])){
+$session = Session::getInstance();
+
+if($session->has('id')){
     if(!empty($_GET['id'])){
         $identificationType      = new IdentificationTypes();
         $campuse                 = new Campuses();
@@ -90,11 +93,11 @@ if(isset($_SESSION['id'])){
 </html>
 <?php
     }else{
-        header("Location:" . Database::route() . "views/identificationTpes/");
+        header("Location:" . Route::route() . "views/identificationTpes/");
         exit;
     }
 }else{
-    header("Location:" . Database::route() . "views/404/");
+    header("Location:" . Route::route() . "views/404/");
     exit;
 }
 ?>

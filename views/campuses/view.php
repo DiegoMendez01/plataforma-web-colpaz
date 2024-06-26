@@ -1,9 +1,12 @@
 <?php
 
-require_once("../../config/database.php");
+require_once("../../docs/Route.php");
+require_once("../../docs/Session.php");
 require_once("../../models/Campuses.php");
 
-if(isset($_SESSION['id'])){
+$session = Session::getInstance();
+
+if($session->has('id')){
     if(!empty($_GET['id'])){
         $campus       = new Campuses(); // Asegúrate de que la clase Campuses tenga un método getCampusById() definido
         $campusData   = $campus->getCampuseById($_GET['id']);
@@ -83,11 +86,11 @@ if(isset($_SESSION['id'])){
 </html>
 <?php
     } else {
-        header("Location:" . Database::route() . "views/campuses/");
+        header("Location:" . Route::route() . "views/campuses/");
         exit;
     }
 } else {
-    header("Location:" . Database::route() . "views/404/");
+    header("Location:" . Route::route() . "views/404/");
     exit;
 }
 ?>

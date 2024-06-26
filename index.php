@@ -1,6 +1,8 @@
 <?php
 
-require_once("config/database.php");
+require_once(__DIR__ . "/docs/Session.php");
+
+$session = Session::getInstance();
 
 ?>
 
@@ -77,7 +79,7 @@ require_once("config/database.php");
                             </div>
                             <div class="dropdown dropdown-typical">
                             	<?php
-                            	if(!empty($_SESSION['id'])){
+                            	if($session->has('id')){
                             	?>
                                 <a href="views/home/" class="dropdown-toggle no-arr" style="color: white;">
                                     <span class="fa fa-graduation-cap"></span>

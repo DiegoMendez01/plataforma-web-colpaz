@@ -1,10 +1,13 @@
 <?php
 
-require_once("../../config/database.php");
+require_once(__DIR__ . "../../../docs/Route.php");
+require_once(__DIR__ . "../../../docs/Session.php");
 require_once("../../models/Menus.php");
 
-$menu  = new Menus();
-$menus = $menu->getMenusByRole($_SESSION['role_id'], $_SESSION['idr']);
+$session = Session::getInstance();
+$menu    = new Menus();
+
+$menus   = $menu->getMenusByRole($session->get('role_id'), $session->get('idr'));
 
 ?>
 
@@ -43,11 +46,11 @@ $menus = $menu->getMenusByRole($_SESSION['role_id'], $_SESSION['idr']);
             </ul>
         </li>
 		<?php
-        if($_SESSION['role_id'] == 3) {
+        if($session->get('role_id') == 3) {
             require_once("../../models/TeacherCourses.php");
         
             $teacherCourse = new TeacherCourses();
-            $dataAll = $teacherCourse->getTeacherCourseByIdUser($_SESSION['id'], $_SESSION['idr']);
+            $dataAll = $teacherCourse->getTeacherCourseByIdUser($session->get('id'), $session->get('idr'));
             ?>
         
             <li class="blue-dirty with-sub">
@@ -70,7 +73,7 @@ $menus = $menu->getMenusByRole($_SESSION['role_id'], $_SESSION['idr']);
         
         <?php
         }
-        if($_SESSION['role_id'] == 5)
+        if($session->get('role_id') == 5)
         {
         ?>
         	<li class="blue-dirty">

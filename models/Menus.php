@@ -1,5 +1,7 @@
 <?php
 
+require_once (__DIR__."/../config/database.php");
+
 Class Menus extends Database
 {
     /* TODO Traer los menus del sistema */

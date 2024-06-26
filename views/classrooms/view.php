@@ -1,11 +1,14 @@
 <?php
 
-require_once("../../config/database.php");
 require_once("../../models/Classrooms.php");
+require_once("../../docs/Route.php");
+require_once("../../docs/Session.php");
 
-if(isset($_SESSION['id'])){
+$session = Session::getInstance();
+
+if($session->has('id')){
     if(!empty($_GET['id'])){
-        $idr              = $_SESSION['idr'];
+        $idr              = $session->get('idr');
         $classrooms       = new Classrooms();
         $clasroomsData    = $classrooms->getClassroomById($_GET['id'], $idr);
 ?>
@@ -80,11 +83,11 @@ if(isset($_SESSION['id'])){
 </html>
 <?php
     } else {
-        header("Location:" . Database::route() . "views/classrooms/");
+        header("Location:" . Route::route() . "views/classrooms/");
         exit;
     }
 } else {
-    header("Location:" . Database::route() . "views/404/");
+    header("Location:" . Route::route() . "views/404/");
     exit;
 }
 ?>

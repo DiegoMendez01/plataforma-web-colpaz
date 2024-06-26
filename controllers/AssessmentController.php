@@ -1,20 +1,22 @@
 <?php
 
-require_once("../config/database.php");
 require_once("../models/Assessments.php");
+require_once("../docs/Session.php");
 
 class AssesmentController
 {
     private $assessmentModel;
+    private $session;
 
     public function __construct()
     {
         $this->assessmentModel = new Assessments();
+        $this->session         = Session::getInstance();
     }
 
     public function handleRequest()
     {
-        $idr = $_SESSION['idr'];
+        $idr = $this->session->get('idr');
         switch($_GET['op'])
         {
             case "createOrUpdate":

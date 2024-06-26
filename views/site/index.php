@@ -1,6 +1,7 @@
 <?php 
 
-require_once("../../config/database.php");
+require_once("../../docs/Route.php");
+require_once("../../docs/Session.php");
 
 if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
     require_once("../../models/Users.php");
@@ -8,8 +9,10 @@ if(isset($_POST['submit']) AND $_POST['submit'] == "si"){
     $user->login();
 }
 
-if(!empty($_SESSION['id'])){
-    header("Location:".Database::route()."");
+$session = Session::getInstance();
+
+if($session->has('id')){
+    header("Location:".Route::route()."");
     exit;
 }else{
 ?>
